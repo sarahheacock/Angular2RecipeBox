@@ -17,7 +17,7 @@ export class EntryService {
 
     constructor(private http: Http){ }
     //private url = "http://localhost:3000";
-    private url = "https://angular2recipebox.herokuapp.com/";
+    private url = "https://angular2recipebox.herokuapp.com";
 
 
     getEntries(): Promise<any[]> {

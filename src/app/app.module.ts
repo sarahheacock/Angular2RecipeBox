@@ -15,11 +15,6 @@ import { EntryListComponent, EntryComponent, EntryService, EntryListModal, Entry
 const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/recipes',
-    pathMatch: 'full'
-  },
-  {
-    path: 'recipes',
     component: EntryListComponent
   }
 ];
@@ -30,7 +25,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    //RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes),
     NgbModule.forRoot(),
     CloudinaryModule.forRoot(cloudinary, {
         cloud_name: 'dhd1eov8v'
