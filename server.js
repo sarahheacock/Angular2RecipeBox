@@ -6,7 +6,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 // Get our API routes
-const api = require('./server/routes/api');
+const api = require('./routes/routes/api');
 const app = express();
 const refreshRoutes = express.Router();
 
@@ -54,7 +54,7 @@ const forceSSL = function() {
   }
 }
 
-app.use(forceSSL());
+//app.use(forceSSL());
 
 // ==================STATIC REQUESTS====================
 refreshRoutes.use(express.static(path.resolve(__dirname, 'dist')));

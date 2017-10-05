@@ -2,3 +2,39 @@
     padding-left: 2%;
     padding-top: 20vh;
 }
+
+.container-fluid{
+    padding: 0px;
+    margin: 0px;
+    background-color: WhiteSmoke;
+}
+
+header {
+    background-image: url(https://res.cloudinary.com/dhd1eov8v/image/upload/c_scale,w_934/v1506628983/pexels-photo-326278_jrnio3.jpg);
+    background-size: cover;
+    background-position: center top;
+    height: 50vh;
+    background-attachment: fixed;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+header h1 {
+    color: White;
+    /* padding-top: 10vh;
+    padding-left: 2%; */
+    font-size: 400%;
+}
+
+body {
+    margin:0;
+    padding:0; 
+    position: relative;
+    font-family: Georgia, serif;
+    background-color: WhiteSmoke;
+}
+
+.main{
+    padding: 5%;
+}

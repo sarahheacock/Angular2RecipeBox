@@ -4,7 +4,7 @@ import { EntryService } from '../shared/entry.service';
 @Component({
     selector: 'app-modal-button',
     template: `
-    <button type="button" class="btn btn-lg btn-outline-primary" (click)="stateChange()">
+    <button type="button" class="btn btn-lg btn-primary" (click)="stateChange()">
         Add Recipe
     </button>
     `,
