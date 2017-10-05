@@ -17,8 +17,8 @@ const options = {
   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } }
 };
 
-mongoose.connect(testConfig.DBHost, options); //connect to database
-// app.set('superSecret', config.secret); //set secret variable
+//mongoose.connect(testConfig.DBHost, options); //connect to database
+mongoose.connect("mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx");
 
 
 const db = mongoose.connection;
@@ -54,7 +54,7 @@ const forceSSL = function() {
   }
 }
 
-// app.use(forceSSL());
+app.use(forceSSL());
 
 // ==================STATIC REQUESTS====================
 refreshRoutes.use(express.static(path.resolve(__dirname, 'dist')));
@@ -91,6 +91,6 @@ const port = process.env.PORT || '3000';
 app.set('port', port);
 
 const server = http.createServer(app); //CHANGE BACK LISTEN WHEN NOT TESTING
-app.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(port, () => console.log(`API running on localhost:${port}`));
 
-module.exports = app;
+//module.exports = app;
