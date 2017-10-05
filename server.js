@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Add headers
 app.use((req, res, next) => { 
     // Website you wish to allow to connect
-  var allowedOrigins = ['http://localhost:4200', 'https://angular-recipe-box.herokuapp.com/'];
+  var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
   var origin = req.headers.origin;
   if(allowedOrigins.indexOf(origin) > -1){
        res.setHeader('Access-Control-Allow-Origin', origin);
