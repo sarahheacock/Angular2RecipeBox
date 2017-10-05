@@ -7,10 +7,10 @@
     "build": "ng build",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start": "node server.js",
+    "start": "set NODE_ENV=dev&&node server",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
-    "postinstall": "ng build --aot -prod",
+    "postinstall": "npm install && npm install --only=dev --no-shrinkwrap && ng build --aot -prod",
     "deploy": "git push origin master && git push heroku master"
   },
   "private": true,
