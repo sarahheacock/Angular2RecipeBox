@@ -1,0 +1,35 @@
+::ng-deep .card{
+    background-color: WhiteSmoke;
+    /* color: blue; */
+}
+
+::ng-deep .card-header{
+    background-color: White;
+}
+
+::ng-deep .card-header a{
+    color: dimgray;
+    font-size: 150%;
+    /* position: relative;
+    margin: 0 auto; */
+}
+
+::ng-deep .card-body{
+    background-color: WhiteSmoke;
+}
+
+
+.flex-container{
+    max-width: 1200px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: center;
+    /* height: auto; */
+}
+
+/* .flex-container a{
+    margin: 2%;
+} */
+  

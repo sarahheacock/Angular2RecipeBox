@@ -1,0 +1,13 @@
+<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+    <ngb-panel *ngFor="let box of entries" title="{{box.category}}">
+        <ng-template ngbPanelContent>
+            <div class="flex-container">
+                <app-entry *ngFor="let entry of box.recipes" [entry]="entry" [id]="entry.pic"></app-entry>
+            </div>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>
+
+
+
+

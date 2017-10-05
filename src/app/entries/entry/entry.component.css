@@ -1,0 +1,45 @@
+a {
+    color: dimgray;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.recipe-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px 15px 10px 15px;
+
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.recipe-content:hover {
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.directions {
+    /* padding-bottom: 5%; */
+    height: "auto";
+    overflow-y: hidden;
+    padding: 10px 15px 10px 15px;
+
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.item{
+    margin: auto;
+}
+
+.link{
+    color: blue;
+}

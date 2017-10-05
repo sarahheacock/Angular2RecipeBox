@@ -1,11 +1,50 @@
-const path = require('path');
+// Get dependencies
 const express = require('express');
-const app = express();
+const path = require('path');
+const mongoose = require("mongoose");
+const http = require('http');
+const bodyParser = require('body-parser');
 
-// If an incoming request uses
-// a protocol other than HTTPS,
-// redirect that request to the
-// same url but with HTTPS
+// Get our API routes
+const api = require('./server/routes/api');
+const app = express();
+const refreshRoutes = express.Router();
+
+//==================CONNECT TO DB==========================
+const testConfig = require('config'); //we load the db location from the JSON files
+const options = {
+  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } }
+};
+
+mongoose.connect(testConfig.DBHost, options); //connect to database
+// app.set('superSecret', config.secret); //set secret variable
+
+
+const db = mongoose.connection;
+db.on("error", (err) => {
+  console.error("connection error:", err);
+});
+db.once("open", () => {
+  console.log("db connection successful");
+});
+
+//===================CONFIGURE===========================
+// Parsers for POST data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Add headers
+app.use((req, res, next) => { 
+    // Website you wish to allow to connect
+  var allowedOrigins = ['http://localhost:4200', 'https://angular-recipe-box.herokuapp.com/'];
+  var origin = req.headers.origin;
+  if(allowedOrigins.indexOf(origin) > -1){
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  next();
+});
+
 const forceSSL = function() {
   return function (req, res, next) {
     if (req.headers['x-forwarded-proto'] !== 'https') {
@@ -15,21 +54,43 @@ const forceSSL = function() {
   }
 }
 
-// Instruct the app
-// to use the forceSSL
-// middleware
-app.use(forceSSL());
+// app.use(forceSSL());
 
-// Run the app by serving the static files
-// in the dist directory
-app.use(express.static(__dirname + '/dist'));
+// ==================STATIC REQUESTS====================
+refreshRoutes.use(express.static(path.resolve(__dirname, 'dist')));
 
-// For all GET requests, send back index.html
-// so that PathLocationStrategy can be used
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/index.html'));
+refreshRoutes.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 
-// Start the app by listening on the default
-// Heroku port
-app.listen(process.env.PORT || 8080);
+// ===================SET UP ROUTES==========================
+app.use('/api', api);
+app.use(refreshRoutes);
+
+//===========================================================
+//==========================================================
+//catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error("Not Found");
+  err.status = 404;
+  next(err);
+});
+
+//Error Handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      message: err.message
+    }
+  });
+});
+
+//====================START SERVER============================
+const port = process.env.PORT || '3000';
+app.set('port', port);
+
+const server = http.createServer(app); //CHANGE BACK LISTEN WHEN NOT TESTING
+app.listen(port, () => console.log(`API running on localhost:${port}`));
+
+module.exports = app;
