@@ -1,6 +1,6 @@
 import { Entry } from './entry.model';
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
 // Import RxJs required methods
@@ -15,8 +15,8 @@ export class EntryService {
     modalShown: string = 'active';
     modalContent: string = 'Loading';
 
-    constructor(private http: Http){ }
-    private url = "http://localhost:3000";
+    constructor(private http: HttpClient){ }
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     //private url = "https://angular2recipebox.herokuapp.com";
 
 
@@ -24,7 +24,7 @@ export class EntryService {
         console.log("get");
         return this.http.get(`${this.url}/api/scrape`)
             .toPromise()
-            .then(response => response.json().data as any[]);
+            .then(response => response['data'] as any[]);
     }
 
     changeContent(str){

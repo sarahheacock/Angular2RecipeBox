@@ -1,31 +1,3 @@
-// const path = require('path');
-// const express = require('express');
-// const app = express();
-
-// // If an incoming request uses
-// // a protocol other than HTTPS,
-// // redirect that request to the
-// // same url but with HTTPS
-// const forceSSL = function() {
-//   return function (req, res, next) {
-//     if (req.headers['x-forwarded-proto'] !== 'https') {
-//       return res.redirect(['https://', req.get('Host'), req.url].join(''));
-//     }
-//     next();
-//   }
-// }
-
-// // Instruct the app
-// // to use the forceSSL
-// // middleware
-// app.use(forceSSL());
-
-
-
-// // Start the app by listening on the default
-// // Heroku port
-// app.listen(process.env.PORT || 8080);
-
 // Get dependencies
 const express = require('express');
 const path = require('path');
@@ -34,9 +6,9 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 
 // Get our API routes
-//const api = require('./routes/routes/api');
+const api = require('./routes/routes/api');
 const app = express();
-//const refreshRoutes = express.Router();
+const refreshRoutes = express.Router();
 
 //==================CONNECT TO DB==========================
 // const testConfig = require('config'); //we load the db location from the JSON files
@@ -63,15 +35,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add headers
-// app.use((req, res, next) => { 
-//     // Website you wish to allow to connect
-//   var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
-//   var origin = req.headers.origin;
-//   if(allowedOrigins.indexOf(origin) > -1){
-//        res.setHeader('Access-Control-Allow-Origin', origin);
-//   }
-//   next();
-// });
+app.use((req, res, next) => { 
+    // Website you wish to allow to connect
+  var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
+  var origin = req.headers.origin;
+  if(allowedOrigins.indexOf(origin) > -1){
+    console.log("yay");
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  next();
+});
 
 const forceSSL = function() {
   return function (req, res, next) {
@@ -85,19 +58,20 @@ const forceSSL = function() {
 app.use(forceSSL());
 
 
-// ===================SET UP ROUTES==========================
-//app.use('/api', api);
-
 // ==================STATIC REQUESTS====================
 // Run the app by serving the static files
 // in the dist directory
-app.use(express.static(__dirname + '/dist'));
+refreshRoutes.use(express.static(__dirname + '/dist'));
 
 // For all GET requests, send back index.html
 // so that PathLocationStrategy can be used
-app.get('/*', function(req, res) {
+refreshRoutes.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
+
+// ===================SET UP ROUTES==========================
+app.use('/api', api);
+app.use(refreshRoutes);
 
 //===========================================================
 //==========================================================
@@ -120,7 +94,6 @@ app.use((err, req, res, next) => {
 
 //====================START SERVER============================
 const port = process.env.PORT || 8080;
-// app.set('port', port);
 
 //const server = http.createServer(app); //CHANGE BACK LISTEN WHEN NOT TESTING
 app.listen(port, () => console.log(`API running on localhost:${port}`));
