@@ -34,7 +34,7 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 
 // Get our API routes
-const api = require('./routes/routes/api');
+//const api = require('./routes/routes/api');
 const app = express();
 //const refreshRoutes = express.Router();
 
@@ -86,7 +86,7 @@ app.use(forceSSL());
 
 
 // ===================SET UP ROUTES==========================
-app.use('/api', api);
+//app.use('/api', api);
 
 // ==================STATIC REQUESTS====================
 // Run the app by serving the static files
