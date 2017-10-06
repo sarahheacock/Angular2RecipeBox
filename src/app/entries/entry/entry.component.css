@@ -13,9 +13,18 @@ a:hover {
     border-radius: 10px;
     padding: 20px 15px 10px 15px;
 
-    margin: 0 auto;
-    margin-bottom: 20px;
+    /* margin: 0 auto;
+    margin-bottom: 20px; */
+    margin: 10px;
+
+    -webkit-transition: zoom 5s ease-out;
+    -moz-transition: zoom 5s ease-out;
+    -o-transition: zoom 5s ease-out;
+    transition: zoom 5s ease-out;
+
+    zoom: 100%;
 }
+
 
 .title {
     margin-top: 10px;
@@ -23,7 +32,11 @@ a:hover {
 }
 
 .recipe-content:hover {
-    box-shadow: 10px 10px 5px #888888;
+    border-style: solid;
+    border-width: 1px;
+    border-color: whitesmoke;
+    transform: scale(1.1);
+    /* box-shadow: 10px 10px 5px #888888; */
 }
 
 .directions {

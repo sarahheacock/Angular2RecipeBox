@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import * as cloudinary from 'cloudinary-core';
 import { CloudinaryModule } from '@cloudinary/angular-4.x';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 
 import { EntryListComponent, EntryComponent, EntryService, EntryListModal, EntryListButton, ContentModal } from './entries';
@@ -26,7 +26,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    NgbModule.forRoot(),
+    //NgbModule.forRoot(),
     CloudinaryModule.forRoot(cloudinary, {
         cloud_name: 'dhd1eov8v'
     })

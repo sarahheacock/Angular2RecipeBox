@@ -16,8 +16,8 @@ export class EntryService {
     modalContent: string = 'Loading';
 
     constructor(private http: Http){ }
-    //private url = "http://localhost:3000";
-    private url = "https://angular2recipebox.herokuapp.com";
+    private url = "http://localhost:3000";
+    //private url = "https://angular2recipebox.herokuapp.com";
 
 
     getEntries(): Promise<any[]> {

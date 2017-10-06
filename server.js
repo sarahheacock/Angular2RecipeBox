@@ -35,15 +35,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add headers
-// app.use((req, res, next) => { 
-//     // Website you wish to allow to connect
-//   var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
-//   var origin = req.headers.origin;
-//   if(allowedOrigins.indexOf(origin) > -1){
-//        res.setHeader('Access-Control-Allow-Origin', origin);
-//   }
-//   next();
-// });
+app.use((req, res, next) => { 
+    // Website you wish to allow to connect
+  var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
+  var origin = req.headers.origin;
+  if(allowedOrigins.indexOf(origin) > -1){
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  next();
+});
 
 const forceSSL = function() {
   return function (req, res, next) {
@@ -54,7 +54,7 @@ const forceSSL = function() {
   }
 }
 
-app.use(forceSSL());
+//app.use(forceSSL());
 
 // ==================STATIC REQUESTS====================
 refreshRoutes.use(express.static(path.resolve(__dirname, 'dist')));

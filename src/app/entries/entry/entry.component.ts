@@ -20,8 +20,7 @@ import $ from "jquery";
         ]),
         trigger('expand', [
             state('inactive', style({
-                maxWidth: '200px',
-                height: '250px'
+                maxWidth: '200px'
             })),
             state('active', style({
                 maxWidth: '1200px'
