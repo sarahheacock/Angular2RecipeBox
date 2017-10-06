@@ -11,11 +11,11 @@ const app = express();
 const refreshRoutes = express.Router();
 
 //==================CONNECT TO DB==========================
-const testConfig = require('config'); //we load the db location from the JSON files
-const options = {
-  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
-  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } }
-};
+// const testConfig = require('config'); //we load the db location from the JSON files
+// const options = {
+//   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+//   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } }
+// };
 
 //mongoose.connect(testConfig.DBHost, options); //connect to database
 mongoose.connect("mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx");
@@ -35,15 +35,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add headers
-app.use((req, res, next) => { 
-    // Website you wish to allow to connect
-  var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
-  var origin = req.headers.origin;
-  if(allowedOrigins.indexOf(origin) > -1){
-       res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  next();
-});
+// app.use((req, res, next) => { 
+//     // Website you wish to allow to connect
+//   var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
+//   var origin = req.headers.origin;
+//   if(allowedOrigins.indexOf(origin) > -1){
+//        res.setHeader('Access-Control-Allow-Origin', origin);
+//   }
+//   next();
+// });
 
 const forceSSL = function() {
   return function (req, res, next) {
@@ -54,13 +54,17 @@ const forceSSL = function() {
   }
 }
 
-//app.use(forceSSL());
+app.use(forceSSL());
 
 // ==================STATIC REQUESTS====================
-refreshRoutes.use(express.static(path.resolve(__dirname, 'dist')));
+// Run the app by serving the static files
+// in the dist directory
+refreshRoutes.use(express.static(__dirname + '/dist'));
 
-refreshRoutes.get('*', function(request, response) {
-  response.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+// For all GET requests, send back index.html
+// so that PathLocationStrategy can be used
+refreshRoutes.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
 // ===================SET UP ROUTES==========================
@@ -87,10 +91,10 @@ app.use((err, req, res, next) => {
 });
 
 //====================START SERVER============================
-const port = process.env.PORT || '3000';
-app.set('port', port);
+const port = process.env.PORT || 3000;
+// app.set('port', port);
 
 const server = http.createServer(app); //CHANGE BACK LISTEN WHEN NOT TESTING
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+app.listen(port, () => console.log(`API running on localhost:${port}`));
 
 //module.exports = app;
