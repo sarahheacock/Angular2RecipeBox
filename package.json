@@ -28,6 +28,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@cloudinary/angular-4.x": "^1.0.0",
+    "body-parser": "^1.18.2",
     "bootstrap": "4.0.0-alpha.6",
     "cheerio": "^1.0.0-rc.2",
     "cloudinary-core": "^2.3.0",
