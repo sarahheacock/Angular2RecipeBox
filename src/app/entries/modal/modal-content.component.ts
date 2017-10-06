@@ -8,7 +8,7 @@ import { EntryService } from '../shared/entry.service';
 
 @Component({
   selector: 'app-modal-content',
-  template: `<div>{{this.content}}</div>`,
+  templateUrl: 'modal-content.component.html'
 })
 
 export class ContentModal {
@@ -25,5 +25,10 @@ export class ContentModal {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  stateChange() {
+    //console.log("hi");
+    this.entryService.toggleState();
   }
 }

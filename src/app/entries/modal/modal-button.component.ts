@@ -3,21 +3,27 @@ import { EntryService } from '../shared/entry.service';
 
 @Component({
     selector: 'app-modal-button',
-    template: `
+    template: 
+    `
+    <h1>{{(this.name) ? this.name + "'s Recipe Box" : 'Recipe Box'}}</h1>
     <button type="button" class="btn btn-lg btn-primary" (click)="stateChange()">
         Add Recipe
     </button>
-    `,
-    //providers: [EntryService]
+    <button type="button" class="btn btn-lg btn-outline-secondary" (click)="stateChange()">
+        Login
+    </button>
+    `
 })
 
 export class EntryListButton {
-    //@Output() onStateChange: EventEmitter<any> = new EventEmitter();   
-    
-    constructor(private entryService: EntryService) {}
+    name: string = '';
+
+    constructor(private entryService: EntryService) {
+        this.name = this.entryService.user.name;
+    }
   
     stateChange() {
         this.entryService.changeContent("Sign In");
-        //this.onStateChange.emit(this.entryService.modalShown);
     }
+    
 }

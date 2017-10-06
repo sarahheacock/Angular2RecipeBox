@@ -13,16 +13,18 @@ a:hover {
     border-radius: 10px;
     padding: 20px 15px 10px 15px;
 
+    border-width: 0px;
+    border-style: solid;
+    border-color: #d9d9d9;
+
     /* margin: 0 auto;
     margin-bottom: 20px; */
     margin: 10px;
 
-    -webkit-transition: zoom 5s ease-out;
-    -moz-transition: zoom 5s ease-out;
-    -o-transition: zoom 5s ease-out;
-    transition: zoom 5s ease-out;
-
-    zoom: 100%;
+    -webkit-transition: box-shadow 2s ease-out, border-width 2s ease-out;
+    -moz-transition: box-shadow 2s ease-out, border-width 2s ease-out;
+    -o-transition: box-shadow 2s ease-out, border-width 2s ease-out;
+    transition: box-shadow 2s ease-out, border-width 2s ease-out;
 }
 
 
@@ -32,11 +34,8 @@ a:hover {
 }
 
 .recipe-content:hover {
-    border-style: solid;
     border-width: 1px;
-    border-color: whitesmoke;
-    transform: scale(1.1);
-    /* box-shadow: 10px 10px 5px #888888; */
+    box-shadow: 5px 5px 3px #888888;
 }
 
 .directions {

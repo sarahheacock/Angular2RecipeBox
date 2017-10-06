@@ -14,11 +14,13 @@ import { EntryService } from '../shared/entry.service';
     trigger('showModal', [
       state('inactive', style({
         display: 'none',
-        top: '-600px'
+        top: '-600px',
+        opacity: '0'
       })),
       state('active', style({
         display: 'block',
-        top: '0px'
+        top: '0px',
+        opacity: '1'
       })),
       transition('inactive <=> active', animate('500ms ease-out'))
     ])
@@ -39,10 +41,6 @@ export class EntryListModal {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }
-
-  stateChange() {
-    this.entryService.toggleState();
   }
 }
 

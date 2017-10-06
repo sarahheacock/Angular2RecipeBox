@@ -13,11 +13,35 @@ export class EntryService {
     @Output() onStateChange: EventEmitter<any> = new EventEmitter();
     @Output() onContentChange: EventEmitter<any> = new EventEmitter();
     modalShown: string = 'active';
-    modalContent: string = 'Loading';
+    modalContent: string = "Loading";
+    user: { name:string; token:string; } = {
+        name: '',
+        token: ''
+    };
 
-    constructor(private http: HttpClient){ }
+    constructor(private http: HttpClient){
+        if(window.location.search){
+            const arr = window.location.search.split('userName');
+            this.user = {
+                name: arr[1].replace(/%20/g, ' '),
+                token: arr[0].replace('?token=', '')
+            };
+            window.sessionStorage.setItem('user', JSON.stringify(this.user));
+            if(this.user.name) window.location.href = window.location.origin + "/";
+            //console.log(this.user);
+        }
+        else if(window.sessionStorage.user){
+            const user = JSON.parse(window.sessionStorage.user);
+            this.user = {
+                name: user.name,
+                token: user.token
+            };
+            //window.location.pathname = '';
+        }
+
+        //window.location.pathname = '';
+    }
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
-    //private url = "https://angular2recipebox.herokuapp.com";
 
 
     getEntries(): Promise<any[]> {
