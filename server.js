@@ -46,16 +46,16 @@ const app = express();
 // };
 
 //mongoose.connect(testConfig.DBHost, options); //connect to database
-mongoose.connect("mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx");
+// mongoose.connect("mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx");
 
 
 // const db = mongoose.connection;
-db.on("error", (err) => {
-  console.error("connection error:", err);
-});
-db.once("open", () => {
-  console.log("db connection successful");
-});
+// db.on("error", (err) => {
+//   console.error("connection error:", err);
+// });
+// db.once("open", () => {
+//   console.log("db connection successful");
+// });
 
 //===================CONFIGURE===========================
 // Parsers for POST data
