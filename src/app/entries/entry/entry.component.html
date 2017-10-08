@@ -4,13 +4,16 @@
             <h4 class="title" [@grow]="contentShown">{{entry.title}}</h4>
 
             <div [ngSwitch]="cloud">
-                <ng-container *ngSwitchCase="added">
+                <ng-container *ngSwitchCase="'added'">
                     <cl-image public-id="{{entry.pic}}"  draggable="false">
                         <cl-transformation width="150" crop="fill" radius="10" ></cl-transformation>
                     </cl-image>
                 </ng-container>
-                <ng-container *ngSwitchCase="original">
-                    <img width="150" src="{{entry.pic}}" alt=""/>
+                <ng-container *ngSwitchCase="'original'">
+                    <img width="150" src="{{entry.pic}}" alt="{{entry.title}}"/>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <div></div>
                 </ng-container>
             </div>
         </div>

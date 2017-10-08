@@ -1,15 +1,15 @@
 <div class="container">
     <div class="panel-group" id="accordion">
         <div *ngFor="let box of entries" class="panel panel-default">
-            <a data-toggle="collapse" data-parent="#accordion" href="{{'#' + box.category}}"  class="btn btn-block btn-outline-primary">
+            <a data-toggle="collapse" data-parent="#accordion" href="{{'#' + box._id}}"  class="btn btn-block btn-outline-primary">
                 <h4 class="panel-title">
                     {{box.category}}
                 </h4>
             </a>
-            <div id={{box.category}} class="panel-collapse collapse in">
+            <div id={{box._id}} class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div class="flex-container">
-                        <app-entry *ngFor="let entry of box.recipes" [entry]="entry" [id]="entry.pic"></app-entry>
+                        <app-entry *ngFor="let entry of box.recipes" [entry]="entry" [id]="entry._id"></app-entry>
                     </div>
                 </div>
             </div>

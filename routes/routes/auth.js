@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/api').User;
-const jwt = require('jsonwebtoken');
+const mid = require("../middleware/user");
 
 const passport = require('passport');
 const FacebookTokenStrategy = require('passport-facebook-token');
-//const FacebookStrategy = require('passport-facebook').Strategy;
 
 //user id is used to retrieve user in deserializeUser
 passport.serializeUser((user, next) => {
@@ -54,25 +53,19 @@ passport.use(new FacebookTokenStrategy({
 router.use(passport.initialize());
 
 router.get('/facebook/token', passport.authenticate('facebook-token'), (req, res) => {
-    const token = (req.user) ? jwt.sign({userID: req.user.userID}, 'I want this to work!', {
-        expiresIn: '3h' //expires in three hour
-    }): '';
-
     if(req.user){
-        let obj = req.user;
-        obj.userID = token;
-        console.log(obj);
-        res.json(obj);
-    }
-    else {
         next();
     }
-});
+    else {
+        let err = new Error("User not found");
+        next(err);
+    }
+}, mid.outputUser);
 
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.json({user: initialUser, message: "logged out"})
-});
+// router.get('/logout', (req, res) => {
+//   req.logout();
+//   res.json({user: initialUser, message: "logged out"})
+// });
 
 module.exports = router;

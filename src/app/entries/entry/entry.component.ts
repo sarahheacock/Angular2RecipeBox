@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterContentInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 //import { Entry } from '../shared/entry.model';
 import $ from "jquery";
@@ -43,19 +43,22 @@ export class EntryComponent {
     @Input() entry: any;
     contentShown: string;
     cloud: string;
-    original: string;
-    added: string;
+    // original: string;
+    // added: string;
 
     constructor(){
         this.contentShown = 'inactive';
         this.cloud = "original";
-        this.original = "original";
-        this.added = "added";
+        this.cloud = ''
+    }
+
+    ngAfterContentInit(){
+        this.cloud = (this.entry.pic.includes("http:")) ? "original": "added";
     }
 
     changeState() {
         this.contentShown = (this.contentShown === 'inactive') ? 'active': 'inactive';
-        const element = document.getElementById(this.entry.pic);
+        const element = document.getElementById(this.entry._id);
         const dist = $(element).offset().top;
 
         $('html, body').animate({

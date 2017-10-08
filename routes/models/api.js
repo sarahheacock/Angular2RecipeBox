@@ -18,9 +18,9 @@ const RecipeSchema = new Schema({
         type: String,
         default: "Tile-Dark-Grey-Smaller-White-97_pxf5ux"
     },
-    href: {
+    href: { // href is either the recipe url or category
         type: String,
-        default: ''
+        required: true
     }
 });
 
@@ -58,11 +58,6 @@ const BookSchema = new Schema({
         type: [BoxSchema],
         default: []
     }
-    // box: {
-    //     type: [Schema.Types.ObjectId], 
-    //     ref: 'Box', 
-    //     required: true 
-    // }
 });
 
 

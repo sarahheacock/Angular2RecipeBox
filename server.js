@@ -8,19 +8,20 @@ const bodyParser = require('body-parser');
 // Get our API routes
 const api = require('./routes/routes/api');
 const auth = require('./routes/routes/auth');
+const authg = require('./routes/routes/authg');
 const user = require('./routes/routes/user');
 const app = express();
 const refreshRoutes = express.Router();
 
 //==================CONNECT TO DB==========================
-// const testConfig = require('config'); //we load the db location from the JSON files
+const testConfig = require('config'); //we load the db location from the JSON files
 const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } }
 };
 
-//mongoose.connect(testConfig.DBHost, options); //connect to database
-mongoose.connect("mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx", options);
+mongoose.connect(testConfig.DBHost, options); //connect to database
+//mongoose.connect("mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx", options);
 
 
 const db = mongoose.connection;
@@ -81,6 +82,7 @@ refreshRoutes.get('/*', function(req, res) {
 // ===================SET UP ROUTES==========================
 app.use('/api', api);
 app.use('/auth', auth);
+app.use('/authg', authg);
 app.use('/user', user);
 app.use(refreshRoutes);
 
@@ -109,4 +111,4 @@ const port = process.env.PORT || 8080;
 //const server = http.createServer(app); //CHANGE BACK LISTEN WHEN NOT TESTING
 app.listen(port, () => console.log(`API running on localhost:${port}`));
 
-//module.exports = app;
+module.exports = app;

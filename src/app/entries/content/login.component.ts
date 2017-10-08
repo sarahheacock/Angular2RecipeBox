@@ -3,6 +3,7 @@ import { Component, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import $ from "jquery";
 
+
 declare var gapi: any;
 
 //<button class="btn btn-success">Sign in with Google <i class="fa fa-google-plus" aria-hidden="true"></i></button>

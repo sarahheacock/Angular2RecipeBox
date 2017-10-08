@@ -46,9 +46,9 @@ export class EntryService {
     // RECIPES
     getEntries(): Promise<any[]> {
         console.log("get");
-        return this.http.get(`${this.url}/api/scrape`)
+        return this.http.get(`${this.url}/api`)
             .toPromise()
-            .then(response => response['data'] as any[]);
+            .then(response => response['box'] as any[]);
     }
 
     // MODAL CONTENT
@@ -95,23 +95,25 @@ export class EntryService {
     }
 
     loginWithGmail(googleUser) {
-        const profile = googleUser.getBasicProfile();
-        const userID = profile.getEmail();
-        const name = profile.getName();
+        const id_token = googleUser.getAuthResponse().id_token;
+        console.log(id_token);
+        // const profile = googleUser.getBasicProfile();
+        // const userID = profile.getEmail();
+        // const name = profile.getName();
         
-        const body = {
-            userID: userID,
-            name: name
-        };
+        // const body = {
+        //     userID: userID,
+        //     name: name
+        // };
 
-        console.log(body, this.user);
-        if(this.user.name !== name){
-            return this.changeUser(`${this.url}/user/gmail/token`, body)
-            .then(user => {
-                this.user = user;
-                this.store();
-            });
-        }
+        // console.log(body, this.user);
+        // if(this.user.name !== name){
+        //     return this.changeUser(`${this.url}/user/gmail/token`, body)
+        //     .then(user => {
+        //         this.user = user;
+        //         this.store();
+        //     });
+        // }
     }
 
     changeUser(url, body): Promise<User> {

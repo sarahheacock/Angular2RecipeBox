@@ -7,8 +7,8 @@
     "build": "ng build",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start": "node server.js",
-    "test": "ng test",
+    "start": "set NODE_ENV=dev&&node server.js",
+    "test": "mocha --timeout 100000",
     "pree2e": "webdriver-manager update",
     "postinstall": "ng build --aot -prod",
     "deploy": "git push origin master && git push heroku master"
@@ -42,6 +42,7 @@
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
+    "passport-google-id-token": "^0.4.3",
     "request": "^2.83.0",
     "rxjs": "^5.4.1",
     "typescript": "2.3.0",
