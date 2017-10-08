@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 //import { Entry } from '../shared/entry.model';
 
+//declare var auth2: any;
+//declare var signInCallback: any;
+
 @Component({
     selector: 'app-entry-list',
     templateUrl: 'entry-list.component.html',
@@ -25,6 +28,15 @@ export class EntryListComponent implements OnInit {
             this.entryService.toggleState();
         });
     }
+
+    // signIn(){
+    //     auth2.grantOfflineAccess().then(this.signInCallback);
+    // }
+
+    // signInCallback(authResult){
+    //     const token = authResult.code;
+    //     this.entryService.loginWithGmail(token);
+    // };
 
     // ngOnInit(){
     //     this.entryService

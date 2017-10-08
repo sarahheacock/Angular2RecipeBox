@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 // Get our API routes
 const api = require('./routes/routes/api');
 const auth = require('./routes/routes/auth');
-const authg = require('./routes/routes/authg');
+//const authg = require('./routes/routes/authg');
 const user = require('./routes/routes/user');
 const app = express();
 const refreshRoutes = express.Router();
@@ -82,7 +82,7 @@ refreshRoutes.get('/*', function(req, res) {
 // ===================SET UP ROUTES==========================
 app.use('/api', api);
 app.use('/auth', auth);
-app.use('/authg', authg);
+//app.use('/authg', authg);
 app.use('/user', user);
 app.use(refreshRoutes);
 

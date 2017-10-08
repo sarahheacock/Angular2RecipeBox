@@ -35,14 +35,18 @@ const auth = (req, res, next) => {
 
 
 const outputUser = (req, res, next) => {
+    console.log("user", req.user);
     if(!req.user){
         let err = new Error("Unable to create token.");
         next(err);
     }
     else {
-        const obj = Object.assign(req.user, {userID: jwt.sign({userID: req.user.userID}, secret, {
+        const token = jwt.sign({userID: req.user.userID}, secret, {
             expiresIn: '3h' //expires in three hour
-        })});
+        });
+        let obj = req.user;
+        obj.userID = token;
+        console.log("obj", obj);
         // req.user.userID = jwt.sign({userID: req.user.userID}, secret, {
         //     expiresIn: '3h' //expires in three hour
         // })

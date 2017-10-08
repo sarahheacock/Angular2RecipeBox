@@ -85,7 +85,9 @@ export class EntryService {
             .then((response: LoginResponse) => {
                 console.log(response);
                 const token = response.authResponse.accessToken;
-                return this.changeUser(`${this.url}/auth/facebook/token?access_token=${token}`, null)
+                const url = `${this.url}/auth/facebook/token?access_token=${token}`;
+                console.log({url: url});
+                return this.changeUser(url)
                     .then(user => {
                         this.user = user;
                         this.store();
@@ -94,39 +96,40 @@ export class EntryService {
             .catch((error: any) => console.error(error)); 
     }
 
-    loginWithGmail(googleUser) {
-        const id_token = googleUser.getAuthResponse().id_token;
-        console.log(id_token);
-        // const profile = googleUser.getBasicProfile();
-        // const userID = profile.getEmail();
-        // const name = profile.getName();
+    // loginWithGmail(token) {
         
-        // const body = {
-        //     userID: userID,
-        //     name: name
-        // };
+    //     console.log("token", token);
+    //     // const id_token = googleUser.getAuthResponse().id_token;
+    //     // console.log(id_token);
 
-        // console.log(body, this.user);
-        // if(this.user.name !== name){
-        //     return this.changeUser(`${this.url}/user/gmail/token`, body)
-        //     .then(user => {
-        //         this.user = user;
-        //         this.store();
-        //     });
-        // }
-    }
+    //     return this.changeUser(`${this.url}/auth/google/token?access_token=${token}`)
+    //     .then(user => {
+    //         this.user = user;
+    //         this.store();
+    //     });
+    //     // const profile = googleUser.getBasicProfile();
+    //     // const userID = profile.getEmail();
+    //     // const name = profile.getName();
+        
+    //     // const body = {
+    //     //     userID: userID,
+    //     //     name: name
+    //     // };
 
-    changeUser(url, body): Promise<User> {
-        if(body){
-            return this.http.post(url, body)
-            .toPromise()
-            .then(response => response as User);
-        }
-        else {
-            return this.http.get(url)
-            .toPromise()
-            .then(response => response as User);
-        }
+    //     // console.log(body, this.user);
+    //     // if(this.user.name !== name){
+    //     //     return this.changeUser(`${this.url}/user/gmail/token`, body)
+    //     //     .then(user => {
+    //     //         this.user = user;
+    //     //         this.store();
+    //     //     });
+    //     // }
+    // }
+
+    changeUser(url): Promise<User> {
+        return this.http.get(url)
+        .toPromise()
+        .then(response => response as User);
     }
     //763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com
     //iHy7MLbSD6-8VWAkFzo0Q18c
