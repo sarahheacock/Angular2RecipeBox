@@ -55,11 +55,16 @@ const BookSchema = new Schema({
         default: new Date()
     },
     box: {
-        type: [Schema.Types.ObjectId], 
-        ref: 'Box', 
-        required: true 
+        type: [BoxSchema],
+        default: []
     }
+    // box: {
+    //     type: [Schema.Types.ObjectId], 
+    //     ref: 'Box', 
+    //     required: true 
+    // }
 });
+
 
 BookSchema.pre('save', function(next){
     let book = this;
@@ -72,8 +77,7 @@ BookSchema.pre('save', function(next){
         });
     } 
     
-    book.createdAt = new Date();
-    
+    book.createdAt = new Date();  
     next();
 });
 
@@ -96,12 +100,12 @@ UserSchema = new Schema({
     }
 })
 
-const User = mongoose.model("User", RecipeSchema);
-const Book = mongoose.model("Book", RecipeSchema);
-const Box = mongoose.model("Box", BoxSchema);
+const User = mongoose.model("User", UserSchema);
+const Book = mongoose.model("Book", BookSchema);
+//const Box = mongoose.model("Box", BoxSchema);
 
 module.exports = {
     User: User,
     Book: Book,
-    Box: Box
+    //Box: Box
 }

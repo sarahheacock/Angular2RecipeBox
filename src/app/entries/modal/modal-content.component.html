@@ -5,8 +5,7 @@
 <div class="modal-body text-center">
     <div [ngSwitch]="content">
         <ng-container *ngSwitchCase="'Sign In'">
-            <a href="#" class="btn btn-success">Sign in with Google <i class="fa fa-google-plus" aria-hidden="true"></i></a>
-            <a href="http://localhost:8080/auth/facebook" class="btn btn-primary">Sign in with Facebook <i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+            <app-login></app-login>
         </ng-container>
         <ng-container *ngSwitchDefault>
             <i class="fa fa-spinner fa-spin fa-2x"></i>

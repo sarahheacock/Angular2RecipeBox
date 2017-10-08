@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { Entry } from '../shared/entry.model';
+//import { Entry } from '../shared/entry.model';
 import $ from "jquery";
 
 

@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 // Get our API routes
 const api = require('./routes/routes/api');
 const auth = require('./routes/routes/auth');
+const user = require('./routes/routes/user');
 const app = express();
 const refreshRoutes = express.Router();
 
@@ -36,14 +37,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add headers
-app.use((req, res, next) => { 
+app.use((req, response, next) => { 
     // Website you wish to allow to connect
-  var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
-  var origin = req.headers.origin;
-  if(allowedOrigins.indexOf(origin) > -1){
-    console.log("yay");
-       res.setHeader('Access-Control-Allow-Origin', origin);
-  }
+  // var allowedOrigins = ['http://localhost:4200', 'https://angular2recipebox.herokuapp.com/'];
+  // var origin = req.headers.origin;
+  // if(allowedOrigins.indexOf(origin) > -1){
+  //   console.log("yay");
+  //   res.setHeader('Access-Control-Allow-Origin', origin);
+  // }
+  // else {
+  //   console.log("oops");
+  // }
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Credentials", "true");
+  response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   next();
 });
 
@@ -73,6 +81,7 @@ refreshRoutes.get('/*', function(req, res) {
 // ===================SET UP ROUTES==========================
 app.use('/api', api);
 app.use('/auth', auth);
+app.use('/user', user);
 app.use(refreshRoutes);
 
 //===========================================================

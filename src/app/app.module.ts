@@ -8,10 +8,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import * as cloudinary from 'cloudinary-core';
 import { CloudinaryModule } from '@cloudinary/angular-4.x';
+
+import { FacebookModule } from 'ngx-facebook';
+//import {GoogleSignInComponent} from 'angular-google-signin';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 
-import { EntryListComponent, EntryComponent, EntryService, EntryListModal, EntryListButton, ContentModal } from './entries';
+import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, ContentModal, Login } from './entries';
 
 const appRoutes: Routes = [
   {
@@ -28,6 +31,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     //NgbModule.forRoot(),
+    FacebookModule.forRoot(),
     CloudinaryModule.forRoot(cloudinary, {
         cloud_name: 'dhd1eov8v'
     })
@@ -37,8 +41,10 @@ const appRoutes: Routes = [
     EntryComponent,
     EntryListComponent,
     EntryListModal,
-    EntryListButton,
-    ContentModal
+    HeaderContent,
+    ContentModal,
+    Login,
+    //GoogleSignInComponent
   ],
   providers: [EntryService],
   bootstrap: [AppComponent]

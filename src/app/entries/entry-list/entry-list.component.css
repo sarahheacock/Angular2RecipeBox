@@ -35,6 +35,18 @@
     margin: 1%;
 }
 
+.btn{
+    margin-bottom: 1%;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
 /* .flex-container a{
     margin: 2%;
 } */

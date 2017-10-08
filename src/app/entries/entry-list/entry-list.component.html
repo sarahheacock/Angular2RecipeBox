@@ -1,12 +1,10 @@
 <div class="container">
     <div class="panel-group" id="accordion">
         <div *ngFor="let box of entries" class="panel panel-default">
-            <a data-toggle="collapse" data-parent="#accordion" href="{{'#' + box.category}}">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        {{box.category}}
-                    </h4>
-                </div>
+            <a data-toggle="collapse" data-parent="#accordion" href="{{'#' + box.category}}"  class="btn btn-block btn-outline-primary">
+                <h4 class="panel-title">
+                    {{box.category}}
+                </h4>
             </a>
             <div id={{box.category}} class="panel-collapse collapse in">
                 <div class="panel-body">

@@ -7,8 +7,8 @@ const cheerio = require('cheerio');
 //const util = require('util');
 //var Promise = require('promise');
 
-const Box = require("../models/api").Box;
-const Recipe = require("../models/api").Recipe;
+//const Box = require("../models/api").Box;
+const Book = require("../models/api").Book;
 
 const required = ["title"];
 
@@ -25,80 +25,91 @@ const arr = (string) => {
 }
 
 //=========PARAMETERS===========================
-router.param("category", (req, res, next, id) => {
-  const cat = cap(id);
+// router.param("category", (req, res, next, id) => {
+//   const cat = cap(id);
 
-  Box.findOne({category: cat}, (err, box) => {
-    if(err){
-      next(err);
-    } 
-    else if(!box){
-      req.box = new Box({
-        category: cat,
-        recipes: []
-      });
-      next();
-    }
-    else{
-      req.box = box;
-      next();
-    }
-  });
-});
+//   Box.findOne({category: cat}, (err, box) => {
+//     if(err){
+//       next(err);
+//     } 
+//     else if(!box){
+//       req.box = new Box({
+//         category: cat,
+//         recipes: []
+//       });
+//       next();
+//     }
+//     else{
+//       req.box = box;
+//       next();
+//     }
+//   });
+// });
 
-//=========MIDDLEWARE===========================
-//check input
-const check = (req, res, next) => {
-  const valid = required.reduce((a, b) => {
-    return a && req.body[b] !== '' && req.body[b] !== undefined;
-  }, true);
+// //=========MIDDLEWARE===========================
+// //check input
+// const check = (req, res, next) => {
+//   const valid = required.reduce((a, b) => {
+//     return a && req.body[b] !== '' && req.body[b] !== undefined;
+//   }, true);
 
-  if(valid){
-    next();
-  }
-  else{
-    res.json({message: "*Fill out required fields"});
-  }
-};
+//   if(valid){
+//     next();
+//   }
+//   else{
+//     res.json({message: "*Fill out required fields"});
+//   }
+// };
 
-//format input
-const formatInput = (req, res, next) => {
-  req.body.title = cap(req.body.title);
+// //format input
+// const formatInput = (req, res, next) => {
+//   req.body.title = cap(req.body.title);
 
-  req.body.ingredients = arr(req.body.ingredients);
-  req.body.directions = arr(req.body.directions);
+//   req.body.ingredients = arr(req.body.ingredients);
+//   req.body.directions = arr(req.body.directions);
 
-  next();
-};
+//   next();
+// };
 
-//format output
-const output = (req, res, next) => {
-  Box.find({}).populate({
-    path: 'recipes',
-    model: 'Recipe'
-  }).exec((err, doc) => {
-    const arr = (req.recipes) ? doc.concat(req.recipes) : doc;
+// //format output
+// const output = (req, res, next) => {
+//   Box.find({}).populate({
+//     path: 'recipes',
+//     model: 'Recipe'
+//   }).exec((err, doc) => {
+//     const arr = (req.recipes) ? doc.concat(req.recipes) : doc;
 
-    const result = arr.sort((a, b) => {
-      return (b.category < a.category) ? 1 : -1;
-    });
+//     const result = arr.sort((a, b) => {
+//       return (b.category < a.category) ? 1 : -1;
+//     });
 
-    res.json({
-      data: result
-    });
-  });
-};
+//     res.json({
+//       data: result
+//     });
+//   });
+// };
 
 //============ROUTES===============================
 //get all recipes and boxes
-router.get('/', output);
+// router.get('/', output);
 
 
 router.get('/scrape', (req, res, next) => {
-  fs.readFile("output.json", (err, data) => {
-    if(err) next();
-    else res.json(JSON.parse(data));
-  });
+  Book.findOne({}).exec((err, doc) => {
+    if(err){
+      next(err);
+    }
+    else if(doc){
+      res.json(doc);
+    }
+    else{
+      next();
+    }
+  })
+  // fs.readFile("output.json", (err, data) => {
+  //   if(err) next();
+  //   else res.json(JSON.parse(data));
+  // });
 }, (req, res, next) => {
   const url = "http://orangette.net/recipes/";
 
@@ -190,18 +201,20 @@ router.get('/scrape', (req, res, next) => {
             setTimeout(myFunc, 1500);
           } 
           else{
-            fs.writeFile('output.json', JSON.stringify({
-              createdAt: new Date(),
-              data: result
-            }, null, 4), function(err){
-              if(err){
-                next(err);
-              }
-              else {
-                console.log('File successfully written! - Check your project directory for the output.json file');
-                res.send({data: result});
-              }
-            });
+            req.create = result;
+            next();
+            // fs.writeFile('output.json', JSON.stringify({
+            //   createdAt: new Date(),
+            //   data: result
+            // }, null, 4), function(err){
+            //   if(err){
+            //     next(err);
+            //   }
+            //   else {
+            //     console.log('File successfully written! - Check your project directory for the output.json file');
+            //     res.send({data: result});
+            //   }
+            // });
           } 
         }
 
@@ -212,46 +225,61 @@ router.get('/scrape', (req, res, next) => {
       }
     });
   };
-
   func(0, req.final);
+}, (req, res, next) => {
+  let book = new Book({
+    box: req.create
+  });
 
+  book.save((err, doc) => {
+    if(err) next(err);
+    else res.json(doc);
+  })
+  // let idArr = [];
+
+  // result.forEach((category) => {
+  //   let box = new Box(category);
+  //   category.save((err, doc) => {
+
+  //   });
+  // });
 });
 
 
 //create new recipe
-router.post('/:category', check, formatInput, (req, res, next) => {
-  let recipe = new Recipe(req.body);
-  recipe.save((err, newRecipe) => {
-    if(err){
-      next(err);
-    }
-    else{
-      console.log(req.box);
-      req.box.recipes.push(recipe);
-      req.box.save((err, doc) => {
-        if(err){
-          next(err);
-        } 
-        else{
-          res.status(201);
-          res.json({
-            data: [doc]
-          });
-        } 
-      });
-    }
-  }); 
-});
+// router.post('/:category', check, formatInput, (req, res, next) => {
+//   let recipe = new Recipe(req.body);
+//   recipe.save((err, newRecipe) => {
+//     if(err){
+//       next(err);
+//     }
+//     else{
+//       console.log(req.box);
+//       req.box.recipes.push(recipe);
+//       req.box.save((err, doc) => {
+//         if(err){
+//           next(err);
+//         } 
+//         else{
+//           res.status(201);
+//           res.json({
+//             data: [doc]
+//           });
+//         } 
+//       });
+//     }
+//   }); 
+// });
 
-//edit recipe
-router.put("/:category/:id", check, formatInput, (req, res, next) => {
-  next();
-});
+// //edit recipe
+// router.put("/:category/:id", check, formatInput, (req, res, next) => {
+//   next();
+// });
 
-//delete recipe
-router.delete("/:category/:id", check, formatInput, (req, res, next) => {
-  next();
-});
+// //delete recipe
+// router.delete("/:category/:id", check, formatInput, (req, res, next) => {
+//   next();
+// });
 
 module.exports = router;
 
