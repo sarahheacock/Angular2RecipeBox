@@ -10,16 +10,21 @@ import * as cloudinary from 'cloudinary-core';
 import { CloudinaryModule } from '@cloudinary/angular-4.x';
 
 import { FacebookModule } from 'ngx-facebook';
+import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
+// import { AuthService, AppGlobals } from 'angular2-google-login';
 //import {GoogleSignInComponent} from 'angular-google-signin';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 
-import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, ContentModal, Login } from './entries';
+import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, ContentModal, Login, Logout, AddShopping } from './entries';
 
 const appRoutes: Routes = [
   {
     path: '',
     component: EntryListComponent
+  },
+  { path: '**',
+    redirectTo: ''
   }
 ];
 
@@ -30,11 +35,13 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
+    //NgxGoogleSignInModule.forRoot(),
     //NgbModule.forRoot(),
     FacebookModule.forRoot(),
     CloudinaryModule.forRoot(cloudinary, {
         cloud_name: 'dhd1eov8v'
-    })
+    }),
+
   ],
   declarations: [
     AppComponent,
@@ -44,9 +51,13 @@ const appRoutes: Routes = [
     HeaderContent,
     ContentModal,
     Login,
+    Logout,
+    AddShopping
     //GoogleSignInComponent
   ],
-  providers: [EntryService],
+  providers: [
+    EntryService
+  ],
   bootstrap: [AppComponent]
 })
 

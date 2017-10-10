@@ -2,10 +2,16 @@
     <button type="button" class="close" (click)="stateChange()">&times;</button>
     <h4 class="modal-title">{{content}}</h4>
 </div>
-<div class="modal-body text-center">
+<div class="modal-body">
     <div [ngSwitch]="content">
         <ng-container *ngSwitchCase="'Sign In'">
             <app-login></app-login>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Logout'">
+            <app-logout></app-logout>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Add Ingredients'">
+            <app-add-shopping [ingredients]="data"></app-add-shopping>
         </ng-container>
         <ng-container *ngSwitchDefault>
             <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -13,6 +19,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn" (click)="stateChange()">Save changes</button>
+    <button *ngIf="show" type="button" class="btn" (click)="stateChange()">Save changes</button>
     <button type="button" class="btn btn-default" (click)="stateChange()">Close</button>
 </div>

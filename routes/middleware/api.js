@@ -90,7 +90,7 @@ const updateBox = (req, res, next) => {
                     } 
                 });
 
-                if(tags.length === 0) tags.push("Entrees");
+                if(tags.length === 0) tags.push("Main Dish");
                 console.log(tags);
 
                 req.book.box.forEach((b) => {

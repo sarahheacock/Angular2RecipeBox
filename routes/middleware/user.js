@@ -1,12 +1,19 @@
 const secret = require('config').superSecret;
 const jwt = require('jsonwebtoken');
+const required = ["title", "ingredients", "href"];
 
+
+const cap = (string) => {
+  return string.trim().split(' ').map((str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }).join(' ');
+};
 
 const arr = (string) => {
     return string.split("\n").filter((str) => {
       if(str !== "") return str;
     });
-}
+};
 
 
 // verifies token after login
@@ -16,10 +23,15 @@ const auth = (req, res, next) => {
 
     if (token) { // decode token
       jwt.verify(token, secret, (err, decoded) => { // verifies secret and checks exp
-        const userID = req.user.userID || req.body.userID;
-        if (err || decoded.userID !== userID) {
+        const userID = req.user.userID;
+        if (err) {
           //NEED TO CHANGE TO SEND SIGN IN FORM
           res.json({message: "Session expired."})
+        }
+        else if(decoded.userID !== userID){
+          let err = new Error("Unauthorized! Go away!");
+          err.status = 401;
+          next(err);
         }
         else { // if everything is good, save to request for use in other routes
           next();
@@ -27,12 +39,22 @@ const auth = (req, res, next) => {
       });
     }
     else {
-      let err = new Error("Auth error");
+      let err = new Error("You need a token.");
       err.status = 401;
       next(err);
     }
 };
 
+const saveAndOutput = (req, res, next) => {
+  req.user.save((err, newUser) => {
+    if(err){
+      next(err);
+    } 
+    else {
+      outputUser(req, res, next);
+    }
+  });
+};
 
 const outputUser = (req, res, next) => {
     console.log("user", req.user);
@@ -54,34 +76,30 @@ const outputUser = (req, res, next) => {
     }
 }
 
-//check input
-const check = (req, res, next) => {
-    const valid = required.reduce((a, b) => {
-      return a && req.body[b] !== '' && req.body[b] !== undefined;
-    }, true);
-  
-    if(valid){
-      next();
-    }
-    else{
-      res.json({message: "*Fill out required fields"});
-    }
-};
-
 //format input
 const formatInput = (req, res, next) => {
+  const valid = required.reduce((a, b) => {
+    return a && req.body[b] !== '' && req.body[b] !== undefined;
+  }, true);
+
+  if(!valid){
+    res.json({message: "*Fill out required fields"});
+  }
+  else{
     req.body.title = cap(req.body.title);
-  
+
     req.body.ingredients = arr(req.body.ingredients);
     req.body.directions = arr(req.body.directions);
-  
+
     next();
+  }
 };
   
 
 module.exports = {
     auth: auth,
+    saveAndOutput: saveAndOutput,
     outputUser: outputUser,
-    check: check,
+    // check: check,
     formatInput: formatInput
 }

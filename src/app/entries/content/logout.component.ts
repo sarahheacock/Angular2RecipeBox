@@ -3,12 +3,12 @@ import { EntryService } from '../shared/entry.service';
 
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
+    selector: 'app-logout',
+    templateUrl: './logout.component.html',
     styleUrls: ['./login.component.css']
 })
 
-export class Login {
+export class Logout {
     name: string = '';
     subscription: any;
 
@@ -20,11 +20,7 @@ export class Login {
         this.subscription = this.entryService.getUser().subscribe(item => this.name=item.name);
     }
 
-    login() {
-        this.entryService.loginWithFacebook();
-    }
-
-    loginG() {
-        this.entryService.loginWithGmail();
+    signOut() {
+        this.entryService.logoutUser();
     }
 }

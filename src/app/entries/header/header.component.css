@@ -1,0 +1,69 @@
+header {
+    background-image: url(https://res.cloudinary.com/dhd1eov8v/image/upload/c_scale,w_934/v1506628983/pexels-photo-326278_jrnio3.jpg);
+    background-size: cover;
+    background-position: center top;
+    height: 60vh;
+    background-attachment: fixed;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+header h1 {
+    color: White;
+    max-width: 70%;
+    /* padding-top: 10vh;
+    padding-left: 2%; */
+    /* font-size: 400%; */
+}
+
+.header-content {
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 10vh;
+}
+
+.btn {
+    margin: 1%;
+}
+
+@media screen and (min-width: 1001px) {
+    .header-content {
+        padding-top: 10vh
+    }
+
+    .header-content h1 {
+        font-size: 400%;
+    }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 700px) {
+    .header-content{
+        padding-top: 5vh;
+    }
+
+    .header-content h1 {
+        font-size: 350%;
+    }
+}
+
+@media screen and (max-width: 699px) {
+    .header-content{
+        padding-top: 5vh;
+    }
+
+    .header-content h1 {
+        font-size: 300%;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* .btn{
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        margin-bottom: 1%;
+    } */
+}
+
+

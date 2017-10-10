@@ -28,22 +28,4 @@ export class EntryListComponent implements OnInit {
             this.entryService.toggleState();
         });
     }
-
-    // signIn(){
-    //     auth2.grantOfflineAccess().then(this.signInCallback);
-    // }
-
-    // signInCallback(authResult){
-    //     const token = authResult.code;
-    //     this.entryService.loginWithGmail(token);
-    // };
-
-    // ngOnInit(){
-    //     this.entryService
-    //         .getEntries()
-    //         .subscribe((entries:any) => {
-    //             this.entries = entries
-    //         });
-
-    // }
 }

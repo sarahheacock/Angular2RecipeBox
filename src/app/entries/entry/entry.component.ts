@@ -1,4 +1,5 @@
-import { Component, Input, AfterContentInit } from '@angular/core';
+import { Component, Input, AfterContentInit, OnInit } from '@angular/core';
+import { EntryService } from '../shared/entry.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 //import { Entry } from '../shared/entry.model';
 import $ from "jquery";
@@ -43,26 +44,54 @@ export class EntryComponent {
     @Input() entry: any;
     contentShown: string;
     cloud: string;
+    title: string;
+    button: string;
+
+    // name: string = '';
+    // subscription: any;
     // original: string;
     // added: string;
 
-    constructor(){
+    constructor(private entryService: EntryService){
         this.contentShown = 'inactive';
-        this.cloud = "original";
-        this.cloud = ''
+        this.cloud = '';
+        this.title = '';
+        this.button = "Add Ingredients";
+
+        // this.name = this.entryService.user.name;
     }
+
+
+    // ngOnInit() {
+    //     this.subscription = this.entryService.getUser().subscribe(item => this.name=item.name);
+    // }
 
     ngAfterContentInit(){
         this.cloud = (this.entry.pic.includes("http:")) ? "original": "added";
+        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 10)}...`: this.entry.title;
+        this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
     }
 
-    changeState() {
+    changeState(e) {
+        if(e) e.preventDefault();
+
         this.contentShown = (this.contentShown === 'inactive') ? 'active': 'inactive';
+        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 10)}...`: this.entry.title;
+        this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
+
         const element = document.getElementById(this.entry._id);
         const dist = $(element).offset().top;
 
-        $('html, body').animate({
-            scrollTop: dist
-        }, 1000, "swing");
+        // $('html, body').animate({
+        //     scrollTop: dist
+        // }, 1000, "swing");
+    }
+
+    launch(e){
+        if(e) e.preventDefault();
+        this.entryService.changeContent({
+            title: "Add Ingredients",
+            data: this.entry.ingredients
+        });
     }
 }

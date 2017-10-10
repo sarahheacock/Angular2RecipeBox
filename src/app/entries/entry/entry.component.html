@@ -1,21 +1,22 @@
-<a href="#" (click)="changeState()" class="item" >
-    <div class="recipe-content" [@expand]="contentShown" draggable="true">
+<a href="#" (click)="changeState($event)" class="item" >
+    <div class="recipe-content" [@expand]="contentShown" draggable="cloud === 'added'">
         <div class="text-center">
-            <h4 class="title" [@grow]="contentShown">{{entry.title}}</h4>
+            <h4 class="title" [@grow]="contentShown">{{title}}</h4>
 
             <div [ngSwitch]="cloud">
                 <ng-container *ngSwitchCase="'added'">
                     <cl-image public-id="{{entry.pic}}"  draggable="false">
-                        <cl-transformation width="150" crop="fill" radius="10" ></cl-transformation>
+                        <cl-transformation width="150" height="100" crop="fill" radius="10" ></cl-transformation>
                     </cl-image>
                 </ng-container>
                 <ng-container *ngSwitchCase="'original'">
-                    <img width="150" src="{{entry.pic}}" alt="{{entry.title}}"/>
+                    <img width="150" src="{{entry.pic}}" alt="{{entry.title}}" draggable="false"/>
                 </ng-container>
                 <ng-container *ngSwitchDefault>
                     <div></div>
                 </ng-container>
             </div>
+            <button class="btn btn-link" (click)="launch($event)">{{button}}<i class="fa fa-pencil" aria-hidden="true"></i></button>
         </div>
     
         <div [@showContent]="contentShown" class="directions">
@@ -27,7 +28,9 @@
             <br />
             <h4>Directions</h4>
             <p *ngFor="let direction of entry.directions">{{direction}}</p>
-            <a class="link" href="{{entry.href}}" *ngIf="entry.href"><p>{{entry.href}}</p></a>
+            <div class="text-center">
+                <a href="{{entry.href}}" *ngIf="entry.href"><button class="btn btn-link">{{entry.href}}</button></a>
+            </div>
         </div>
     </div>
 </a>

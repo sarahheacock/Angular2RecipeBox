@@ -1,6 +1,7 @@
 import { User } from './entry.model';
 import { Injectable, EventEmitter, Output, OnInit } from '@angular/core';
 import { FacebookService, InitParams, LoginResponse, LoginOptions } from 'ngx-facebook';
+import { GoogleSignInProviderService } from 'ngx-google-sign-in';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
@@ -9,7 +10,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-//declare var gapi: any;
+declare var gapi: any;
 
 @Injectable()
 export class EntryService {
@@ -18,17 +19,21 @@ export class EntryService {
     @Output() onUserChange: EventEmitter<any> = new EventEmitter();
 
     modalShown: string = 'active';
-    modalContent: string = "Loading";
+    modalContent: { title:string; data:any } = {
+        title: "Loading",
+        data: null
+    };
     user: User = {
         name: '',
         userID: '',
         shoppingList: [],
+        shoppingListNames: [],
         recipes: [],
         _id: ''
     };
-    //api: any;
+    auth2: any;
 
-    constructor(private http: HttpClient, private fb: FacebookService){
+    constructor(private http: HttpClient, private fb: FacebookService){ //, private google:  GoogleSignInProviderService){
         let initParams: InitParams = {
             appId: '1474280852691654',
             xfbml: true,
@@ -36,9 +41,21 @@ export class EntryService {
         };
     
         fb.init(initParams);
+        //google.init("763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com");
+
+        gapi.load('auth2', () => {
+            this.auth2 = gapi.auth2.init({
+              client_id: '763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com',
+              fetch_basic_profile: false,
+              scope: 'profile'
+              // Scopes to request in addition to 'profile' and 'email'
+              //scope: 'additional_scope'
+            });
+        });
 
         if(window.sessionStorage.user){
             this.user = JSON.parse(window.sessionStorage.user);
+            console.log(this.user);
         }
     }
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
@@ -52,8 +69,19 @@ export class EntryService {
     }
 
     // MODAL CONTENT
-    changeContent(str){
-        this.modalContent = str;
+    changeContent(obj){
+        if(this.user.name){
+            this.modalContent = obj;
+        } 
+        else{
+            this.modalContent = {
+                title: "Sign In",
+                data: this.user.name
+            };
+        } 
+
+        console.log(this.modalContent);
+        
         this.onContentChange.emit(this.modalContent);
         this.toggleState();
     }
@@ -96,63 +124,51 @@ export class EntryService {
             .catch((error: any) => console.error(error)); 
     }
 
-    // loginWithGmail(token) {
-        
-    //     console.log("token", token);
-    //     // const id_token = googleUser.getAuthResponse().id_token;
-    //     // console.log(id_token);
+    loginWithGmail() {
+        this.auth2.grantOfflineAccess().then((authResult) => {
+            this.auth2.currentUser.listen((googleUser) => {
+                if (!googleUser.isSignedIn()) {
+                    return;
+                }
+    
+                console.log(googleUser);
+                const token = googleUser.getAuthResponse().access_token;
+                const url = `${this.url}/auth/google/token?access_token=${token}`;
+                console.log(url);
+    
+                return this.changeUser(url)
+                .then(user => {
+                    this.user = user;
+                    this.store();
+                });
+            });
+        });
+    }
 
-    //     return this.changeUser(`${this.url}/auth/google/token?access_token=${token}`)
-    //     .then(user => {
-    //         this.user = user;
-    //         this.store();
-    //     });
-    //     // const profile = googleUser.getBasicProfile();
-    //     // const userID = profile.getEmail();
-    //     // const name = profile.getName();
-        
-    //     // const body = {
-    //     //     userID: userID,
-    //     //     name: name
-    //     // };
+    logoutUser(){
+        return this.changeUser(`${this.url}/auth/logout`)
+        .then(user => {
+            this.user = user;
+            this.user._id = '';
+            this.store();
+        });
+    }
 
-    //     // console.log(body, this.user);
-    //     // if(this.user.name !== name){
-    //     //     return this.changeUser(`${this.url}/user/gmail/token`, body)
-    //     //     .then(user => {
-    //     //         this.user = user;
-    //     //         this.store();
-    //     //     });
-    //     // }
-    // }
+    store() {
+        console.log(this.user);
+        window.sessionStorage.setItem('user', JSON.stringify(this.user));       
+        this.onUserChange.emit(this.user);
+        this.toggleState();
+    }
+
 
     changeUser(url): Promise<User> {
         return this.http.get(url)
         .toPromise()
         .then(response => response as User);
     }
-    //763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com
-    //iHy7MLbSD6-8VWAkFzo0Q18c
-    logoutUser(){
-        this.user = {
-            name: '',
-            userID: '',
-            shoppingList: [],
-            recipes: [],
-            _id: ''
-        };
-        sessionStorage.removeItem('user');
-        this.onUserChange.emit(this.user);
-        this.toggleState();
-    }
 
     getUser() {
         return this.onUserChange;
-    }
-
-    store() {
-        window.sessionStorage.setItem('user', JSON.stringify(this.user));       
-        this.onUserChange.emit(this.user);
-        this.toggleState();
     }
 }

@@ -8,6 +8,18 @@ a:hover {
     text-decoration: none;
 }
 
+img {
+    border-radius: 10%
+}
+
+button {
+    margin-top: 3%;
+}
+
+.fa-pencil {
+    margin-left: 3%;
+}
+
 .recipe-content {
     background-color: white;
     border-radius: 10px;

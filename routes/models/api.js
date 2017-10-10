@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const RecipeSchema = new Schema({
     title: {
         type: String,
-        default: ''
+        required: true
     },
     ingredients: {
         type: Array,
-        default: []
+        required: true
     },
     directions: {
         type: Array,
@@ -79,21 +79,54 @@ BookSchema.pre('save', function(next){
 UserSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        default: ''
     },
     userID: {
         type: String,
-        required: true
+        required: true,
+        default: ''
     },
     recipes: {
         type: [RecipeSchema],
+        default: []
+    },
+    shoppingListNames: {
+        type: Array,
         default: []
     },
     shoppingList: {
         type: Array,
         default: []
     }
-})
+});
+
+UserSchema.statics.findOrCreate = function(profile, cb){ //profile = profile._json
+    return this.findOne({userID: profile.id}).exec((err, user) => {
+        if(err){
+            console.log(err);
+            return cb(err);
+        }
+        else if(!user){
+            let newUser = new User();
+
+            newUser.name = profile.name;
+            newUser.userID = profile.id;
+
+            newUser.save((err, user) => {
+                if(err){
+                    err = new Error("Unable to create profile.");
+                    err.status = 400;
+                    cb(err);
+                }
+                cb(null, user);
+            });
+        }
+        else {
+            cb(null, user);
+        }
+    });
+}
 
 const User = mongoose.model("User", UserSchema);
 const Book = mongoose.model("Book", BookSchema);

@@ -1,10 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-// import { trigger, state, style, animate, transition } from '@angular/animations';
-
-// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EntryService } from '../shared/entry.service';
 
-//import 'rxjs';
 
 @Component({
   selector: 'app-modal-content',
@@ -12,15 +8,27 @@ import { EntryService } from '../shared/entry.service';
 })
 
 export class ContentModal {
+  show: boolean = true;
+  hide: any[] = ["Loading", "Logout", "Sign In"];
   content: string;
+  data: any;
   subscription: any;
   
   constructor(private entryService: EntryService) {
-    this.content = this.entryService.modalContent;
+    const modal = this.entryService.modalContent;
+    this.content = modal.title;
+    this.data = modal.data;
+    this.show = !this.hide.includes(modal.title);
+    console.log(this.content, this.show);
   }
 
   ngOnInit() {
-    this.subscription = this.entryService.getContent().subscribe(item => this.content=item);
+    this.subscription = this.entryService.getContent().subscribe(item => {
+      this.content = item.title;
+      this.data = item.data;
+      this.show = !this.hide.includes(item.title);
+      console.log("onInit", this.content, this.show);
+    });
   }
 
   ngOnDestroy() {
@@ -28,7 +36,6 @@ export class ContentModal {
   }
 
   stateChange() {
-    //console.log("hi");
     this.entryService.toggleState();
   }
 }
