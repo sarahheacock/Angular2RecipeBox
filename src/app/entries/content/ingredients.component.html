@@ -1,3 +1,39 @@
-<div *ngFor="let item of ingredients" class="checkbox">
-    <label><input type="checkbox" value="">{{item}}</label>
+<!-- <div #aVariable="var" var="abc"></div> -->
+<div class="modal-body">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <div *ngFor="let item of ingredients; let i=index" class="checkbox">
+            <label [ngStyle]="{'opacity': item.selected ? '1.0' : '0.5'}">
+                <input
+                    type="checkbox"
+                    ng-init="checked=item.selected"
+                    name={{item.name}}
+                    [(ngModel)]="item.selected"
+                > {{item.name}}
+            </label>
+        </div>
+    </form>
 </div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" (click)="onSubmit(f)">
+        Save
+    </button>
+    <button class="btn btn-secondary" (click)="close()">
+        Close
+    </button>
+</div>
+
+<!-- (change)="handleClick($event)" -->
+
+<!-- <div class="form-group">
+    <label for="usr">Name:</label>
+    <input type="text" class="form-control" id="usr">
+</div> -->
+
+<!-- value={{item.name}}
+checked={{item.selected}}
+name={{item.name}}
+(click)="handleClick($event)" -->
+
+<!-- checked="true"
+name={{item.name}} -->

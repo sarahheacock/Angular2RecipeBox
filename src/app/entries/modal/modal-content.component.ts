@@ -16,18 +16,12 @@ export class ContentModal {
   
   constructor(private entryService: EntryService) {
     const modal = this.entryService.modalContent;
-    this.content = modal.title;
-    this.data = modal.data;
-    this.show = !this.hide.includes(modal.title);
-    console.log(this.content, this.show);
+    this.format(modal);
   }
 
   ngOnInit() {
     this.subscription = this.entryService.getContent().subscribe(item => {
-      this.content = item.title;
-      this.data = item.data;
-      this.show = !this.hide.includes(item.title);
-      console.log("onInit", this.content, this.show);
+      this.format(item)
     });
   }
 
@@ -35,7 +29,35 @@ export class ContentModal {
     this.subscription.unsubscribe();
   }
 
+  format(item) {
+    this.content = item.title;
+    this.show = !this.hide.includes(item.title);
+
+    if(item.title === "Add Ingredients"){
+      const ingredients = item.data.reduce((a, b) => {
+        if(!a.includes(b.trim())) a.push(b.trim());
+        return a;
+      }, []);
+
+      this.data = ingredients.map((b) => {
+        return {
+          name: b,
+          selected: true
+        };
+      });
+    }
+    else {
+      this.data = item.data;
+    }
+
+    console.log(this.data);
+  }
+
   stateChange() {
     this.entryService.toggleState();
+  }
+
+  onIngredientsAdded() {
+
   }
 }

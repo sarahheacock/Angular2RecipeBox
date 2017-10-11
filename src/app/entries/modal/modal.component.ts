@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +37,10 @@ export class EntryListModal {
 
   ngOnInit() {
     this.subscription = this.entryService.getState().subscribe(item => this.modalShown=item);
+  }
+
+  ngOnChanges(e) {
+    console.log("E", e);
   }
 
   ngOnDestroy() {

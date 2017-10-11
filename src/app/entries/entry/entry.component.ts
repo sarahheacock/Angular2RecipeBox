@@ -21,7 +21,7 @@ import $ from "jquery";
         ]),
         trigger('expand', [
             state('inactive', style({
-                maxWidth: '200px'
+                maxWidth: '270px'
             })),
             state('active', style({
                 maxWidth: '1200px'
@@ -30,7 +30,7 @@ import $ from "jquery";
         ]),
         trigger('grow', [
             state('inactive', style({
-                fontSize: '150%'
+                fontSize: '120%'
             })),
             state('active', style({
                 fontSize: '170%'
@@ -68,7 +68,7 @@ export class EntryComponent {
 
     ngAfterContentInit(){
         this.cloud = (this.entry.pic.includes("http:")) ? "original": "added";
-        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 10)}...`: this.entry.title;
+        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 12)}...`: this.entry.title;
         this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
     }
 
@@ -76,15 +76,15 @@ export class EntryComponent {
         if(e) e.preventDefault();
 
         this.contentShown = (this.contentShown === 'inactive') ? 'active': 'inactive';
-        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 10)}...`: this.entry.title;
+        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 12)}...`: this.entry.title;
         this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
 
         const element = document.getElementById(this.entry._id);
         const dist = $(element).offset().top;
 
-        // $('html, body').animate({
-        //     scrollTop: dist
-        // }, 1000, "swing");
+        $('html, body').animate({
+            scrollTop: dist
+        }, 1000, "swing");
     }
 
     launch(e){

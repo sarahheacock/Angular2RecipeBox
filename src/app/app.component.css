@@ -1,6 +1,6 @@
 .container-fluid{
-    padding: 0px;
     margin: 0px;
+    padding:0; 
     background-color: WhiteSmoke;
 }
 
@@ -10,9 +10,31 @@ body {
     padding:0; 
     position: relative;
     font-family: Georgia, serif;
-    background-color: WhiteSmoke;
+    /* background-color: WhiteSmoke; */
 }
 
-.main{
-    padding: 5%;
+.border-top {
+    border-style: solid;
+    border-width: 6px;
+    border-color: #373737;
+}
+
+.border {
+    padding: 40px 30px 40px 30px;
+    /* border-style: solid;
+    border-width: 10px 0px 0px 0px;
+    border-color: #f44336; */
+}
+
+/* .main{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3%;
+    height: 100%;
+} */
+
+footer{
+    background-color: #373737;
+    color: whitesmoke;
+    padding: 1%;
 }

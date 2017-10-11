@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 //import { Entry } from '../shared/entry.model';
 
@@ -28,4 +28,12 @@ export class EntryListComponent implements OnInit {
             this.entryService.toggleState();
         });
     }
+
+    // ngAfterContentInit(){
+    //     this.entryService
+    //     .getUserEntries()
+    //     .then(entries => {
+
+    //     });
+    // }
 }

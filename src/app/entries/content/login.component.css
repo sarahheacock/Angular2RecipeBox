@@ -1,6 +1,11 @@
 
 .center {
-    width: 250px;
+    max-width: 250px;
     margin: 0 auto;
+    padding: 2%;
+}
+
+.modal-body {
+    padding: 5%;
 }
 /* .abcRioButton.abcRioButtonLightBlue { } */

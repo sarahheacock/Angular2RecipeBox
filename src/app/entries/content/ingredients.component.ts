@@ -1,35 +1,38 @@
-import { Component, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { EntryService } from '../shared/entry.service';
 
 //declare var gapi: any;
 
 @Component({
     selector: 'app-add-shopping',
-    templateUrl: './ingredients.component.html'
+    templateUrl: './ingredients.component.html',
+    styleUrls: ['./login.component.css']
 })
 
 export class AddShopping {
-    @Input() ingredients: any;
-    //subscription: any;
+    @Input() ingredients: Array<{name:string; selected:boolean;}>;
+    @Input() title: string;
 
-    //TAKE OUT ENTRY SERVICE
-    constructor() {
-        console.log(this.ingredients);
-        //else this.ingredients = [];
+    @ViewChild('commentForm') commentForm: NgForm;
+
+    constructor(private entryService: EntryService) {
     }
 
-    // ngOnInit() {
-    //     this.subscription = this.entryService.getContent().subscribe(item => {
-    //         const arr = item.data;
-    //         console.log(arr);
 
-    //         if(Array.isArray(arr)) this.ingredients = arr;
-    //         //else this.ingredients = [];
-    //     });
-    // }
+    onSubmit(f: NgForm) {
+        const result = Object.keys(f.value).reduce((a, b) => {
+            if(f.value[b]) a.push(b);
+            return a;
+        }, []);
 
+        this.entryService.addToList({
+            shoppingListNames: this.title,
+            shoppingList: result
+        });
+    }
 
-    // ngOnDestroy() {
-    //     this.subscription.unsubscribe();
-    // }
+    close() {
+        this.entryService.toggleState();
+    }
 }

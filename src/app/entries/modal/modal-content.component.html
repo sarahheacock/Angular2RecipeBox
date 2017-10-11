@@ -2,23 +2,38 @@
     <button type="button" class="close" (click)="stateChange()">&times;</button>
     <h4 class="modal-title">{{content}}</h4>
 </div>
-<div class="modal-body">
-    <div [ngSwitch]="content">
-        <ng-container *ngSwitchCase="'Sign In'">
+<div [ngSwitch]="content">
+    <ng-container *ngSwitchCase="'Sign In'">
+        <div class="modal-body">
             <app-login></app-login>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Logout'">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="stateChange()">Close</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'Logout'">
+        <div class="modal-body">
             <app-logout></app-logout>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Add Ingredients'">
-            <app-add-shopping [ingredients]="data"></app-add-shopping>
-        </ng-container>
-        <ng-container *ngSwitchDefault>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="stateChange()">Close</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'Add Ingredients'">
+        <div>
+            <app-add-shopping [ingredients]="data" [title]="content" ></app-add-shopping>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+        <div class="text-center modal-body">
             <i class="fa fa-spinner fa-spin fa-2x"></i>
-        </ng-container>
-    </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="stateChange()">Close</button>
+        </div>
+    </ng-container>
 </div>
-<div class="modal-footer">
-    <button *ngIf="show" type="button" class="btn" (click)="stateChange()">Save changes</button>
-    <button type="button" class="btn btn-default" (click)="stateChange()">Close</button>
-</div>
+

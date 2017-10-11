@@ -20,11 +20,8 @@ export class Login {
         this.subscription = this.entryService.getUser().subscribe(item => this.name=item.name);
     }
 
-    login() {
-        this.entryService.loginWithFacebook();
-    }
-
-    loginG() {
-        this.entryService.loginWithGmail();
+    login(str) {
+        if(str === 'google') this.entryService.loginWithGmail();
+        else this.entryService.loginWithFacebook();
     }
 }

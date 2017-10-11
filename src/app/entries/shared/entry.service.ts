@@ -60,15 +60,22 @@ export class EntryService {
     }
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
-    // RECIPES
+    // ===============RECIPES==================================
     getEntries(): Promise<any[]> {
-        console.log("get");
         return this.http.get(`${this.url}/api`)
             .toPromise()
             .then(response => response['box'] as any[]);
     }
 
-    // MODAL CONTENT
+    // getUserEntries(): Promise<any[]> {
+    //     if(this.user.name){
+    //         return this.http.get(`${this.url}/api`)
+    //         .toPromise()
+    //         .then(response => response['box'] as any[]);
+    //     }    
+    // }
+
+    // ==============MODAL CONTENT===============================
     changeContent(obj){
         if(this.user.name){
             this.modalContent = obj;
@@ -90,18 +97,43 @@ export class EntryService {
         return this.onContentChange;
     }
 
-    // MODAL TOGGLE
+    // =============MODAL TOGGLE===========================
     toggleState() {
         this.modalShown = (this.modalShown === 'inactive') ? 'active': 'inactive';
         console.log(this.modalShown);
         this.onStateChange.emit(this.modalShown);
     }
 
+    // hide(str) {
+    //     this.modalShown = str;
+    //     console.log(this.modalShown);
+    //     this.onStateChange.emit(this.modalShown);
+    // }
+
     getState() {
         return this.onStateChange;
     }
 
-    // USER LOGIN
+    //==============EDIT USER===============================
+    addToList(obj) {
+        const url = `${this.url}/user/${this.user._id}/list?token=${this.user.userID}`;
+        console.log(url, obj);
+
+        this.postUser(url, obj)
+        .then(user => {
+            this.user = user;
+            console.log(this.user);
+            this.store();
+        });
+    }
+
+    postUser(url, obj): Promise<User> {
+        return this.http.post(url, obj)
+        .toPromise()
+        .then(response => response as User);
+    }
+
+    // ==============USER LOGIN=============================
     loginWithFacebook(): void {
         const options: LoginOptions = {
             scope: 'public_profile',
@@ -115,7 +147,7 @@ export class EntryService {
                 const token = response.authResponse.accessToken;
                 const url = `${this.url}/auth/facebook/token?access_token=${token}`;
                 console.log({url: url});
-                return this.changeUser(url)
+                this.changeUser(url)
                     .then(user => {
                         this.user = user;
                         this.store();
@@ -126,27 +158,19 @@ export class EntryService {
 
     loginWithGmail() {
         this.auth2.grantOfflineAccess().then((authResult) => {
-            this.auth2.currentUser.listen((googleUser) => {
-                if (!googleUser.isSignedIn()) {
-                    return;
-                }
-    
-                console.log(googleUser);
-                const token = googleUser.getAuthResponse().access_token;
-                const url = `${this.url}/auth/google/token?access_token=${token}`;
-                console.log(url);
-    
-                return this.changeUser(url)
-                .then(user => {
-                    this.user = user;
-                    this.store();
-                });
+            const token = this.auth2.currentUser.get().getAuthResponse().access_token;
+            const url = `${this.url}/auth/google/token?access_token=${token}`;
+
+            return this.changeUser(url)
+            .then(user => {
+                this.user = user;
+                this.store();
             });
         });
     }
 
     logoutUser(){
-        return this.changeUser(`${this.url}/auth/logout`)
+        this.changeUser(`${this.url}/auth/logout`)
         .then(user => {
             this.user = user;
             this.user._id = '';
@@ -156,7 +180,9 @@ export class EntryService {
 
     store() {
         console.log(this.user);
-        window.sessionStorage.setItem('user', JSON.stringify(this.user));       
+        //window.focus();
+        window.sessionStorage.setItem('user', JSON.stringify(this.user));
+        //location.reload();    
         this.onUserChange.emit(this.user);
         this.toggleState();
     }

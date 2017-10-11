@@ -6,11 +6,11 @@
             <div [ngSwitch]="cloud">
                 <ng-container *ngSwitchCase="'added'">
                     <cl-image public-id="{{entry.pic}}"  draggable="false">
-                        <cl-transformation width="150" height="100" crop="fill" radius="10" ></cl-transformation>
+                        <cl-transformation width="250" height="170" crop="fill" radius="10" ></cl-transformation>
                     </cl-image>
                 </ng-container>
                 <ng-container *ngSwitchCase="'original'">
-                    <img width="150" src="{{entry.pic}}" alt="{{entry.title}}" draggable="false"/>
+                    <img width="250" src="{{entry.pic}}" alt="{{entry.title}}" draggable="false"/>
                 </ng-container>
                 <ng-container *ngSwitchDefault>
                     <div></div>
@@ -21,15 +21,19 @@
     
         <div [@showContent]="contentShown" class="directions">
             <hr />
-            <h4>Ingredients</h4>
-            <ol type="1">
-                <li *ngFor="let ingredient of entry.ingredients">{{ingredient}}</li>
-            </ol>
-            <br />
-            <h4>Directions</h4>
-            <p *ngFor="let direction of entry.directions">{{direction}}</p>
-            <div class="text-center">
-                <a href="{{entry.href}}" *ngIf="entry.href"><button class="btn btn-link">{{entry.href}}</button></a>
+            <div class="guts">
+                <h4>Ingredients</h4>
+                <ol type="1">
+                    <li *ngFor="let ingredient of entry.ingredients">{{ingredient}}</li>
+                </ol>
+                <br />
+                <h4>Directions</h4>
+                <ol type="1">
+                    <li *ngFor="let direction of entry.directions"><p>{{direction}}</p></li>
+                </ol>
+                <div class="text-center">
+                    <a (click)="'(e) => {e.preventDefault();}'" href="{{entry.href}}" *ngIf="entry.href"><button class="btn btn-link">{{entry.href}}</button></a>
+                </div>
             </div>
         </div>
     </div>
