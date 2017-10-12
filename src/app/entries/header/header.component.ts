@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
+import { User } from '../shared/entry.model';
 
 //declare var gapi: any;
 
@@ -10,21 +11,30 @@ import { EntryService } from '../shared/entry.service';
 })
 
 export class HeaderContent {
-    name: string = '';
+    //name: string = '';
     length: number = 0;
+    //cart: Array<string> = [];
     //auth2: any;
     subscription: any;
+    user: User;
+   // recipes: Array<string> = [];
 
     constructor(private entryService: EntryService) {
-        this.name = this.entryService.user.name;
-        this.length = this.entryService.user.shoppingList.length;
+        this.format(this.entryService.user);
+        
     }
 
     ngOnInit() {
         this.subscription = this.entryService.getUser().subscribe(item => {
-            this.name = item.name;
-            this.length = item.shoppingList.length;
+            this.format(item);
         });
+        this.entryService.initG();
+    }
+
+    format(item){
+        //this.name = item.name;
+        this.length = item.shoppingList.length;
+        this.user = item
     }
 
     ngAfterViewInit() {
@@ -38,9 +48,15 @@ export class HeaderContent {
   
     stateChange(str){
         console.log(str);
+        const data = (str.includes("Text")) ? {
+            title: this.user.shoppingListNames.join(', '),
+            ingredients: this.user.shoppingList,
+            phone: this.user.phone
+        } : this.user.name;
+
         this.entryService.changeContent({
             title: str,
-            data: this.name
+            data: data
         });
     }
 }

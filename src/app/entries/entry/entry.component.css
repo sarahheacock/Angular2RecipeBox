@@ -1,15 +1,16 @@
 a {
     margin: 5px 0px 5px 0px;
     text-decoration: none;
+    overflow: hidden;
 }
 
 
 img {
-    border-radius: 10%
+    /* border-radius: 10%; */
 }
 
 button {
-    margin-top: 3%;
+    margin: 1%;
     /* margin-bottom: -10px; */
 }
 
@@ -17,17 +18,30 @@ button {
     margin-left: 3%;
 }
 
+.image-container {
+    padding: 1%;
+    border-radius: 5%;
+    
+    width: 250px;
+    height: 170px;
+    margin: 0 auto;
+
+    position: relative;
+    overflow: hidden;
+}
+
 .recipe-content {
     color: dimgray;
     background-color: white;
     border-radius: 10px;
-    padding: 1%;
+    /* padding: 1%; */
     /* max-width: 200px;
     margin: 0 auto; */
 
     border-width: 0px;
     border-style: solid;
-    border-color: #d9d9d9;
+    border-width: 1px;
+    border-color: transparent;
 
     /* margin: 0 auto;
     margin-bottom: 20px; */
@@ -39,9 +53,35 @@ button {
     transition: color 2s ease-out;
 }
 
+.recipe-content:hover {
+    color: #373737;
+    border-color: #d9d9d9;
+    box-shadow: 5px 5px 3px #888888;
+}
+
+.image {
+    border-radius: 5%;
+    /* padding: 1%; */
+}
+
+.recipe-content .image{
+    max-width: 100%;
+
+    -moz-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.recipe-content:hover .image{
+
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
 .directions {
     height: "auto";
-    overflow-y: hidden;
+    overflow: hidden;
     /* width: 100%; */
 }
 
@@ -53,13 +93,7 @@ button {
 
 .title {
     margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.recipe-content:hover {
-    color: #373737;
-    border-width: 1px;
-    box-shadow: 5px 5px 3px #888888;
+    margin-bottom: 0px;
 }
 
 /* .directions {
@@ -77,6 +111,33 @@ button {
 
 .link{
     color: blue;
+}
+
+
+
+@media screen and (max-width: 400px) {
+    .recipe-content{
+        /* max-width: 250px; */
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 3%;
+    }
+
+    .directions {
+        /* max-width: 250px; */
+        width: 80%;
+    }
+
+    .guts {
+        /* max-width: 250px; */
+        width: 100%;
+    }
+
+    .recipe-content .image {
+        width: 70%;
+        height: 70%;
+        /* height: 150px; */
+    }
 }
 
 /* .text-center{

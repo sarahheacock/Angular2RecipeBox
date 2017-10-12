@@ -18,7 +18,7 @@ import { EntryService } from '../shared/entry.service';
         opacity: '0'
       })),
       state('active', style({
-        display: 'block',
+        display: 'relative',
         top: '0px',
         opacity: '1'
       })),

@@ -5,31 +5,41 @@ import { EntryService } from '../shared/entry.service';
 //declare var gapi: any;
 
 @Component({
-    selector: 'app-add-shopping',
+    selector: 'app-text-shopping',
+    //template: `<div></div>`,
     templateUrl: './ingredients.component.html',
     styleUrls: ['./content.component.css']
 })
 
-export class AddShopping {
-    message: boolean = false;
+export class TextShopping {
+    message: boolean = true;
 
     @Input() ingredients: Array<{name:string; selected:boolean;}>;
     @Input() title: string;
+    @Input() phone: string;
+
     @ViewChild('commentForm') commentForm: NgForm;
 
-    constructor(private entryService: EntryService) {
-    }
+
+    constructor(private entryService: EntryService) {}
 
 
     onSubmit(f: NgForm) {
         const result = Object.keys(f.value).reduce((a, b) => {
-            if(f.value[b]) a.push(b);
+            if(f.value[b] && b !== "phone") a.push(b);
             return a;
         }, []);
 
-        this.entryService.addToList({
+        // console.log({
+        //     shoppingListNames: this.title,
+        //     shoppingList: result,
+        //     phone: f.value["phone"]
+        // });
+
+        this.entryService.sendMessage({
             shoppingListNames: this.title,
-            shoppingList: result
+            shoppingList: result,
+            phone: f.value["phone"]
         });
     }
 

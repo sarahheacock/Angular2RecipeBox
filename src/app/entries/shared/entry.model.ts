@@ -13,4 +13,5 @@ export class User {
   shoppingListNames: any[];
   name: string;
   userID: string;
+  phone: string;
 }

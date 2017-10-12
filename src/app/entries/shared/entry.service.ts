@@ -29,7 +29,8 @@ export class EntryService {
         shoppingList: [],
         shoppingListNames: [],
         recipes: [],
-        _id: ''
+        _id: '',
+        phone: ''
     };
     auth2: any;
 
@@ -41,23 +42,29 @@ export class EntryService {
         };
     
         fb.init(initParams);
+        if(gapi) this.initG();
         //google.init("763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com");
-
-        gapi.load('auth2', () => {
-            this.auth2 = gapi.auth2.init({
-              client_id: '763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com',
-              fetch_basic_profile: false,
-              scope: 'profile'
-              // Scopes to request in addition to 'profile' and 'email'
-              //scope: 'additional_scope'
-            });
-        });
 
         if(window.sessionStorage.user){
             this.user = JSON.parse(window.sessionStorage.user);
             console.log(this.user);
         }
     }
+
+    initG() {
+        if(!this.auth2){
+            if(gapi){
+                gapi.load('auth2', () => {
+                    this.auth2 = gapi.auth2.init({ //SOMETIMES THERE IS AN ERROR GAPI DNE
+                      client_id: '763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com',
+                      fetch_basic_profile: false,
+                      scope: 'profile'
+                    });
+                });
+            }
+        }
+    }
+
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
     // ===============RECIPES==================================
@@ -117,6 +124,18 @@ export class EntryService {
     //==============EDIT USER===============================
     addToList(obj) {
         const url = `${this.url}/user/${this.user._id}/list?token=${this.user.userID}`;
+        console.log(url, obj);
+
+        this.postUser(url, obj)
+        .then(user => {
+            this.user = user;
+            console.log(this.user);
+            this.store();
+        });
+    }
+
+    sendMessage(obj) {
+        const url = `${this.url}/user/${this.user._id}/message?token=${this.user.userID}`;
         console.log(url, obj);
 
         this.postUser(url, obj)

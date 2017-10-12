@@ -5,6 +5,32 @@ const User = require('../models/api').User;
 const Book = require('../models/api').Book;
 const mid = require("../middleware/user");
 
+const config = require('config');
+
+const Twilio = require('twilio');
+const textClient = new Twilio(
+  config.accountSID,
+  config.authToken
+);
+
+const formatNum = (num) => {
+    const newNum = num.replace(/[^0-9]/gi, '');
+    if(newNum.length === 11){
+      return "+" + newNum;
+    }
+    else if(newNum.length === 10){
+      return "+1" + newNum;
+    }
+    else {
+      return newNum;
+    }
+};
+  
+const checkPhone = (newNum) => {
+    //make sure num has <= 11 digits but >= 10 digits
+    //newNum.replace("+", "");
+    return /^[+]{1}([0-9]{10}|(1|0)[0-9]{10})$/.test(newNum);
+};
 
 //=========PARAMETERS===========================
 router.param("userID", (req, res, next, id) => {
@@ -37,18 +63,8 @@ router.param("recipeID", (req, res, next, id) => {
 
 
 //============ROUTES===============================
-
-//router.use(mid.auth);
-
 //called after user signs in with gamil
 router.get('/:userID', mid.auth, mid.outputUser);
-
-
-//create new recipe
-router.post('/:userID', mid.auth, mid.formatInput, (req, res, next) => {
-    req.user.recipes.push(req.body);
-    next();
-}, mid.saveAndOutput);
   
 //add to shopping list
 router.post("/:userID/list", mid.auth, (req, res, next) => {
@@ -62,14 +78,51 @@ router.post("/:userID/list", mid.auth, (req, res, next) => {
     next();
 }, mid.saveAndOutput);
 
+//clear shopping list 
+router.put("/:userID/list", mid.auth, (req, res, next) => {
+    req.user.shoppingList = [];
+    req.user.shoppingListNames = [];
+    next();
+}, mid.saveAndOutput);
+
+//text shopping list
+router.post("/:userID/message", mid.auth, (req, res, next) => {
+    const phone = formatNum(req.body.phone);
+    req.user.phone = phone;
+    next();
+}, (req, res, next) => {
+    const names = req.body.shoppingListNames;
+
+    const list = req.body.shoppingList.map((item, i) => {
+        return (i + 1) + ".\t" + item;
+    }).join("\n");
+
+    const content = "Hello, " + req.user.name + "!\n\n" + "Your Shopping List For:\n" + names + "\n\n" + list;
+
+    textClient.messages.create({
+        from: config.phone,
+        to: req.user.phone,
+        body: content
+    }, (error, message) => {
+        if(error) res.json({message: error.message});
+        else next();
+    });
+}, mid.saveAndOutput);
+
+//create new recipe
+router.post('/:userID/recipe', mid.auth, mid.formatInput, (req, res, next) => {
+    req.user.recipes.push(req.body);
+    next();
+}, mid.saveAndOutput);
+
 //edit recipe
-router.put("/:userID/:recipeID", mid.auth, mid.formatInput, (req, res, next) => {
+router.put("/:userID/recipe/:recipeID", mid.auth, mid.formatInput, (req, res, next) => {
     Object.assign(req.recipe, req.body);
     next();
 }, mid.saveAndOutput);
 
 //delete recipe
-router.delete("/:userID/:recipeID", mid.auth, (req, res, next) => {
+router.delete("/:userID/recipe/:recipeID", mid.auth, (req, res, next) => {
     req.recipe.remove((err) => {
         if(err) next(err);
         else next();

@@ -6,6 +6,8 @@ export * from './modal/modal-content.component';
 export * from './content/login.component';
 export * from './content/logout.component';
 export * from './content/ingredients.component';
+export * from './content/message.component';
+export * from './content/recipe-form.component';
 
 export * from './entry-list/entry-list.component';
 export * from './entry/entry.component';

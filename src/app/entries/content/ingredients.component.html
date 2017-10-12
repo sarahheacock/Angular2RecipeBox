@@ -1,22 +1,47 @@
 <!-- <div #aVariable="var" var="abc"></div> -->
-<div class="modal-body">
-    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-        <div *ngFor="let item of ingredients; let i=index" class="checkbox">
-            <label [ngStyle]="{'opacity': item.selected ? '1.0' : '0.5'}">
-                <input
-                    type="checkbox"
-                    ng-init="checked=item.selected"
-                    name={{item.name}}
-                    [(ngModel)]="item.selected"
-                > {{item.name}}
-            </label>
-        </div>
-    </form>
+<div class="modal-outer">
+    <div class="modal-body modal-guts">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+            <div *ngIf="message" class="form-group">
+                <label for="phone">Phone Number</label>
+                <input 
+                    class="form-control"
+                    type="text" 
+                    name="phone"
+                    [(ngModel)]="phone"
+                    required
+                >
+                
+            </div>
+
+            <div class="outline">
+                <i *ngIf="message" class="text-center">
+                    Below is the grocery list you created for <b>{{title}}</b>. Select which grocery list items you would like to message yourself.
+                </i>
+                <i *ngIf="!message" class="text-center">
+                    Select which items you would like to add to your grocery list.
+                </i>
+            </div>
+        
+
+            <div *ngFor="let item of ingredients; let i=index" class="checkbox">
+                <label [ngStyle]="{'opacity': item.selected ? '1.0' : '0.5'}">
+                    <input
+                        type="checkbox"
+                        ng-init="checked=item.selected"
+                        name={{item.name}}
+                        [(ngModel)]="item.selected"
+                    > {{item.name}}
+                </label>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="modal-footer">
     <button class="btn btn-primary" (click)="onSubmit(f)">
-        Save
+        <span *ngIf="message">Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+        <span *ngIf="!message">Save Changes</span>
     </button>
     <button class="btn btn-secondary" (click)="close()">
         Close

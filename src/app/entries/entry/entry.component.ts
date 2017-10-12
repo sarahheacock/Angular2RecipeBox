@@ -21,7 +21,7 @@ import $ from "jquery";
         ]),
         trigger('expand', [
             state('inactive', style({
-                maxWidth: '270px'
+                maxWidth: '280px'
             })),
             state('active', style({
                 maxWidth: '1200px'
@@ -79,19 +79,29 @@ export class EntryComponent {
         this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 12)}...`: this.entry.title;
         this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
 
-        const element = document.getElementById(this.entry._id);
-        const dist = $(element).offset().top;
-
-        $('html, body').animate({
-            scrollTop: dist
-        }, 1000, "swing");
+        setTimeout(() => { 
+            this.animationDone();
+        }, 250);
     }
 
     launch(e){
         if(e) e.preventDefault();
         this.entryService.changeContent({
             title: "Add Ingredients",
-            data: this.entry.ingredients
+            data: {
+                title: this.entry.title,
+                ingredients: this.entry.ingredients
+            }
         });
+    }
+
+    animationDone(){
+        //console.log("DONE"); 
+        const element = document.getElementById(this.entry._id);
+        const dist = $(element).offset().top;
+
+        $('html, body').animate({
+            scrollTop: dist
+        }, 700, "swing");
     }
 }

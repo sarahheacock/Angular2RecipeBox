@@ -5,7 +5,7 @@ import { EntryService } from '../shared/entry.service';
 @Component({
     selector: 'app-logout',
     templateUrl: './logout.component.html',
-    styleUrls: ['./login.component.css']
+    styleUrls: ['./content.component.css']
 })
 
 export class Logout {

@@ -1,24 +1,24 @@
 
     <header>
-        <div class="border">
-            <div class="header-content">
-                <h1>{{(this.name) ? this.name + "'s Recipe Box" : "Recipe Box"}}</h1>
-                <span [ngSwitch]="name">
+        <div class="">
+            <div class="header-content border">
+                <h1>{{(this.user.name) ? this.user.name + "'s Recipe Box" : "Recipe Box"}}</h1>
+                <span [ngSwitch]="user.name">
                     <ng-container *ngSwitchCase="''">
                         <button type="button" class="btn btn-primary" (click)="stateChange('Sign In')">
                             Login <i class="fa fa-sign-in" aria-hidden="true"></i>
                         </button>
                     </ng-container>
                     <ng-container *ngSwitchDefault>
-                        <button type="button" class="btn btn-danger" (click)="stateChange('Logout')">
+                        <button type="button" class="btn btn-outline-danger" (click)="stateChange('Logout')">
                             Logout <i class="fa fa-sign-out" aria-hidden="true"></i>
                         </button>
                     </ng-container>
                 </span>
-                <button type="button" class='btn btn-primary' (click)="stateChange('Add Recipe')">
+                <button type="button" class='btn btn-outline-primary' (click)="stateChange('Add Recipe')">
                     Add Recipe <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-secondary" (click)="stateChange('Text Shopping List')">
+                <button type="button" class="btn btn-outline-secondary" (click)="stateChange('Text Shopping List')">
                     Text Shopping List <b>( {{this.length}} )</b>
                 </button>
             </div>

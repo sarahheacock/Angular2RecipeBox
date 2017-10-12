@@ -1,4 +1,7 @@
 {
     "DBHost": "mongodb://heroku_w6qmkrvx:incbup7qafnnktd5fnvqvl43dq@ds161304.mlab.com:61304/heroku_w6qmkrvx",
-    "superSecret": "I want this to work!"
+    "superSecret": "I want this to work!",
+    "accountSID": "ACd5037971ff18cfa5152aa07e6fa6505e",
+    "authToken": "e8e57b82c7a0113d8d26894bd4adc775",
+    "phone": "+16154423483"
 }

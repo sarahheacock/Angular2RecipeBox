@@ -23,7 +23,19 @@
 
     <ng-container *ngSwitchCase="'Add Ingredients'">
         <div>
-            <app-add-shopping [ingredients]="data" [title]="content" ></app-add-shopping>
+            <app-add-shopping [ingredients]="data" [title]="recipe" ></app-add-shopping>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'Text Shopping List'">
+        <div>
+            <app-text-shopping [ingredients]="data" [title]="recipe" [phone]="phone"></app-text-shopping>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'Add Recipe'">
+        <div>
+            <app-recipe-form></app-recipe-form>
         </div>
     </ng-container>
 

@@ -98,6 +98,10 @@ UserSchema = new Schema({
     shoppingList: {
         type: Array,
         default: []
+    }, 
+    phone: {
+        type: String,
+        default: ''
     }
 });
 

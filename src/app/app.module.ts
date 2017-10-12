@@ -6,8 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
+import {HttpModule} from '@angular/http';
 import * as cloudinary from 'cloudinary-core';
-import { CloudinaryModule } from '@cloudinary/angular-4.x';
+//import { CloudinaryModule } from '@cloudinary/angular-4.x';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-4.x';
+import {FileUploadModule} from 'ng2-file-upload';
 
 import { FacebookModule } from 'ngx-facebook';
 import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
@@ -16,7 +19,7 @@ import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 
-import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, ContentModal, Login, Logout, AddShopping } from './entries';
+import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, ContentModal, Login, Logout, AddShopping, TextShopping, RecipeForm } from './entries';
 
 const appRoutes: Routes = [
   {
@@ -38,9 +41,12 @@ const appRoutes: Routes = [
     //NgxGoogleSignInModule.forRoot(),
     //NgbModule.forRoot(),
     FacebookModule.forRoot(),
+    HttpModule,
     CloudinaryModule.forRoot(cloudinary, {
-        cloud_name: 'dhd1eov8v'
+        cloud_name: 'dhd1eov8v',
+        upload_preset: 'r7pixfy9'
     }),
+    FileUploadModule
 
   ],
   declarations: [
@@ -52,8 +58,9 @@ const appRoutes: Routes = [
     ContentModal,
     Login,
     Logout,
-    AddShopping
-    //GoogleSignInComponent
+    AddShopping,
+    TextShopping,
+    RecipeForm
   ],
   providers: [
     EntryService
