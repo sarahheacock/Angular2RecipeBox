@@ -42,7 +42,7 @@ export class EntryService {
         };
     
         fb.init(initParams);
-        if(gapi) this.initG();
+        // if(gapi) this.initG();
         //google.init("763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com");
 
         if(window.sessionStorage.user){
@@ -51,19 +51,19 @@ export class EntryService {
         }
     }
 
-    initG() {
-        if(!this.auth2){
-            if(gapi){
-                gapi.load('auth2', () => {
-                    this.auth2 = gapi.auth2.init({ //SOMETIMES THERE IS AN ERROR GAPI DNE
-                      client_id: '763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com',
-                      fetch_basic_profile: false,
-                      scope: 'profile'
-                    });
-                });
-            }
-        }
-    }
+    // initG() {
+    //     if(!this.auth2){
+    //         if(gapi){
+    //             gapi.load('auth2', () => {
+    //                 this.auth2 = gapi.auth2.init({ //SOMETIMES THERE IS AN ERROR GAPI DNE
+    //                   client_id: '763862879351-ut6n5jru27vvk2dr94u9jd4b71m1va7b.apps.googleusercontent.com',
+    //                   fetch_basic_profile: false,
+    //                   scope: 'profile'
+    //                 });
+    //             });
+    //         }
+    //     }
+    // }
 
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
@@ -175,18 +175,18 @@ export class EntryService {
             .catch((error: any) => console.error(error)); 
     }
 
-    loginWithGmail() {
-        this.auth2.grantOfflineAccess().then((authResult) => {
-            const token = this.auth2.currentUser.get().getAuthResponse().access_token;
-            const url = `${this.url}/auth/google/token?access_token=${token}`;
+    // loginWithGmail() {
+    //     this.auth2.grantOfflineAccess().then((authResult) => {
+    //         const token = this.auth2.currentUser.get().getAuthResponse().access_token;
+    //         const url = `${this.url}/auth/google/token?access_token=${token}`;
 
-            return this.changeUser(url)
-            .then(user => {
-                this.user = user;
-                this.store();
-            });
-        });
-    }
+    //         return this.changeUser(url)
+    //         .then(user => {
+    //             this.user = user;
+    //             this.store();
+    //         });
+    //     });
+    // }
 
     logoutUser(){
         this.changeUser(`${this.url}/auth/logout`)

@@ -28,7 +28,7 @@ export class HeaderContent {
         this.subscription = this.entryService.getUser().subscribe(item => {
             this.format(item);
         });
-        this.entryService.initG();
+        // this.entryService.initG();
     }
 
     format(item){

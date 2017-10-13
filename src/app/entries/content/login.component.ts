@@ -21,7 +21,8 @@ export class Login {
     }
 
     login(str) {
-        if(str === 'google') this.entryService.loginWithGmail();
-        else this.entryService.loginWithFacebook();
+        // if(str === 'google') this.entryService.loginWithGmail();
+        // else 
+        this.entryService.loginWithFacebook();
     }
 }
