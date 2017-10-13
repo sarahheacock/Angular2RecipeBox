@@ -18,8 +18,8 @@ export class RecipeForm {
     @Input()
     responses: Array<any>;
   
-    private hasBaseDropZoneOver: boolean = false;
-    private uploader: FileUploader;
+    hasBaseDropZoneOver: boolean = false;
+    uploader: FileUploader;
     // private title: string;
   
     constructor(
@@ -76,9 +76,6 @@ export class RecipeForm {
         // as part of the XHR request to upload the files.
         // Running in a custom zone forces change detection
         this.zone.run(() => {
-          // Update an existing entry if it's upload hasn't completed yet
-  
-          // Find the id of an existing item
           const existingId = this.responses.reduce((prev, current, index) => {
             if (current.file.name === fileItem.file.name && !current.status) {
               return index;
