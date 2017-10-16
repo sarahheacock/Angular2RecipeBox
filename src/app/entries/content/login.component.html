@@ -1,6 +1,17 @@
-<div class="center text-center">
-    <button class="btn btn-success center" (click)="login('google')">Sign in with Gmail <i class='fa fa-google' aria-hidden='true'></i></button>
-    <p>OR</p>
-    <button class="btn btn-primary center" (click)="login('fb')">Sign in with Facebook <i class="fa fa-facebook-square" aria-hidden="true"></i></button>
+<div class="modal-body">
+    <div class="center text-center" [ngSwitch]="name">
+        <ng-container *ngSwitchCase="''">
+            <button class="btn btn-success center" (click)="loginWithGmail($event)">Sign in with Gmail <i class='fa fa-google' aria-hidden='true'></i></button>
+            <p>OR</p>
+            <button class="btn btn-primary center" (click)="loginWithFacebook($event)">Sign in with Facebook <i class="fa fa-facebook-square" aria-hidden="true"></i></button>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <p>Welcome, {{name}}!</p>
+        </ng-container>
+    </div>
 </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+</div>
+
 

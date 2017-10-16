@@ -1,3 +1,22 @@
+body {
+    margin:0;
+    padding:0; 
+    position: relative;
+    font-family: Georgia, serif;
+}
+
+.border-top {
+    border-style: double;
+    border-width: 0px 0px 6px 0px;
+    border-color: white;
+}
+
+.border {
+    padding: 40px 30px 40px 30px;
+    min-height: 100%;
+}
+
+
 header {
     background-image: url(https://res.cloudinary.com/dhd1eov8v/image/upload/c_scale,w_934/v1506628983/pexels-photo-326278_jrnio3.jpg);
     background-size: cover;
@@ -11,22 +30,8 @@ header {
     border-style: dotted;
     border-width: 12px;
     border-color: transparent;
-
 }
 
-/* header::after{
-    border-style: dotted;
-    border-width: 5px 0px 5px 0px;
-    border-color: #373737;
-
-    display: block;
-    position: absolute;
-
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    bottom: 4px;
-} */
 
 .border {
     border-style: solid;
@@ -37,10 +42,6 @@ header {
 
 header h1 {
     color: White;
-    
-    /* padding-top: 10vh;
-    padding-left: 2%; */
-    /* font-size: 400%; */
 }
 
 .btn-secondary {

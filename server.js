@@ -1,3 +1,7 @@
+// IF HEROKU HAS A 503 ERROR
+// CHANGE PACKAGE.JSON START 
+// FROM set NODE_ENV=dev&&nodemon server.js TO node server.js
+
 // Get dependencies
 const express = require('express');
 const path = require('path');

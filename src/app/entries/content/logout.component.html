@@ -1,4 +1,16 @@
-<div class="center text-center">
-    <p>Are you sure you would like to logout?</p>
-    <button class="btn btn-danger center" (click)="signOut()">Sign out</button>
+<div class="modal-body">
+    <div class="center text-center" [ngSwitch]="name">
+        <ng-container *ngSwitchCase="''">
+            <p>You are logged out.</p>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <p>Are you sure you would like to logout, {{name}}?</p>
+            <button class="btn btn-danger center" (click)="signOut()">Sign out</button>
+        </ng-container>
+    </div>
 </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+</div>
+
+

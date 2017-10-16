@@ -3,25 +3,42 @@
 <div class="modal-container">
   <div [@showModal]="modalShown" class="modal-back">
       <div class="modal-dialog my-modal" role="document">
-        <div class="modal-outer">
-            <div class="modal-content modal-guts">
-              <app-modal-content></app-modal-content>
+            <!-- modal content -->
+            <div class="modal-header">
+                <button type="button" class="close" (click)="stateChange()">&times;</button>
+                <h4 class="modal-title">{{modalContent.title}}</h4>
             </div>
-        </div>
+            <div [ngSwitch]="modalContent.title">
+                <ng-container *ngSwitchCase="'Sign In'">
+                    <app-login (stateChange)="stateChange($event)" (userChange)="userChange($event)" [name]="user.name"></app-login>
+                </ng-container>
+            
+                <ng-container *ngSwitchCase="'Logout'">
+                    <app-logout (stateChange)="stateChange($event)" (userChange)="userChange($event)" [name]="user.name"></app-logout>
+                </ng-container>
+            
+                <ng-container *ngSwitchCase="'Add Ingredients'">
+                    <app-add-shopping [ingredients]="modalContent.data.ingredients" [title]="modalContent.data.title" [userID]="user._id" [token]="user.userID" (stateChange)="stateChange($event)" (userChange)="userChange($event)"></app-add-shopping>
+                </ng-container>
+            
+                <ng-container *ngSwitchCase="'Text Shopping List'">
+                    <app-text-shopping [ingredients]="user.shoppingList" [title]="user.shoppingListNames" [phone]="user.phone" [userID]="user._id" [token]="user.userID" (stateChange)="stateChange($event)" (userChange)="userChange($event)"></app-text-shopping>
+                </ng-container>
+            
+                <ng-container *ngSwitchCase="'Add Recipe'">
+                    <app-recipe-form (stateChange)="stateChange($event)"></app-recipe-form>
+                </ng-container>
+            
+                <ng-container *ngSwitchDefault>
+                    <div class="text-center modal-body">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="stateChange('inactive')">Close</button>
+                    </div>
+                </ng-container>
+            </div>
+            <!-- end of modal content -->
       </div>
     </div>
 </div>
-
-<!-- Modal -->
-<!-- <div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <app-modal-content></app-modal-content>
-        <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal" (click)="stateChange()">Save changes</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-  
-    </div>
-  </div> -->

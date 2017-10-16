@@ -1,4 +1,4 @@
-
+<div class="border-top">
     <header>
         <div class="">
             <div class="header-content border">
@@ -19,9 +19,17 @@
                     Add Recipe <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn-outline-secondary" (click)="stateChange('Text Shopping List')">
-                    Text Shopping List <b>( {{this.length}} )</b>
+                    Text Shopping List <b>( {{user.shoppingList.length}} )</b>
                 </button>
             </div>
         </div>
     </header>
+</div>
+<app-modal [modalShown]="modalShown" [modalContent]="modalContent" [user]="user" (onToggle)="toggleState($event)" (updateUser)="updateUser($event)"></app-modal>
+<div class="border">
+    <div class="main">
+        <app-entry-list (onEntryLoad)="toggleState($event)" (onEntryEdit)="changeModalContent($event)" [userRecipes]="user.recipes"></app-entry-list>
+    </div>      
+</div>
+
 

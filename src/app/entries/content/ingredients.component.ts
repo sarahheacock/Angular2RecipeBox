@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { EntryService } from '../shared/entry.service';
-
+import { User } from '../shared/entry.model';
 //declare var gapi: any;
 
 @Component({
@@ -12,28 +12,46 @@ import { EntryService } from '../shared/entry.service';
 
 export class AddShopping {
     message: boolean = false;
+    
+    @Output() stateChange = new EventEmitter<string>();
+    @Output() userChange = new EventEmitter<User>();
 
     @Input() ingredients: Array<{name:string; selected:boolean;}>;
     @Input() title: string;
-    @ViewChild('commentForm') commentForm: NgForm;
+    @Input() userID: string;
+    @Input() token: string;
 
-    constructor(private entryService: EntryService) {
-    }
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
+    constructor(private entryService: EntryService) {}
 
     onSubmit(f: NgForm) {
-        const result = Object.keys(f.value).reduce((a, b) => {
-            if(f.value[b]) a.push(b);
-            return a;
-        }, []);
+        //console.log(f.value);
+        const result = Object.keys(f.value).map((key) => {
+            return {
+                name: key,
+                selected: f.value[key]
+            };
+        });
 
-        this.entryService.addToList({
+        console.log(result);
+
+        const obj = {
             shoppingListNames: this.title,
             shoppingList: result
+        };
+
+        const url = `${this.url}/user/${this.userID}/list?token=${this.token}`;
+        console.log(url, obj);
+
+        this.entryService.postUser(url, obj)
+        .then(user => {
+            this.userChange.emit(user);
         });
     }
 
-    close() {
-        this.entryService.toggleState();
+    toggle(e){
+        //if(e) e.preventDefault();
+        this.stateChange.emit('inactive');
     }
 }

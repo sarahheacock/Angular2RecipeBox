@@ -31,7 +31,6 @@
     align-content: center;
     padding: 2%;
     padding-bottom: 3%;
-    /* height: auto; */
 }
 
 .panel-title {
@@ -42,26 +41,9 @@
     .panel-title {
         font-size: 100%;
     }
-    /* .btn{
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-        margin-bottom: 1%;
-    } */
 }
 
-/* .panel-heading{
-    border-style: solid;
-    border-width: 1px;
-    border-color: #e6e6e6;
-    border-radius: 4%;
-
-    padding: 1%;
-    margin: 1%;
-} */
-
 .btn-block{
-    /* margin-bottom: 2%; */
     padding-bottom: 0;
 }
 
@@ -97,7 +79,5 @@ a:visited:hover {
     color: white;
 }
 
-/* .flex-container a{
-    margin: 2%;
-} */
+
   

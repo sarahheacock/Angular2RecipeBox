@@ -9,7 +9,7 @@
             <div id={{box._id}} class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div class="flex-container">
-                        <app-entry *ngFor="let entry of box.recipes" [entry]="entry" [id]="entry._id"></app-entry>
+                        <app-entry *ngFor="let entry of box.recipes" [entry]="entry" [id]="entry._id" (entryEdit)="entryEdit($event)" ></app-entry>
                     </div>
                 </div>
             </div>

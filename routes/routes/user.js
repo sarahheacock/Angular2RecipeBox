@@ -69,8 +69,20 @@ router.get('/:userID', mid.auth, mid.outputUser);
 //add to shopping list
 router.post("/:userID/list", mid.auth, (req, res, next) => {
     req.user.shoppingListNames.push(req.body.shoppingListNames);
-    req.user.shoppingList = req.body.shoppingList.concat(req.user.shoppingList).reduce((a, b) => {
+    req.user.shoppingListNames = req.user.shoppingListNames.reduce((a, b) => {
         if(!a.includes(b)) a.push(b);
+        return a;
+    }, []);
+
+    req.user.shoppingList = req.user.shoppingList.concat(req.body.shoppingList).reduce((a, b) => {
+        const valid = a.reduce((c, d) => {
+            if(d.name === b.name) return a.indexOf(d);
+            else return c;
+        }, -1);
+
+        if(valid > -1) a[valid]["selected"] = b["selected"];
+        else a.push(b);
+
         return a;
     }, []);
 
@@ -93,9 +105,15 @@ router.post("/:userID/message", mid.auth, (req, res, next) => {
 }, (req, res, next) => {
     const names = req.body.shoppingListNames;
 
-    const list = req.body.shoppingList.map((item, i) => {
-        return (i + 1) + ".\t" + item;
-    }).join("\n");
+    let i = 1;
+    const list = req.body.shoppingList.reduce((a, b) => {      
+        if(b.selected){
+            a.push((i + 1) + ".\t" + b.name);
+            i++;
+        } 
+        return a;
+    }, []).join("\n");
+    console.log(req.body.shoppingList, list);
 
     const content = "Hello, " + req.user.name + "!\n\n" + "Your Shopping List For:\n" + names + "\n\n" + list;
 

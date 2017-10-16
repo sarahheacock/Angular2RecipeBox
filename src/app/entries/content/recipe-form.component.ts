@@ -2,7 +2,7 @@
 // import { NgForm } from '@angular/forms';
 // import { EntryService } from '../shared/entry.service';
 
-import { Component, OnInit, Input, NgZone } from '@angular/core';
+import { Component, OnInit, Input, NgZone, Output, EventEmitter } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { FileUploader, FileUploaderOptions, ParsedResponseHeaders } from 'ng2-file-upload';
 import 'rxjs/add/operator/toPromise';
@@ -15,6 +15,7 @@ import { Cloudinary } from '@cloudinary/angular-4.x';
 })
 
 export class RecipeForm {
+    @Output() stateChange = new EventEmitter<string>();
     @Input()
     responses: Array<any>;
   
@@ -149,5 +150,10 @@ export class RecipeForm {
       }
       return Object.keys(fileProperties)
         .map((key) => ({ 'key': key, 'value': fileProperties[key] }));
+    }
+
+    toggle(e){
+      //if(e) e.preventDefault();
+      this.stateChange.emit('inactive');
     }
 }

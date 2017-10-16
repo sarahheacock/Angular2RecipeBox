@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import { User } from '../shared/entry.model';
-
-//declare var gapi: any;
+import { Recipe } from '../shared/entry.model';
 
 @Component({
     selector: 'app-header',
@@ -10,53 +9,89 @@ import { User } from '../shared/entry.model';
     styleUrls: ["header.component.css"]
 })
 
-export class HeaderContent {
-    //name: string = '';
-    length: number = 0;
-    //cart: Array<string> = [];
-    //auth2: any;
-    subscription: any;
-    user: User;
-   // recipes: Array<string> = [];
+export class HeaderContent{
+    // length: number = 0;
+    user: User = {
+        name: '',
+        userID: '',
+        shoppingList: [],
+        shoppingListNames: [],
+        recipes: [],
+        _id: '',
+        phone: ''
+    };
+    //recipes: Array<Recipe> = [];
+    modalShown: string = 'active';
+    modalContent: { title:string; data:any } = {
+        title: "Loading",
+        data: null
+    };
 
-    constructor(private entryService: EntryService) {
-        this.format(this.entryService.user);
-        
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
+
+
+    constructor(private entryService: EntryService){ //, private google:  GoogleSignInProviderService){
+        if(window.sessionStorage.user){
+            this.user = JSON.parse(window.sessionStorage.user);
+            console.log(this.user);
+        }
     }
-
-    ngOnInit() {
-        this.subscription = this.entryService.getUser().subscribe(item => {
-            this.format(item);
-        });
-        // this.entryService.initG();
-    }
-
-    format(item){
-        //this.name = item.name;
-        this.length = item.shoppingList.length;
-        this.user = item
-    }
-
-    ngAfterViewInit() {
-        //this.auth2 = gapi.auth2.getAuthInstance();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-
   
     stateChange(str){
         console.log(str);
         const data = (str.includes("Text")) ? {
-            title: this.user.shoppingListNames.join(', '),
-            ingredients: this.user.shoppingList,
-            phone: this.user.phone
-        } : this.user.name;
+            title: this.user.shoppingListNames.join(', ')
+        } : null;
 
-        this.entryService.changeContent({
+        const obj = {
             title: str,
             data: data
-        });
+        };
+
+        if(this.user.name){
+            this.modalContent = obj;
+        } 
+        else{
+            this.modalContent = {
+                title: "Sign In",
+                data: this.user.name
+            };
+        }
+
+        this.toggleState('active');
     }
+
+    // ==============MODAL CONTENT===============================
+    toggleState(e) {
+        if(!e) this.modalShown = (this.modalShown === 'inactive') ? 'active': 'inactive';
+        else this.modalShown = e;
+
+        console.log("header", this.modalShown);
+    }
+
+    changeModalContent(e: {title:string; data:any;}) {
+        this.modalContent = e;
+        this.toggleState('active');
+    }
+
+    //==============EDIT USER===============================
+    updateUser(obj: User) {
+        console.log(obj);
+        
+        this.user = obj;
+        window.sessionStorage.setItem('user', JSON.stringify(obj));
+        this.toggleState('inactive');
+    }
+
+    // addToList(obj) {
+    //     const url = `${this.url}/user/${this.user._id}/list?token=${this.user.userID}`;
+    //     console.log(url, obj);
+
+    //     this.entryService.postUser(url, obj)
+    //     .then(user => {
+    //         this.user = user;
+    //         console.log(this.user);
+    //         //this.store();
+    //     });
+    // }    
 }

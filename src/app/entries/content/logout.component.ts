@@ -1,6 +1,6 @@
-import { Component, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, AfterViewInit, AfterViewChecked, Output, EventEmitter, Input } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
-
+import { User } from '../shared/entry.model';
 
 @Component({
     selector: 'app-logout',
@@ -9,18 +9,22 @@ import { EntryService } from '../shared/entry.service';
 })
 
 export class Logout {
-    name: string = '';
-    subscription: any;
+    @Output() stateChange = new EventEmitter<string>();
+    @Output() userChange = new EventEmitter<User>();
 
-    constructor(private entryService: EntryService) {
-        this.name = this.entryService.user.name;
+    @Input() name: string;
+
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
+    constructor(private entryService: EntryService) {}
+
+    toggle(e){
+        this.stateChange.emit('inactive');
     }
 
-    ngOnInit() {
-        this.subscription = this.entryService.getUser().subscribe(item => this.name=item.name);
-    }
-
-    signOut() {
-        this.entryService.logoutUser();
+    signOut(){
+        this.entryService.getUser(`${this.url}/auth/logout`)
+        .then(user => {
+            this.userChange.emit(user);
+        });
     }
 }

@@ -1,9 +1,6 @@
-import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit, Output, EventEmitter, Input } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
-//import { Entry } from '../shared/entry.model';
-
-//declare var auth2: any;
-//declare var signInCallback: any;
+import { Recipe } from '../shared/entry.model';
 
 @Component({
     selector: 'app-entry-list',
@@ -12,28 +9,36 @@ import { EntryService } from '../shared/entry.service';
 })
 
 export class EntryListComponent implements OnInit {
-    entries: any;
-    //keys: any[];
+    @Output() onEntryLoad = new EventEmitter<string>();
+    @Output() onEntryEdit = new EventEmitter<{title:string; data:{
+        title:string;
+        ingredients:Array<{
+            name:string;
+            selected:boolean;
+        }>;
+    }}>();
 
-    constructor(private entryService: EntryService){
-        console.log(this.entries);
-    }   
+    @Input() userRecipes: Array<Recipe>;
+    entries: any;
+
+    constructor(private entryService: EntryService){}   
 
     ngOnInit(){
         this.entryService
         .getEntries()
         .then(entries => {
             console.log(entries);
-            this.entries = entries;
-            this.entryService.toggleState();
+            this.entries = (this.userRecipes.length < 1) ? entries: this.userRecipes.reduce((a, b) => {
+                return a;
+            }, entries);
+
+            this.onEntryLoad.emit('inactive');
         });
     }
 
-    // ngAfterContentInit(){
-    //     this.entryService
-    //     .getUserEntries()
-    //     .then(entries => {
+    //ngOnChange
 
-    //     });
-    // }
+    entryEdit(e){
+        this.onEntryEdit.emit(e);
+    }
 }

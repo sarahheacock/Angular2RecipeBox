@@ -43,7 +43,7 @@
         <span *ngIf="message">Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
         <span *ngIf="!message">Save Changes</span>
     </button>
-    <button class="btn btn-secondary" (click)="close()">
+    <button class="btn btn-secondary" (click)="toggle($event)">
         Close
     </button>
 </div>
