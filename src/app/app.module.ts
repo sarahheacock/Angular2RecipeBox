@@ -9,7 +9,7 @@ import { HttpModule } from '@angular/http';
 import * as cloudinary from 'cloudinary-core';
 //import * as cloudJQ from 'cloudinary-jquery-file-upload';
 //import { CloudinaryModule } from '@cloudinary/angular-4.x';
-import { CloudinaryModule, CloudinaryConfiguration, provideCloudinary } from '@cloudinary/angular-4.x';
+import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular';
 //import { FileUploadModule } from 'ng2-file-upload';
 
 import { FacebookModule } from 'ngx-facebook';
