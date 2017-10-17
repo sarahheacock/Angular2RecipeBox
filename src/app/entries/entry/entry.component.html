@@ -6,10 +6,10 @@
                 <button class="btn btn-link" (click)="launch($event)">{{button}}<i class="fa fa-pencil" aria-hidden="true"></i></button>
                 <div [ngSwitch]="cloud" class="image-container">
                     <ng-container *ngSwitchCase="'added'" class="image">
-                        <div></div>
-                        <!-- <cl-image public-id="{{entry.pic}}"  draggable="false" >
+                        <!-- <div></div> -->
+                        <cl-image secure="true" public-id="{{entry.pic}}"  draggable="false" >
                             <cl-transformation width="250" height="170" crop="fill" radius="10"></cl-transformation>
-                        </cl-image> -->
+                        </cl-image>
                     </ng-container>
                     <ng-container *ngSwitchCase="'original'">
                         <img class="image" src="{{entry.pic}}" alt="{{entry.title}}" draggable="false"/>

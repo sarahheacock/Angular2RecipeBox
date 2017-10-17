@@ -6,10 +6,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-//import * as cloudinary from 'cloudinary-core';
+import * as cloudinary from 'cloudinary-core';
 //import * as cloudJQ from 'cloudinary-jquery-file-upload';
 //import { CloudinaryModule } from '@cloudinary/angular-4.x';
-//import { CloudinaryModule, CloudinaryConfiguration, provideCloudinary } from '@cloudinary/angular-4.x';
+import { CloudinaryModule, CloudinaryConfiguration, provideCloudinary } from '@cloudinary/angular-4.x';
 //import { FileUploadModule } from 'ng2-file-upload';
 
 import { FacebookModule } from 'ngx-facebook';
@@ -42,7 +42,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FacebookModule.forRoot(),
     HttpModule,
-    //CloudinaryModule.forRoot(cloudinary, cloudinaryConfig as CloudinaryConfiguration),
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfig as CloudinaryConfiguration),
     //FileUploadModule,
     //CloudinaryModule
 
