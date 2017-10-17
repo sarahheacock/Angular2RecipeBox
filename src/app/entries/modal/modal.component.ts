@@ -29,8 +29,8 @@ import { User } from '../shared/entry.model';
 })
 
 export class EntryListModal {
-  @Output() onToggle = new EventEmitter<string>();
-  @Output() updateUser = new EventEmitter<User>();
+  @Output() onToggle = new EventEmitter<any>();
+  @Output() updateUser = new EventEmitter<any>();
 
   @Input() modalShown: string;
   @Input() modalContent: { title:string; data:any; };
@@ -43,11 +43,11 @@ export class EntryListModal {
     console.log("E", e);
   }
 
-  stateChange(e: string) {
+  stateChange(e) {
     this.onToggle.emit(e);
   }
   
-  userChange(e: User) {
+  userChange(e) {
     this.updateUser.emit(e);
   }
 }

@@ -16,9 +16,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 export class DefaultModal{
     @Output() stateChange = new EventEmitter<string>();
     
-    constructor(){
-
-    }
+    constructor(){}
 
     toggle(e){
         this.stateChange.emit('inactive');
