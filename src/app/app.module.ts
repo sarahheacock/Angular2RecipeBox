@@ -7,14 +7,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import * as cloudinary from 'cloudinary-core';
-import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-4.x';
-import {FileUploadModule} from 'ng2-file-upload';
+//import * as cloudJQ from 'cloudinary-jquery-file-upload';
+//import { CloudinaryModule } from '@cloudinary/angular-4.x';
+import { CloudinaryModule, CloudinaryConfiguration, provideCloudinary } from '@cloudinary/angular-4.x';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { FacebookModule } from 'ngx-facebook';
 import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
 import { AppComponent } from './app.component';
 
 import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, Login, Logout, AddShopping, TextShopping, RecipeForm, DefaultModal } from './entries';
+
+const cloudinaryConfig = {
+  cloud_name: 'dhd1eov8v',
+  upload_preset: 'r7pixfy9'
+};
 
 const appRoutes: Routes = [
   {
@@ -33,15 +40,11 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
-    //NgxGoogleSignInModule.forRoot(),
-    //NgbModule.forRoot(),
     FacebookModule.forRoot(),
     HttpModule,
-    CloudinaryModule.forRoot(cloudinary, {
-        cloud_name: 'dhd1eov8v',
-        upload_preset: 'r7pixfy9'
-    }),
-    FileUploadModule
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfig),
+    FileUploadModule,
+    //CloudinaryModule
 
   ],
   declarations: [
@@ -58,7 +61,9 @@ const appRoutes: Routes = [
     DefaultModal
   ],
   providers: [
-    EntryService
+    EntryService,
+    // provideCloudinary(cloudJQ,
+    // cloudinaryConfig as CloudinaryConfiguration)
   ],
   bootstrap: [AppComponent]
 })
