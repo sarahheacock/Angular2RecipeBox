@@ -11,7 +11,7 @@ import { HttpModule } from '@angular/http';
 //import { CloudinaryModule } from '@cloudinary/angular-4.x';
 import { Cloudinary } from 'cloudinary-core';
 import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-4.x';
-//import { FileUploadModule } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { FacebookModule } from 'ngx-facebook';
 import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
@@ -44,7 +44,7 @@ const appRoutes: Routes = [
     FacebookModule.forRoot(),
     HttpModule,
     CloudinaryModule.forRoot({ Cloudinary }, cloudinaryConfig as CloudinaryConfiguration),
-    //FileUploadModule,
+    FileUploadModule,
     //CloudinaryModule
 
   ],
