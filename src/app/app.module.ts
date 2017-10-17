@@ -42,7 +42,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FacebookModule.forRoot(),
     HttpModule,
-    CloudinaryModule.forRoot(cloudinary, cloudinaryConfig),
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfig as CloudinaryConfiguration),
     FileUploadModule,
     //CloudinaryModule
 

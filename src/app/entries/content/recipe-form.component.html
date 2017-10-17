@@ -1,7 +1,7 @@
 <div class="modal-outer">
     <div class="modal-body modal-guts">
-        <div id="direct_upload" ng2FileDrop [uploader]="uploader" (fileOver)="fileOverBase($event)" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}">
-            <p>Drag and drop an image file into the dashed area or click here to upload an image.</p>
+        <!-- <div id="direct_upload" ng2FileDrop [uploader]="uploader" (fileOver)="fileOverBase($event)" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}">
+            <p>Drag and drop an image file into the dashed area or click here to upload an image.</p> -->
             <!-- <form>
                 <div class="upload_button_holder">
                     <label class="upload_button" for="fileupload">Upload</label>
@@ -10,10 +10,10 @@
                 </div>
             </form> -->
 
-            <div class="file" *ngFor="let response of responses; let i = index">
-                <h3>{{response.file.name}}</h3>
+            <!-- <div class="file" *ngFor="let response of responses; let i = index">
+                <h3>{{response.file.name}}</h3> -->
             <!-- <button class="delete-image" *ngIf="!!response.data.delete_token" (click)="deleteImage(response.data, i)">Delete image</button> -->
-                <div class="status">
+                <!-- <div class="status">
                     Uploading... {{response.progress}}%
                     <div *ngIf="!response.status">In progress</div>
                     <div class="status-code" *ngIf="response.status">Upload completed with status code {{response.status}}</div>
@@ -38,7 +38,7 @@
                 </div>
             </div>
         
-        </div>
+        </div> -->
                 
     </div>
     <div class="modal-footer">
