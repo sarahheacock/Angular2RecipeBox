@@ -40,7 +40,7 @@ import $ from "jquery";
     ]
 })
 
-export class EntryComponent {
+export class EntryComponent implements AfterContentInit{
     @Output() entryEdit = new EventEmitter<{title:string; data:{
         title:string;
         ingredients:Array<{
