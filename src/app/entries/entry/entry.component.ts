@@ -40,7 +40,7 @@ import $ from "jquery";
     ]
 })
 
-export class EntryComponent implements AfterContentInit,OnChanges{
+export class EntryComponent implements AfterContentInit{
     @Output() entryEdit = new EventEmitter<{title:string; data:{
         title:string;
         ingredients:Array<{
@@ -60,6 +60,7 @@ export class EntryComponent implements AfterContentInit,OnChanges{
         this.cloud = '';
         this.title = '';
         this.button = "Add Ingredients";
+        //this.entry.pic = this.entry.pic.replace("http://", "https://");
     }
 
 
@@ -69,9 +70,8 @@ export class EntryComponent implements AfterContentInit,OnChanges{
         this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
     }
 
-    ngOnChanges(){
-        this.entry.pic = this.entry.pic.replace("http://", "https://");
-        console.log(this.entry);
+    getImage(str){
+        return str.replace("http://", "https://");
     }
 
     changeState(e) {

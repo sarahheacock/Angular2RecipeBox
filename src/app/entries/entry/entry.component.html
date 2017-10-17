@@ -12,7 +12,7 @@
                         </cl-image>
                     </ng-container>
                     <ng-container *ngSwitchCase="'original'">
-                        <img class="image" src="{{entry.pic}}" alt="{{entry.title}}" draggable="false"/>
+                        <img class="image" src="{{getImage(entry.pic)}}" alt="{{entry.title}}" draggable="false"/>
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         <div></div>
