@@ -30,12 +30,7 @@
                 </ng-container>
             
                 <ng-container *ngSwitchDefault>
-                    <div class="text-center modal-body">
-                        <i class="fa fa-spinner fa-spin fa-2x"></i>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="stateChange('inactive')">Close</button>
-                    </div>
+                    <app-default (stateChange)="stateChange($event)"></app-default>
                 </ng-container>
             </div>
             <!-- end of modal content -->

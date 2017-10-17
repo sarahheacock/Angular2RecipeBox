@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, OnChanges } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import { User } from '../shared/entry.model';
 import { Recipe } from '../shared/entry.model';
@@ -10,7 +10,7 @@ import { Recipe } from '../shared/entry.model';
 })
 
 export class HeaderContent{
-    // length: number = 0;
+    length: number = 0;
     user: User = {
         name: '',
         userID: '',
@@ -20,7 +20,7 @@ export class HeaderContent{
         _id: '',
         phone: ''
     };
-    //recipes: Array<Recipe> = [];
+
     modalShown: string = 'active';
     modalContent: { title:string; data:any } = {
         title: "Loading",
@@ -33,15 +33,21 @@ export class HeaderContent{
     constructor(private entryService: EntryService){ //, private google:  GoogleSignInProviderService){
         if(window.sessionStorage.user){
             this.user = JSON.parse(window.sessionStorage.user);
+            this.count();
             console.log(this.user);
         }
+    }
+
+    count(){
+        this.length = this.user.shoppingList.reduce((a, b) => {
+            if(b.selected) a++;
+            return a;
+        }, 0);
     }
   
     stateChange(str){
         console.log(str);
-        const data = (str.includes("Text")) ? {
-            title: this.user.shoppingListNames.join(', ')
-        } : null;
+        const data = null;
 
         const obj = {
             title: str,
@@ -80,18 +86,7 @@ export class HeaderContent{
         
         this.user = obj;
         window.sessionStorage.setItem('user', JSON.stringify(obj));
+        this.count();
         this.toggleState('inactive');
-    }
-
-    // addToList(obj) {
-    //     const url = `${this.url}/user/${this.user._id}/list?token=${this.user.userID}`;
-    //     console.log(url, obj);
-
-    //     this.entryService.postUser(url, obj)
-    //     .then(user => {
-    //         this.user = user;
-    //         console.log(this.user);
-    //         //this.store();
-    //     });
-    // }    
+    } 
 }

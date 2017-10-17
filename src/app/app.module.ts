@@ -14,7 +14,7 @@ import { FacebookModule } from 'ngx-facebook';
 import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
 import { AppComponent } from './app.component';
 
-import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, Login, Logout, AddShopping, TextShopping, RecipeForm } from './entries';
+import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, Login, Logout, AddShopping, TextShopping, RecipeForm, DefaultModal } from './entries';
 
 const appRoutes: Routes = [
   {
@@ -54,7 +54,8 @@ const appRoutes: Routes = [
     Logout,
     AddShopping,
     TextShopping,
-    RecipeForm
+    RecipeForm,
+    DefaultModal
   ],
   providers: [
     EntryService

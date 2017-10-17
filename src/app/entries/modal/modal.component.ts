@@ -43,7 +43,7 @@ export class EntryListModal {
     console.log("E", e);
   }
 
-  stateChange(e) {
+  stateChange(e: string) {
     this.onToggle.emit(e);
   }
   

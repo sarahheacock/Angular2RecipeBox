@@ -8,6 +8,7 @@ export * from './content/logout.component';
 export * from './content/ingredients.component';
 export * from './content/message.component';
 export * from './content/recipe-form.component';
+export * from './content/default-modal.component';
 
 export * from './entry-list/entry-list.component';
 export * from './entry/entry.component';

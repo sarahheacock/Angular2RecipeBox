@@ -5,7 +5,7 @@
                 <h1>{{(this.user.name) ? this.user.name + "'s Recipe Box" : "Recipe Box"}}</h1>
                 <span [ngSwitch]="user.name">
                     <ng-container *ngSwitchCase="''">
-                        <button type="button" class="btn btn-primary" (click)="stateChange('Sign In')">
+                        <button type="button" class="btn btn-danger" (click)="stateChange('Sign In')">
                             Login <i class="fa fa-sign-in" aria-hidden="true"></i>
                         </button>
                     </ng-container>
