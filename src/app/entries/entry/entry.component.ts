@@ -1,4 +1,4 @@
-import { Component, Input, AfterContentInit, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, AfterContentInit, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 //import { Entry } from '../shared/entry.model';
@@ -40,7 +40,7 @@ import $ from "jquery";
     ]
 })
 
-export class EntryComponent implements AfterContentInit{
+export class EntryComponent implements AfterContentInit,OnChanges{
     @Output() entryEdit = new EventEmitter<{title:string; data:{
         title:string;
         ingredients:Array<{
@@ -67,6 +67,11 @@ export class EntryComponent implements AfterContentInit{
         this.cloud = (this.entry.pic.includes("http:")) ? "original": "added";
         this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 12)}...`: this.entry.title;
         this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
+    }
+
+    ngOnChanges(){
+        this.entry.pic = this.entry.pic.replace("http://", "https://");
+        console.log(this.entry);
     }
 
     changeState(e) {
