@@ -12,8 +12,8 @@ declare var gapi: any;
 })
 
 export class Login implements AfterViewInit{
-    @Output() stateChange = new EventEmitter<string>();
-    @Output() userChange = new EventEmitter<User>();
+    @Output() stateChange = new EventEmitter<any>();
+    @Output() userChange = new EventEmitter<any>();
 
     @Input() name: string;
     auth2: any;

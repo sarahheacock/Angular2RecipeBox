@@ -10,27 +10,54 @@
             </div>
             <div [ngSwitch]="modalContent.title">
                 <ng-container *ngSwitchCase="'Sign In'">
-                    <app-login (stateChange)="stateChange($event)" (userChange)="userChange($event)" [name]="user.name"></app-login>
+                    <app-login 
+                      (stateChange)="stateChange($event)" 
+                      (userChange)="userChange($event)" 
+                      [name]="user.name"
+                    ></app-login>
                 </ng-container>
             
                 <ng-container *ngSwitchCase="'Logout'">
-                    <app-logout (stateChange)="stateChange($event)" (userChange)="userChange($event)" [name]="user.name"></app-logout>
+                    <app-logout 
+                      (stateChange)="stateChange($event)" 
+                      (userChange)="userChange($event)" 
+                      [name]="user.name"
+                    ></app-logout>
                 </ng-container>
             
                 <ng-container *ngSwitchCase="'Add Ingredients'">
-                    <app-add-shopping [ingredients]="modalContent.data.ingredients" [title]="modalContent.data.title" [userID]="user._id" [token]="user.userID" (stateChange)="stateChange($event)" (userChange)="userChange($event)"></app-add-shopping>
+                    <app-add-shopping 
+                      [ingredients]="modalContent.data.ingredients"
+                      [title]="modalContent.data.title" 
+                      [user]="user._id" 
+                      [token]="user.userID" 
+                      (stateChange)="stateChange($event)" 
+                      (userChange)="userChange($event)"
+                    ></app-add-shopping>
                 </ng-container>
             
                 <ng-container *ngSwitchCase="'Text Shopping List'">
-                    <app-text-shopping [ingredients]="user.shoppingList" [title]="user.shoppingListNames" [phone]="user.phone" [userID]="user._id" [token]="user.userID" (stateChange)="stateChange($event)" (userChange)="userChange($event)"></app-text-shopping>
+                    <app-text-shopping 
+                      [ingredients]="user.shoppingList" 
+                      [title]="user.shoppingListNames" 
+                      [phone]="user.phone" 
+                      [userID]="user._id" 
+                      [token]="user.userID" 
+                      (stateChange)="stateChange($event)" 
+                      (userChange)="userChange($event)"
+                    ></app-text-shopping>
                 </ng-container>
             
                 <ng-container *ngSwitchCase="'Add Recipe'">
-                    <app-recipe-form (stateChange)="stateChange($event)"></app-recipe-form>
+                    <app-recipe-form 
+                      (stateChange)="stateChange($event)"
+                    ></app-recipe-form>
                 </ng-container>
             
                 <ng-container *ngSwitchDefault>
-                    <app-default (stateChange)="stateChange($event)"></app-default>
+                    <app-default 
+                      (stateChange)="stateChange($event)"
+                    ></app-default>
                 </ng-container>
             </div>
             <!-- end of modal content -->

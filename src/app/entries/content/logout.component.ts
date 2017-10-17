@@ -9,8 +9,8 @@ import { User } from '../shared/entry.model';
 })
 
 export class Logout {
-    @Output() stateChange = new EventEmitter<string>();
-    @Output() userChange = new EventEmitter<User>();
+    @Output() stateChange = new EventEmitter<any>();
+    @Output() userChange = new EventEmitter<any>();
 
     @Input() name: string;
 

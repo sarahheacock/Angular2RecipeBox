@@ -14,7 +14,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 })
 
 export class DefaultModal{
-    @Output() stateChange = new EventEmitter<string>();
+    @Output() stateChange = new EventEmitter<any>();
     
     constructor(){}
 

@@ -15,8 +15,7 @@ import { Cloudinary } from '@cloudinary/angular-4.x';
 })
 
 export class RecipeForm {
-    @Output() stateChange = new EventEmitter<string>();
-    @Input()
+    @Output() stateChange = new EventEmitter<any>();
     responses: Array<any>;
   
     hasBaseDropZoneOver: boolean = false;

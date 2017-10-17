@@ -14,8 +14,8 @@ import { User } from '../shared/entry.model';
 
 export class TextShopping {
     message: boolean = true;
-    @Output() stateChange = new EventEmitter<string>();
-    @Output() userChange = new EventEmitter<User>();
+    @Output() stateChange = new EventEmitter<any>();
+    @Output() userChange = new EventEmitter<any>();
 
     @Input() ingredients: Array<{name:string; selected:boolean;}>;
     @Input() title: Array<string>;

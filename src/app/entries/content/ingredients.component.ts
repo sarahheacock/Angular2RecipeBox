@@ -13,8 +13,8 @@ import { User } from '../shared/entry.model';
 export class AddShopping {
     message: boolean = false;
     
-    @Output() stateChange = new EventEmitter<string>();
-    @Output() userChange = new EventEmitter<User>();
+    @Output() stateChange = new EventEmitter<any>();
+    @Output() userChange = new EventEmitter<any>();
 
     @Input() ingredients: Array<{name:string; selected:boolean;}>;
     @Input() title: string;
