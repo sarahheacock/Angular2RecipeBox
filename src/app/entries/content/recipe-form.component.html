@@ -1,47 +1,51 @@
 <div class="modal-outer">
     <div class="modal-body modal-guts">
-        <div id="direct_upload" ng2FileDrop [uploader]="uploader" (fileOver)="fileOverBase($event)" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}">
-            <p>Drag and drop an image file into the dashed area or click here to upload an image.</p>
-            <!-- <form>
-                <div class="upload_button_holder">
-                    <label class="upload_button" for="fileupload">Upload</label>
-                    <input type="file" id="fileupload" #fileInput ng2FileSelect [style.display]="'none'" [uploader]="uploader" (change)="fileInput.value=''"
-                        multiple />
-                </div>
-            </form> -->
-
-            <div class="file" *ngFor="let response of responses; let i = index">
-                <h3>{{response.file.name}}</h3>
-            <!-- <button class="delete-image" *ngIf="!!response.data.delete_token" (click)="deleteImage(response.data, i)">Delete image</button> -->
-                <div class="status">
-                    Uploading... {{response.progress}}%
-                    <div *ngIf="!response.status">In progress</div>
-                    <div class="status-code" *ngIf="response.status">Upload completed with status code {{response.status}}</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress" role="progressbar" [style.width.%]="response.progress"></div>
-                </div>
-                <div class="form_line">
-                    <div class="form_controls">
-                        <div class="preview">
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="info">
-                    <table>
-                        <tr *ngFor="let property of getFileProperties(response.data)">
-                            <td> {{ property.key }} </td>
-                            <td> {{ property.value | json}} </td>
-                        </tr>
-                    </table>
-                </div>
+        <form  #f="ngForm" (ngSubmit)="onSubmit(f)">
+            <div class="form-group required">
+                <label for="title">Recipe Label*</label>
+                <input class="form-control" type="text" name="title" [(ngModel)]="title" required/>
             </div>
+
+            <div class="form-group">
+                <label for="ingredients">Ingredients*</label>
+                <textarea class="form-control" type="text" name="ingredients" [(ngModel)]="ingredients" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="directions">Recipe Directions*</label>
+                <textarea class="form-control" type="text" name="directions" [(ngModel)]="directions" required></textarea>
+            </div>
+        </form>
+        <form>
+            <label for="dragdrop">Upload Image</label>
+            <a href="#" (click)="launch($event)" id="dragdrop">
+                <div id="direct_upload" ng2FileDrop [uploader]="uploader" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}">
+                    <p>Drag and drop an image file into the dashed area or click here to upload an image.</p>
+                    <div class="file text-center">
+                        <div class="status">
+                            Uploading... {{progress}}%
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" role="progressbar" [style.width.%]="progress"></div>
+                        </div>
+                        <cl-image secure="true" public-id="{{pic}}"  draggable="false" >
+                            <cl-transformation width="150" height="100" crop="fill" radius="10"></cl-transformation>
+                        </cl-image>
+                    </div>
+                </div>       
+            </a>
+
+            <input type="file" id="fileupload" #fileInput ng2FileSelect [style.display]="'none'" [uploader]="uploader" (change)="fileInput.value=''" multiple />
+        </form>
         
+        <div class="alert alert-warning" *ngIf="errorMessage !== ''">
+            {{errorMessage}}
         </div>
-                
     </div>
     <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onSubmit(f)">
+            <span>Save</span>
+        </button>
         <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
     </div>
 </div>
