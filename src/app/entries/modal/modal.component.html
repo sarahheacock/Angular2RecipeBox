@@ -49,8 +49,12 @@
                 </ng-container>
             
                 <ng-container *ngSwitchCase="'Add Recipe'">
-                    <app-recipe-form 
-                      (stateChange)="stateChange($event)"
+                    <app-recipe-form
+                        [options]="options"
+                        [userID]="user._id" 
+                        [token]="user.userID" 
+                        (userChange)="userChange($event)"
+                        (stateChange)="stateChange($event)"
                     ></app-recipe-form>
                 </ng-container>
             

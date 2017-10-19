@@ -25,10 +25,10 @@
         </div>
     </header>
 </div>
-<app-modal [modalShown]="modalShown" [modalContent]="modalContent" [user]="user" (onToggle)="toggleState($event)" (updateUser)="updateUser($event)"></app-modal>
+<app-modal [modalShown]="modalShown" [modalContent]="modalContent" [user]="user" [options]="options" (onToggle)="toggleState($event)" (updateUser)="updateUser($event)"></app-modal>
 <div class="border">
     <div class="main">
-        <app-entry-list (onEntryLoad)="toggleState($event)" (onEntryEdit)="changeModalContent($event)" [userRecipes]="user.recipes"></app-entry-list>
+        <app-entry-list (onEntryLoad)="updateOptions($event)" (onEntryEdit)="changeModalContent($event)" [userRecipes]="user.recipes" [userName]="user.name"></app-entry-list>
     </div>      
 </div>
 

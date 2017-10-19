@@ -26,6 +26,7 @@ export class HeaderContent{
         title: "Loading",
         data: null
     };
+    options: Array<string> = [];
 
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
@@ -60,7 +61,7 @@ export class HeaderContent{
         else{
             this.modalContent = {
                 title: "Sign In",
-                data: this.user.name
+                data: data
             };
         }
 
@@ -78,6 +79,12 @@ export class HeaderContent{
     changeModalContent(e: {title:string; data:any;}) {
         this.modalContent = e;
         this.toggleState('active');
+    }
+
+    updateOptions(e: Array<string>) {
+        this.options = e;
+        this.modalShown = 'inactive';
+        console.log(this.options);
     }
 
     //==============EDIT USER===============================

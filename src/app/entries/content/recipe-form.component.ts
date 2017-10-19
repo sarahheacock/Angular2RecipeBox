@@ -1,6 +1,6 @@
 // import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 // import { NgForm } from '@angular/forms';
-// import { EntryService } from '../shared/entry.service';
+import { EntryService } from '../shared/entry.service';
 
 import { Component, OnInit, Input, NgZone, Output, EventEmitter } from '@angular/core';
 //import { Http, Response, RequestOptions, Headers } from '@angular/http';
@@ -18,11 +18,18 @@ import $ from "jquery";
 
 export class RecipeForm {
     @Output() stateChange = new EventEmitter<any>();
+    @Output() userChange = new EventEmitter<any>();
+
+    @Input() options: Array<string>;
+    @Input() userID: string;
+    @Input() token: string;
+
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     //responses: Array<any>; 
     uploader: FileUploader;
     title: string;
     //_id: string;
-    ingredients: string;
+    ingredients: string; //back-end will change the ingredients and directions into arrays
     directions: string;
     pic: string;
     href: string;
@@ -33,6 +40,7 @@ export class RecipeForm {
     constructor(
       private cloudinary: Cloudinary,
       private zone: NgZone,
+      private entryService: EntryService
       //private http: Http
     ) {
       this.title = '';
@@ -110,9 +118,17 @@ export class RecipeForm {
       }, true);
       console.log(valid);
 
-      if(!valid) this.errorMessage = "*Fill out required fields."
-      else this.errorMessage = '';
-      
-      console.log(result);
+      if(!valid){
+        this.errorMessage = "*Fill out required fields."
+      } 
+      else{
+        this.errorMessage = '';
+
+        const url = `${this.url}/user/${this.userID}/recipe?token=${this.token}`;
+        this.entryService.postUser(url, result)
+        .then(user => {
+            this.userChange.emit(user);
+        });
+      } 
     }
 }

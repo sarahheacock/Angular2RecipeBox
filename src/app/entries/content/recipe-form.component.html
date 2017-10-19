@@ -1,20 +1,52 @@
 <div class="modal-outer">
     <div class="modal-body modal-guts">
         <form  #f="ngForm" (ngSubmit)="onSubmit(f)">
-            <div class="form-group required">
-                <label for="title">Recipe Label*</label>
-                <input class="form-control" type="text" name="title" [(ngModel)]="title" required/>
+            <div class="form-group">
+                <label for="title" [ngStyle]="{'color': !labelField.valid && errorMessage ? '#d9534f': undefined}">Recipe Label*</label>
+                <input class="form-control" type="text" name="title" [(ngModel)]="title" 
+                required minlength="1" #labelField="ngModel"
+                [ngStyle]="{'border-color': !labelField.valid && errorMessage ? '#d9534f': undefined}"/>
+            </div>
+            <div class="alert alert-danger" *ngIf="errorMessage !== '' && !labelField.valid">
+                {{errorMessage}}
+            </div>
+
+            <!-- #8a6d3b #faf2cc-->
+
+            <div class="form-group">
+                <label for="sel1" [ngStyle]="{'color': !hrefField.valid && errorMessage ? '#d9534f': undefined}">Category*</label>
+                <select class="form-control" id="sel1" name="href" [(ngModel)]="href"
+                required minlength="1" #hrefField="ngModel"
+                [ngStyle]="{'border-color': !hrefField.valid && errorMessage ? '#d9534f': undefined}">
+                    <option *ngFor="let cat of options">{{cat}}</option>
+                </select>
+            </div>
+            <div class="alert alert-danger" *ngIf="errorMessage !== '' && !hrefField.valid">
+                {{errorMessage}}
             </div>
 
             <div class="form-group">
-                <label for="ingredients">Ingredients*</label>
-                <textarea class="form-control" type="text" name="ingredients" [(ngModel)]="ingredients" required></textarea>
+                <label for="ingredients" [ngStyle]="{'color': !ingredientsField.valid && errorMessage ? '#d9534f': undefined}">Ingredients*</label>
+                <textarea class="form-control" type="text" name="ingredients" [(ngModel)]="ingredients" 
+                required minlength="1" #ingredientsField="ngModel"
+                [ngStyle]="{'border-color': !ingredientsField.valid && errorMessage ? '#d9534f': undefined}">
+                </textarea>
+            </div>
+            <div class="alert alert-danger" *ngIf="errorMessage !== '' && !ingredientsField.valid">
+                {{errorMessage}}
             </div>
 
-            <div class="form-group">
+            <div class="form-group"  [ngStyle]="{'color': !directionsField.valid && errorMessage ? '#d9534f': undefined}">
                 <label for="directions">Recipe Directions*</label>
-                <textarea class="form-control" type="text" name="directions" [(ngModel)]="directions" required></textarea>
+                <textarea class="form-control" type="text" name="directions" [(ngModel)]="directions" 
+                required minlength="1" #directionsField="ngModel"
+                [ngStyle]="{'border-color': !directionsField.valid && errorMessage ? '#d9534f': undefined}">
+                </textarea>
             </div>
+            <div class="alert alert-danger" *ngIf="errorMessage !== '' && !ingredientsField.valid">
+                {{errorMessage}}
+            </div>
+    
         </form>
         <form>
             <label for="dragdrop">Upload Image</label>
@@ -37,10 +69,6 @@
 
             <input type="file" id="fileupload" #fileInput ng2FileSelect [style.display]="'none'" [uploader]="uploader" (change)="fileInput.value=''" multiple />
         </form>
-        
-        <div class="alert alert-warning" *ngIf="errorMessage !== ''">
-            {{errorMessage}}
-        </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" (click)="onSubmit(f)">

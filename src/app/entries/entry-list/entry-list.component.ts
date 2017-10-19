@@ -9,7 +9,7 @@ import { Recipe } from '../shared/entry.model';
 })
 
 export class EntryListComponent implements OnInit {
-    @Output() onEntryLoad = new EventEmitter<string>();
+    @Output() onEntryLoad = new EventEmitter<Array<string>>();
     @Output() onEntryEdit = new EventEmitter<{title:string; data:{
         title:string;
         ingredients:Array<{
@@ -17,8 +17,10 @@ export class EntryListComponent implements OnInit {
             selected:boolean;
         }>;
     }}>();
+    //@Output() createCategories = new EventEmitter<Array<string>>();
 
     @Input() userRecipes: Array<Recipe>;
+    @Input() userName: string;
     entries: any;
 
     constructor(private entryService: EntryService){}   
@@ -28,11 +30,20 @@ export class EntryListComponent implements OnInit {
         .getEntries()
         .then(entries => {
             console.log(entries);
+            const categories = entries.map((cat) => {
+                return cat.category;
+            });
+
             this.entries = (this.userRecipes.length < 1) ? entries: this.userRecipes.reduce((a, b) => {
+                if(categories.includes(b.href)) {
+                    entries.forEach((entry) => {
+                        if(entry.category === b.href) entry.recipes.push(b);
+                    });
+                }
                 return a;
             }, entries);
 
-            this.onEntryLoad.emit('inactive');
+            this.onEntryLoad.emit(categories);
         });
     }
 

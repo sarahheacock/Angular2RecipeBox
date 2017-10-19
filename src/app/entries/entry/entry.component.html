@@ -5,11 +5,13 @@
                 <h4 class="title" [@grow]="contentShown">{{title}}</h4>
                 <button class="btn btn-link" (click)="launch($event)">{{button}}<i class="fa fa-pencil" aria-hidden="true"></i></button>
                 <div [ngSwitch]="cloud" class="image-container">
-                    <ng-container *ngSwitchCase="'added'" class="image">
+                    <ng-container *ngSwitchCase="'added'">
                         <!-- <div></div> -->
-                        <cl-image secure="true" public-id="{{entry.pic}}"  draggable="false" >
-                            <cl-transformation width="250" height="170" crop="fill" radius="10"></cl-transformation>
-                        </cl-image>
+                        <div class="image">
+                            <cl-image public-id="{{entry.pic}}"  draggable="false">
+                                <cl-transformation width="250" height="170" crop="fill" radius="10"></cl-transformation>
+                            </cl-image>
+                        </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="'original'">
                         <img class="image" src="{{getImage(entry.pic)}}" alt="{{entry.title}}" draggable="false"/>
@@ -33,7 +35,11 @@
                         <li *ngFor="let direction of entry.directions"><p>{{direction}}</p></li>
                     </ol>
                     <div class="text-center">
-                        <a (click)="'(e) => {e.preventDefault();}'" href="{{entry.href}}" *ngIf="entry.href"><button class="btn btn-link">{{entry.href}}</button></a>
+                        <a href="{{entry.href}}" *ngIf="cloud === 'original'"><button class="btn btn-link">{{entry.href}}</button></a>
+                        <div *ngIf="cloud === 'added'">
+                            <button class="btn btn-outline-primary">Edit</button>
+                            <button class="btn btn-outline-danger">Delete <i class="fa fa-trash"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>

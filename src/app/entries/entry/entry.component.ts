@@ -1,7 +1,7 @@
 import { Component, Input, AfterContentInit, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-//import { Entry } from '../shared/entry.model';
+import { Recipe } from '../shared/entry.model';
 import $ from "jquery";
 
 
@@ -48,7 +48,8 @@ export class EntryComponent implements AfterContentInit{
             selected:boolean;
         }>;
     }}>();
-    @Input() entry: any;
+    @Input() entry: Recipe;
+    @Input() userName: string;
 
     contentShown: string;
     cloud: string;
@@ -96,18 +97,24 @@ export class EntryComponent implements AfterContentInit{
             };
         });
 
-        this.entryEdit.emit({
+        const obj = (!this.userName) ? 
+        {
+            title: "Sign In",
+            data: null
+        } : 
+        {
             title: "Add Ingredients",
             data: {
                 title: this.entry.title,
                 ingredients: ingredients
             }
-        });
-        //this.entryService.changeContent(
-        // });
+        };
+
+        this.entryEdit.emit(obj);
     }
 
     animationDone(){
+        //console.log(this.entry);
         const element = document.getElementById(this.entry._id);
         const dist = $(element).offset().top;
 

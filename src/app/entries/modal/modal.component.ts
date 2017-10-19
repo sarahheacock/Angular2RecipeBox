@@ -35,6 +35,7 @@ export class EntryListModal {
   @Input() modalShown: string;
   @Input() modalContent: { title:string; data:any; };
   @Input() user: any;
+  @Input() options: Array<string>;
   //subscription: any;
   
   constructor() {}
