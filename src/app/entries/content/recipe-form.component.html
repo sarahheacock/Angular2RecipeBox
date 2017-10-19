@@ -51,7 +51,8 @@
         <form>
             <label for="dragdrop">Upload Image</label>
             <a href="#" (click)="launch($event)" id="dragdrop">
-                <div id="direct_upload" ng2FileDrop [uploader]="uploader" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}">
+                    <!-- [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" -->
+                <div id="direct_upload" ng2FileDrop [uploader]="uploader" >
                     <p>Drag and drop an image file into the dashed area or click here to upload an image.</p>
                     <div class="file text-center">
                         <div class="status">
