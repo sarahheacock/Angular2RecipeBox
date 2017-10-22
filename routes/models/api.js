@@ -8,7 +8,7 @@ const RecipeSchema = new Schema({
     },
     ingredients: {
         type: Array,
-        required: true
+        //required: true
     },
     directions: {
         type: Array,
@@ -20,7 +20,7 @@ const RecipeSchema = new Schema({
     },
     href: { // href is either the recipe url or category
         type: String,
-        required: true
+        //required: true
     }
 });
 

@@ -39,10 +39,21 @@
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-primary" (click)="onSubmit(f)">
-        <span *ngIf="message">Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
-        <span *ngIf="!message">Save Changes</span>
-    </button>
+    <div *ngIf="message">
+        <button class="btn btn-primary" (click)="onSubmit(f)">
+            Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-primary" (click)="save(f)">
+            Save Changes
+        </button>
+        <button class="btn btn-danger" (click)="clear(f)">
+            Clear List
+        </button>
+    </div>
+    <div *ngIf="!message">
+        <button class="btn btn-primary" (click)="onSubmit(f)">Save Changes</button>
+    </div>
+    
     <button class="btn btn-secondary" (click)="toggle($event)">
         Close
     </button>

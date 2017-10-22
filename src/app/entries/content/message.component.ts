@@ -29,25 +29,9 @@ export class TextShopping {
     constructor(private entryService: EntryService) {}
 
 
-    onSubmit(f: NgForm) {
-        const result = Object.keys(f.value).reduce((a, b) => {
-            if(f.value[b] && b !== "phone"){
-                a.push({
-                    name: b,
-                    selected: f.value[b]
-                });
-            } 
-            return a;
-        }, []);
-
+    onSubmit(f: NgForm) {     
+        const result = this.modify(f);
         console.log(result);
-        // const result = Object.keys(f.value).map((key) => {
-        //     return {
-        //         name: key,
-        //         selected: f.value[key]
-        //     };
-        // });
-
 
         const url = `${this.url}/user/${this.userID}/message?token=${this.token}`;
 
@@ -64,5 +48,27 @@ export class TextShopping {
     toggle(e){
         //if(e) e.preventDefault();
         this.stateChange.emit('inactive');
+    }
+
+    clear(f: NgForm){
+        const result = this.modify(f);
+        console.log(result);
+    }
+
+    save(f: NgForm){
+        const result = this.modify(f);
+        console.log(result);
+    }
+
+    modify(f){
+        return Object.keys(f.value).reduce((a, b) => {
+            if(b !== "phone"){
+                a.push({
+                    name: b.trim(),
+                    selected: f.value[b]
+                });
+            } 
+            return a;
+        }, []);
     }
 }
