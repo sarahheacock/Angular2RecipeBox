@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, OnChanges } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
-import { User } from '../shared/entry.model';
-import { Recipe } from '../shared/entry.model';
+//import {  } from '../shared/entry.model';
+import { User, Recipe } from '../shared/entry.model';
 
 @Component({
     selector: 'app-header',
@@ -33,11 +33,25 @@ export class HeaderContent{
 
     constructor(private entryService: EntryService){ //, private google:  GoogleSignInProviderService){
         if(window.sessionStorage.user){
-            this.user = JSON.parse(window.sessionStorage.user);
+            const user = JSON.parse(window.sessionStorage.user);
+            this.user = (user.name) ? user: {
+                name: '',
+                userID: '',
+                shoppingList: [],
+                shoppingListNames: [],
+                recipes: [],
+                _id: '',
+                phone: ''
+            };
+
             this.count();
             console.log(this.user);
         }
     }
+
+    // ngOnInit(){
+    //     if(this.user.userID) this.fetchUser();
+    // }
 
     count(){
         this.length = this.user.shoppingList.reduce((a, b) => {
@@ -81,13 +95,23 @@ export class HeaderContent{
         this.toggleState('active');
     }
 
-    updateOptions(e: Array<string>) {
-        this.options = e;
+    updateOptions(e: {options: Array<string>; user: User;}) {
+        this.options = e.options;
+        //this.user = e.user;
         this.modalShown = 'inactive';
+        this.updateUser(e.user);
         console.log(this.options);
     }
 
     //==============EDIT USER===============================
+    // fetchUser() {
+        
+    //     this.entryService.getUser(userUrl).then(user => {
+    //         //this.user = user;
+    //         this.updateUser(user);
+    //     });
+    // }
+
     updateUser(obj: User) {
         console.log(obj);
         

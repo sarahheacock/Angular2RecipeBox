@@ -26,7 +26,16 @@ const auth = (req, res, next) => {
         const userID = req.user.userID;
         if (err) {
           //NEED TO CHANGE TO SEND SIGN IN FORM
-          res.json({message: "Session expired."})
+          //res.json({message: "Session expired."})
+          res.json({
+            name: '',
+            userID: '',
+            shoppingList: [],
+            shoppingListNames: [],
+            recipes: [],
+            _id: '',
+            phone: ''
+          });
         }
         else if(decoded.userID !== userID){
           let err = new Error("Unauthorized! Go away!");

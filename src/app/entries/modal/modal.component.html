@@ -52,7 +52,19 @@
                     <app-recipe-form
                         [options]="options"
                         [userID]="user._id" 
-                        [token]="user.userID" 
+                        [token]="user.userID"
+                        [recipe]="modalContent.data"
+                        (userChange)="userChange($event)"
+                        (stateChange)="stateChange($event)"
+                    ></app-recipe-form>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'Edit Recipe'">
+                    <app-recipe-form
+                        [options]="options"
+                        [userID]="user._id" 
+                        [token]="user.userID"
+                        [recipe]="modalContent.data"
                         (userChange)="userChange($event)"
                         (stateChange)="stateChange($event)"
                     ></app-recipe-form>

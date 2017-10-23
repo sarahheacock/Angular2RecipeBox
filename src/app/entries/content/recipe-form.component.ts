@@ -21,6 +21,7 @@ export class RecipeForm {
     @Output() userChange = new EventEmitter<any>();
 
     @Input() options: Array<string>;
+    @Input() recipe: any;
     @Input() userID: string;
     @Input() token: string;
 
@@ -43,12 +44,6 @@ export class RecipeForm {
       private entryService: EntryService
       //private http: Http
     ) {
-      this.title = '';
-      this.ingredients = '';
-      this.directions = '';
-      this.pic = 'Tile-Dark-Grey-Smaller-White-97_pxf5ux';
-      this.href = '';
-
       this.progress = 0;
       this.errorMessage = '';
     }
@@ -88,6 +83,13 @@ export class RecipeForm {
         
       // Update model on upload progress event
       this.uploader.onProgressItem = (fileItem: any, progress: any) => this.getProgress(progress);
+
+      this.title = this.recipe.title;
+      this.ingredients = this.recipe.ingredients;
+      this.directions = this.recipe.directions;
+      this.pic = this.recipe.pic;
+      this.href = this.recipe.href;
+
     }
 
     getProgress(num: number){

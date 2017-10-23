@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterContentInit, Output, EventEmitter, Input } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
-import { Recipe } from '../shared/entry.model';
+import { User, Recipe } from '../shared/entry.model';
 
 @Component({
     selector: 'app-entry-list',
@@ -9,7 +9,10 @@ import { Recipe } from '../shared/entry.model';
 })
 
 export class EntryListComponent implements OnInit {
-    @Output() onEntryLoad = new EventEmitter<Array<string>>();
+    @Output() onEntryLoad = new EventEmitter<{
+        options:Array<string>;
+        user:User;
+    }>();
     @Output() onEntryEdit = new EventEmitter<{title:string; data:{
         title:string;
         ingredients:Array<{
@@ -19,32 +22,46 @@ export class EntryListComponent implements OnInit {
     }}>();
     //@Output() createCategories = new EventEmitter<Array<string>>();
 
-    @Input() userRecipes: Array<Recipe>;
-    @Input() userName: string;
+    // @Input() userRecipes: Array<Recipe>;
+    // @Input() userName: string;
+    @Input() user: User;
     entries: any;
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
     constructor(private entryService: EntryService){}   
 
     ngOnInit(){
-        this.entryService
-        .getEntries()
-        .then(entries => {
-            console.log(entries);
-            const categories = entries.map((cat) => {
-                return cat.category;
+        const userUrl = `${this.url}/user/${this.user._id}?token=${this.user.userID}`;
+
+        //NEED TO CHANGE SO THAT UNDEFINED URL DOES NOT FETCH
+        this.entryService.
+        getUser(userUrl)
+        .then(user => {
+            this.entryService
+            .getEntries()
+            .then(entries => {
+                console.log(entries);
+                const categories = entries.map((cat) => {
+                    return cat.category;
+                });
+    
+                this.entries = (this.user.recipes.length < 1) ? entries: this.user.recipes.reduce((a, b) => {
+                    if(categories.includes(b.href)) {
+                        entries.forEach((entry) => {
+                            if(entry.category === b.href) entry.recipes.push(b);
+                        });
+                    }
+                    return a;
+                }, entries);
+    
+                this.onEntryLoad.emit({
+                    options: categories, 
+                    user: user
+                });
             });
-
-            this.entries = (this.userRecipes.length < 1) ? entries: this.userRecipes.reduce((a, b) => {
-                if(categories.includes(b.href)) {
-                    entries.forEach((entry) => {
-                        if(entry.category === b.href) entry.recipes.push(b);
-                    });
-                }
-                return a;
-            }, entries);
-
-            this.onEntryLoad.emit(categories);
         });
+
+        
     }
 
     //ngOnChange

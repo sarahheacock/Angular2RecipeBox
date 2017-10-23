@@ -41,13 +41,14 @@ import $ from "jquery";
 })
 
 export class EntryComponent implements AfterContentInit{
-    @Output() entryEdit = new EventEmitter<{title:string; data:{
-        title:string;
-        ingredients:Array<{
-            name:string;
-            selected:boolean;
-        }>;
-    }}>();
+    @Output() entryEdit = new EventEmitter<{title:string; data:any;//{
+        // title:string;
+        // ingredients:Array<{
+        //     name:string;
+        //     selected:boolean;
+        // }>;
+    //}
+    }>();
     @Input() entry: Recipe;
     @Input() userName: string;
 
@@ -107,6 +108,35 @@ export class EntryComponent implements AfterContentInit{
             data: {
                 title: this.entry.title,
                 ingredients: ingredients
+            }
+        };
+
+        this.entryEdit.emit(obj);
+    }
+
+    editRecipe(e) {
+        if(e) e.preventDefault();
+        
+        // const ingredients = this.entry.ingredients.map((item) => {
+        //     return {
+        //         name: item,
+        //         selected: true
+        //     };
+        // });
+
+        const obj = (!this.userName) ? 
+        {
+            title: "Sign In",
+            data: null
+        } : 
+        {
+            title: "Edit Recipe",
+            data: {
+                title: 'Hello',
+                ingredients: '',
+                directions: '',
+                pic: 'Tile-Dark-Grey-Smaller-White-97_pxf5ux',
+                href: ''
             }
         };
 
