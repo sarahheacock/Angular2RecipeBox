@@ -132,7 +132,7 @@ export class EntryComponent implements AfterContentInit{
         {
             title: "Edit Recipe",
             data: {
-                title: 'Hello',
+                title: '',
                 ingredients: '',
                 directions: '',
                 pic: 'Tile-Dark-Grey-Smaller-White-97_pxf5ux',

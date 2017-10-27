@@ -86,14 +86,14 @@ button {
 }
 
 .guts {
-    padding: 0px 35px 35px 35px;
+    padding: 0px 35px 0px 35px;
     max-width: 700px;
     margin: 0 auto;
 }
 
 .title {
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
 }
 
 /* .directions {
@@ -111,6 +111,12 @@ button {
 
 .link{
     color: blue;
+}
+
+.ingredients-button{
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 3%;
 }
 
 

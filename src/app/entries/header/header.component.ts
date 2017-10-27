@@ -116,7 +116,10 @@ export class HeaderContent{
         console.log(obj);
         
         this.user = obj;
+
+        window.focus();
         window.sessionStorage.setItem('user', JSON.stringify(obj));
+        
         this.count();
         this.toggleState('inactive');
     } 

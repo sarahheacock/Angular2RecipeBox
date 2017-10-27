@@ -76,6 +76,7 @@ export class Login implements AfterViewInit{
                 this.userChange.emit(user);
                 //this.stateChange.emit('inactive');
             });
-        });
+        })
+        .catch((error: any) => console.error(error)); 
     }
 }
