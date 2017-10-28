@@ -29,7 +29,7 @@ export class RecipeForm {
     //responses: Array<any>; 
     uploader: FileUploader;
     title: string;
-    //_id: string;
+    _id: string;
     ingredients: string; //back-end will change the ingredients and directions into arrays
     directions: string;
     pic: string;
@@ -89,7 +89,7 @@ export class RecipeForm {
       this.directions = this.recipe.directions;
       this.pic = this.recipe.pic;
       this.href = this.recipe.href;
-
+      this._id = this.recipe._id
     }
 
     getProgress(num: number){
@@ -126,11 +126,22 @@ export class RecipeForm {
       else{
         this.errorMessage = '';
 
-        const url = `${this.url}/user/${this.userID}/recipe?token=${this.token}`;
-        this.entryService.postUser(url, result)
-        .then(user => {
-            this.userChange.emit(user);
-        });
+        if(this._id){
+          const url = `${this.url}/user/${this.userID}/recipe/${this._id}?token=${this.token}`;
+          this.entryService.putUser(url, result)
+          .then(user => {
+              console.log("done", user);
+              this.userChange.emit(user);
+          });
+        }
+        else {
+          const url = `${this.url}/user/${this.userID}/recipe?token=${this.token}`;
+          this.entryService.postUser(url, result)
+          .then(user => {
+              console.log("done", user);
+              this.userChange.emit(user);
+          });
+        }
       } 
     }
 }

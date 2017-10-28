@@ -6,6 +6,7 @@ export * from './header/header.component';
 export * from './content/login.component';
 export * from './content/logout.component';
 export * from './content/ingredients.component';
+export * from './content/delete-recipe.component';
 export * from './content/message.component';
 export * from './content/recipe-form.component';
 export * from './content/default-modal.component';

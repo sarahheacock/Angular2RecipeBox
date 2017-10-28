@@ -69,6 +69,16 @@
                         (stateChange)="stateChange($event)"
                     ></app-recipe-form>
                 </ng-container>
+
+                <ng-container *ngSwitchCase="'Delete Recipe'">
+                    <app-recipe-delete
+                        [_id]="user._id" 
+                        [token]="user.userID"
+                        [data]="modalContent.data"
+                        (userChange)="userChange($event)"
+                        (stateChange)="stateChange($event)"
+                    ></app-recipe-delete>
+                </ng-container>
             
                 <ng-container *ngSwitchDefault>
                     <app-default 

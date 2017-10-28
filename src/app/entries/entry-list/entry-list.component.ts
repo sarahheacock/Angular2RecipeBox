@@ -20,11 +20,11 @@ export class EntryListComponent implements OnInit, OnChanges {
             selected:boolean;
         }>;
     }}>();
-    //@Output() createCategories = new EventEmitter<Array<string>>();
 
-    // @Input() userRecipes: Array<Recipe>;
-    // @Input() userName: string;
     @Input() user: User;
+    @Input() modalContent: {
+        title:string; data:any;
+    }
     entries: any;
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
@@ -84,7 +84,11 @@ export class EntryListComponent implements OnInit, OnChanges {
 
         if(e.user){
             if(e.user.previousValue){
+                const previous = e.user.previousValue.recipes || [];
+                const current = e.user.currentValue.recipes || [];
+
                 if(e.user.currentValue.name !== e.user.previousValue.name){
+                    console.log("SIGN IN");
                     const user = e.user.currentValue;
                     const userUrl = `${this.url}/user/${user._id}?token=${user.userID}`;
     
@@ -94,6 +98,35 @@ export class EntryListComponent implements OnInit, OnChanges {
                     else {
                         this.remove();
                     } 
+                }
+                else if(e.user.currentValue.recipes.length > e.user.previousValue.recipes.length){
+                    //find new one
+                    console.log("ADD");
+                    const newRecipe = current.reduce((a, b) => {
+                        if(!previous.includes(b)) return b;
+                        else return a;
+                    }, {});
+
+                    this.add(newRecipe);
+                }
+                else if(e.user.currentValue.recipes.length < e.user.previousValue.recipes.length){
+                    //find old
+                    console.log('DELETE');
+                    this.delete(this.modalContent.data.category, this.modalContent.data._id);
+                }
+                else if(this.modalContent.title === 'Edit Recipe'){
+                    console.log('EDIT');
+                    //find edited recipe
+                    this.user.recipes.forEach((recipe) => {
+                        if(recipe._id === this.modalContent.data._id){
+                            if(recipe.href !== this.modalContent.data.href){
+                                this.move(recipe, this.modalContent.data.href);
+                            }
+                            else{
+                                this.edit(recipe);
+                            }
+                        }
+                    });
                 }
             }
         }
@@ -107,19 +140,49 @@ export class EntryListComponent implements OnInit, OnChanges {
         });
     }
 
-    add(recipes: Array<Recipe>){
-        const categories = this.entries.map((cat) => {
-            return cat.category;
-        });
+    add(recipe: Recipe){
+        this.entries.forEach((entry) => {
+            if(entry.category === recipe.href) entry.recipes.push(recipe);
+        })
+    }
 
-        this.entries = (this.user.recipes.length < 1) ? this.entries: this.user.recipes.reduce((a, b) => {
-            if(categories.includes(b.href)) {
-                this.entries.forEach((entry) => {
-                    if(entry.category === b.href) entry.recipes.push(b);
+    delete(category:string, id:string){
+        //console.log(recipe);
+
+        this.entries.forEach((entry) => {
+            if(entry.category === category){
+                entry.recipes.forEach((recipe, i) => {
+                    if(recipe._id === id) entry.recipes.splice(i, 1);
+                });
+                console.log(entry.recipes);
+            }
+        });
+    }
+
+    edit(recipe: Recipe){
+        //console.log(recipe);
+        this.entries.forEach((entry) => {
+            //console.log(moved);
+            if(entry.category === recipe.href){
+                entry.recipes.forEach((record, i) => {
+                    if(record._id === recipe._id) entry.recipes.splice(i, 1, recipe);
+                });
+            } 
+        });
+    }
+
+    move(recipe: Recipe, cat: string){
+        this.entries.forEach((entry) => {
+            //console.log(moved);
+            if(entry.category === recipe.href){ //push to new
+                entry.recipes.push(recipe);
+            }
+            else if(entry.category === cat){ //remove from old
+                entry.recipes.forEach((record, i) => {
+                    if(record._id === recipe._id) entry.recipes.splice(i, 1);
                 });
             }
-            return a;
-        }, this.entries);
+        });
     }
 
     entryEdit(e){

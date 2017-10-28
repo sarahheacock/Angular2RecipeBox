@@ -62,20 +62,28 @@ export class HeaderContent{
   
     stateChange(str){
         console.log(str);
-        const data = null;
-
-        const obj = {
-            title: str,
-            data: data
-        };
 
         if(this.user.name){
-            this.modalContent = obj;
+            this.modalContent = (str === 'Add Recipe') ? {
+                title: str,
+                data: {
+                    title: '',
+                    ingredients: '',
+                    directions: '',
+                    pic: 'Tile-Dark-Grey-Smaller-White-97_pxf5ux',
+                    href: '',
+                    _id: ''
+                }
+            }:
+            {
+                title: str,
+                data: null
+            };
         } 
         else{
             this.modalContent = {
                 title: "Sign In",
-                data: data
+                data: null
             };
         }
 
@@ -117,9 +125,9 @@ export class HeaderContent{
         
         this.user = obj;
 
-        window.focus();
+        //window.focus();
         window.sessionStorage.setItem('user', JSON.stringify(obj));
-        
+
         this.count();
         this.toggleState('inactive');
     } 

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, AfterViewInit, Output, EventEmitter, Input, NgZone } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import { FacebookService, InitParams, LoginResponse, LoginOptions } from 'ngx-facebook';
 import { User } from '../shared/entry.model';
@@ -20,7 +20,7 @@ export class Login implements AfterViewInit{
 
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
-    constructor(private fb: FacebookService, private entryService: EntryService){ //, private google:  GoogleSignInProviderService){
+    constructor(private fb: FacebookService, private entryService: EntryService, private ngZone: NgZone){ //, private google:  GoogleSignInProviderService){
         let initParams: InitParams = {
             appId: '1474280852691654',
             xfbml: true,
@@ -45,6 +45,18 @@ export class Login implements AfterViewInit{
     }
 
     loginWithFacebook(): void {
+        this.ngZone.runOutsideAngular(() => {
+            this.facebook((token) => {
+              // reenter the Angular zone and display done
+                this.ngZone.run(() => { 
+                    const url = `${this.url}/auth/facebook/token?access_token=${token}`;
+                    return this.login(url);
+                });        
+            });
+        });
+    }
+
+    facebook(doneCallback: (token:string) => void){
         const options: LoginOptions = {
             scope: 'public_profile',
             return_scopes: true,
@@ -53,30 +65,36 @@ export class Login implements AfterViewInit{
         
         this.fb.login(options)
             .then((response: LoginResponse) => {
-                console.log(response);
                 const token = response.authResponse.accessToken;
-                const url = `${this.url}/auth/facebook/token?access_token=${token}`;
-
-                this.entryService.getUser(url)
-                    .then(user => {
-                        this.userChange.emit(user);
-                        //this.stateChange.emit('inactive');
-                    });
+                doneCallback(token); 
             }) 
             .catch((error: any) => console.error(error)); 
     }
 
     loginWithGmail() {
+        //ngZone is used because sometimes the view is not updated when signing into gmail
+        this.ngZone.runOutsideAngular(() => {
+            this.gmail((token) => {
+              // reenter the Angular zone and display done
+                this.ngZone.run(() => { 
+                    const url = `${this.url}/auth/google/token?access_token=${token}`;
+                    return this.login(url);
+                });        
+            });
+        });
+    }
+
+    gmail(doneCallback: (token:string) => void){
         this.auth2.grantOfflineAccess().then((authResult) => {
             const token = this.auth2.currentUser.get().getAuthResponse().access_token;
-            const url = `${this.url}/auth/google/token?access_token=${token}`;
-
-            return this.entryService.getUser(url)
-            .then(user => {
-                this.userChange.emit(user);
-                //this.stateChange.emit('inactive');
-            });
+            doneCallback(token);            
         })
         .catch((error: any) => console.error(error)); 
+    }
+
+    login(url:string){
+        return this.entryService.getUser(url).then(user => {
+            this.userChange.emit(user);
+        }); 
     }
 }

@@ -38,6 +38,7 @@
         <app-entry-list 
             (onEntryLoad)="updateOptions($event)" 
             (onEntryEdit)="changeModalContent($event)"
+            [modalContent]="modalContent" 
             [user]="user"
         ></app-entry-list>
     </div>      

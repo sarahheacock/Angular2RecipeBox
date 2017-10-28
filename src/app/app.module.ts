@@ -17,7 +17,7 @@ import { FacebookModule } from 'ngx-facebook';
 import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
 import { AppComponent } from './app.component';
 
-import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, Login, Logout, AddShopping, TextShopping, RecipeForm, DefaultModal } from './entries';
+import { EntryListComponent, EntryComponent, EntryService, EntryListModal, HeaderContent, Login, Logout, AddShopping, TextShopping, RecipeForm, DeleteRecipe, DefaultModal } from './entries';
 
 const cloudinaryConfig = {
   cloud_name: 'dhd1eov8v',
@@ -59,6 +59,7 @@ const appRoutes: Routes = [
     AddShopping,
     TextShopping,
     RecipeForm,
+    DeleteRecipe,
     DefaultModal
   ],
   providers: [

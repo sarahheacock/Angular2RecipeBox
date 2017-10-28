@@ -21,7 +21,7 @@ import $ from "jquery";
         ]),
         trigger('expand', [
             state('inactive', style({
-                maxWidth: '280px'
+                maxWidth: '300px'
             })),
             state('active', style({
                 maxWidth: '1200px'
@@ -116,13 +116,6 @@ export class EntryComponent implements AfterContentInit{
 
     editRecipe(e) {
         if(e) e.preventDefault();
-        
-        // const ingredients = this.entry.ingredients.map((item) => {
-        //     return {
-        //         name: item,
-        //         selected: true
-        //     };
-        // });
 
         const obj = (!this.userName) ? 
         {
@@ -132,11 +125,32 @@ export class EntryComponent implements AfterContentInit{
         {
             title: "Edit Recipe",
             data: {
-                title: '',
-                ingredients: '',
-                directions: '',
-                pic: 'Tile-Dark-Grey-Smaller-White-97_pxf5ux',
-                href: ''
+                title: this.entry.title,
+                ingredients: this.entry.ingredients.join(", "),
+                directions: this.entry.directions.join(", "),
+                pic: this.entry.pic,
+                href: this.entry.href,
+                _id: this.entry._id
+            }
+        };
+
+        this.entryEdit.emit(obj);
+    }
+
+    deleteRecipe(e){
+        if(e) e.preventDefault();
+        
+        const obj = (!this.userName) ? 
+        {
+            title: "Sign In",
+            data: null
+        } : 
+        {
+            title: "Delete Recipe",
+            data: {
+                title: this.entry.title,
+                category: this.entry.href,
+                _id: this.entry._id
             }
         };
 

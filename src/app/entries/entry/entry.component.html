@@ -7,18 +7,21 @@
                     <ng-container *ngSwitchCase="'added'">
                         <!-- <div></div> -->
                         <div class="image">
-                            <cl-image public-id="{{entry.pic}}"  draggable="false">
-                                <cl-transformation width="250" height="170" crop="fill" radius="10"></cl-transformation>
+                            <cl-image class="image" public-id="{{entry.pic}}"  draggable="false">
+                                <cl-transformation width="250" crop="scale" radius="10"></cl-transformation>
                             </cl-image>
                         </div>
                     </ng-container>
                     <ng-container *ngSwitchCase="'original'">
-                        <img class="image" src="{{getImage(entry.pic)}}" alt="{{entry.title}}" draggable="false"/>
+                        <div class="image">
+                            <img class="" src="{{getImage(entry.pic)}}" alt="{{entry.title}}" draggable="false"/>
+                        </div>
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         <div></div>
                     </ng-container>
                 </div>
+                <br />
             </div>
         
             <div [@showContent]="contentShown" class="directions">
@@ -36,15 +39,15 @@
                     <div class="text-center">
                         <a href="{{entry.href}}" *ngIf="cloud === 'original'"><button class="btn btn-link">{{entry.href}}</button></a>
                         <div *ngIf="cloud === 'added'">
-                            <button class="btn btn-outline-primary" (click)="editRecipe($event)">Edit</button>
-                            <button class="btn btn-outline-danger">Delete <i class="fa fa-trash"></i></button>
+                            <button class="btn btn-outline-danger btn-block"  (click)="deleteRecipe($event)">Delete <i class="fa fa-trash"></i></button>
+                            <button class="btn btn-outline-primary btn-block" (click)="editRecipe($event)">Edit</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center">
-                <button class="btn btn-outline-primary ingredients-button" (click)="launch($event)">{{button}}<i class="fa fa-pencil" aria-hidden="true"></i></button>
+            <div class="text-center guts">
+                <button class="btn btn-outline-primary ingredients-button btn-block" (click)="launch($event)">{{button}}<i class="fa fa-pencil" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>

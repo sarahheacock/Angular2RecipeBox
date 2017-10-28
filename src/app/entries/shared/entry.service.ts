@@ -31,8 +31,20 @@ export class EntryService {
         .then(response => response as User);
     }
 
+    putUser(url, obj): Promise<User> {
+        return this.http.put(url, obj)
+        .toPromise()
+        .then(response => response as User);
+    }
+
     getUser(url): Promise<User> {
         return this.http.get(url)
+        .toPromise()
+        .then(response => response as User);
+    }
+
+    deleteUser(url): Promise<User> {
+        return this.http.delete(url)
         .toPromise()
         .then(response => response as User);
     }
