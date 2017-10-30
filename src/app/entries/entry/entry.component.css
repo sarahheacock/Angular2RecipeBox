@@ -17,9 +17,9 @@ button {
     /* margin-bottom: -10px; */
 }
 
-.fa-pencil {
+/* .fa-pencil {
     margin-left: 3%;
-}
+} */
 
 .image-container {
     padding: 2%;
@@ -153,6 +153,10 @@ button {
         width: 70%;
         height: 70%;
         /* height: 150px; */
+    }
+
+    .ingredients-button {
+        width: 70%;
     }
 }
 

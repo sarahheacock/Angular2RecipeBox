@@ -36,7 +36,16 @@ import $ from "jquery";
                 fontSize: '170%'
             })),
             transition('* <=> *', animate('500ms ease-in-out'))
-        ])        
+        ]),
+        trigger('button', [
+            state('inactive', style({
+                padding: '0px 5px 0px 5px'
+            })),
+            state('active', style({
+                padding: '0px 35px 0px 35px',
+            })),
+            transition('* <=> *', animate('500ms ease-in-out'))
+        ])           
     ]
 })
 
@@ -54,12 +63,14 @@ export class EntryComponent implements AfterContentInit{
 
     contentShown: string;
     cloud: string;
+    edit: string;
     title: string;
     button: string;
 
     constructor(private entryService: EntryService){
         this.contentShown = 'inactive';
         this.cloud = '';
+        this.edit = '';
         this.title = '';
         this.button = "Add Ingredients";
         //this.entry.pic = this.entry.pic.replace("http://", "https://");
@@ -68,7 +79,8 @@ export class EntryComponent implements AfterContentInit{
 
     ngAfterContentInit(){
         this.cloud = (this.entry.pic.includes("http:")) ? "original": "added";
-        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 12)}...`: this.entry.title;
+        this.edit = (this.entry.href.includes("http")) ? "original": "added";
+        this.title = (this.contentShown === 'inactive') ? `${this.entry.title.slice(0, 20)}...`: this.entry.title;
         this.button = (this.contentShown === 'inactive') ? "Add Ingredients": "Add ingredients to shopping list.";
     }
 

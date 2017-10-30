@@ -25,5 +25,5 @@ export class User {
   shoppingListNames: Array<string>;
   name: string;
   userID: string;
-  phone: string;
+  phone: Array<{string}>;
 }

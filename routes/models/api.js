@@ -100,8 +100,8 @@ UserSchema = new Schema({
         default: []
     }, 
     phone: {
-        type: String,
-        default: ''
+        type: Array,
+        default: []
     }
 });
 

@@ -10,7 +10,7 @@ import { User, Recipe } from '../shared/entry.model';
 })
 
 export class HeaderContent{
-    length: number = 0;
+    //length: number = 0;
     user: User = {
         name: '',
         userID: '',
@@ -18,7 +18,7 @@ export class HeaderContent{
         shoppingListNames: [],
         recipes: [],
         _id: '',
-        phone: ''
+        phone: []
     };
 
     modalShown: string = 'active';
@@ -27,6 +27,10 @@ export class HeaderContent{
         data: null
     };
     options: Array<string> = [];
+    length: number = this.user.shoppingList.reduce((a, b) => { 
+        if(b.selected) a += 1;
+        return a; 
+    }, 0)
 
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 

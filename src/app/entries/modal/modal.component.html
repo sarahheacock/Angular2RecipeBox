@@ -38,13 +38,14 @@
             
                 <ng-container *ngSwitchCase="'Text Shopping List'">
                     <app-text-shopping 
-                      [ingredients]="user.shoppingList" 
+                      [ingredientList]="user.shoppingList" 
                       [title]="user.shoppingListNames" 
-                      [phone]="user.phone" 
+                      [phoneList]="user.phone" 
                       [userID]="user._id" 
                       [token]="user.userID" 
                       (stateChange)="stateChange($event)" 
                       (userChange)="userChange($event)"
+                      (modalChange)="modalChange($event)"
                     ></app-text-shopping>
                 </ng-container>
             
@@ -78,6 +79,31 @@
                         (userChange)="userChange($event)"
                         (stateChange)="stateChange($event)"
                     ></app-recipe-delete>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'Clear List'">
+                    <app-clear-list
+                        [_id]="user._id" 
+                        [token]="user.userID"
+                        (userChange)="userChange($event)"
+                        (stateChange)="stateChange($event)"
+                    ></app-clear-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'Save Changes'">
+                    <app-save-changes
+                        [user]="user"
+                        [ingredients]="modalContent.data"
+                        (userChange)="userChange($event)"
+                    ></app-save-changes>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'Sending Text...'">
+                    <app-send-message
+                        [user]="user"
+                        [ingredients]="modalContent.data"
+                        (userChange)="userChange($event)"
+                    ></app-send-message>
                 </ng-container>
             
                 <ng-container *ngSwitchDefault>

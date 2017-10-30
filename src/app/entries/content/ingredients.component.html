@@ -2,60 +2,123 @@
 <div class="modal-outer">
     <div class="modal-body modal-guts">
         <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-            <div *ngIf="message" class="form-group">
-                <label for="phone">Phone Number</label>
-                <input 
-                    class="form-control"
-                    type="text" 
-                    name="phone"
-                    [(ngModel)]="phone"
-                    required
-                >
-                
-            </div>
-
-            <div class="outline">
-                <i *ngIf="message" class="text-center">
-                    Below is the grocery list you created for <b>{{title}}</b>. Select which grocery list items you would like to message yourself.
+            <div class="text-center" *ngIf="list">
+                <i *ngIf="message && title.length" class="text-center">
+                    Shopping list for <b>{{title}}</b>
                 </i>
                 <i *ngIf="!message" class="text-center">
                     Select which items you would like to add to your grocery list.
                 </i>
             </div>
-        
+            <br />
+            <hr />
+                
+            <form *ngIf="message" #add="ngForm" (ngSubmit)="addIngredient(add)" class="form-group row">
+                <label for="add" class="col-sm-3 col-form-label">Add Ingredient:</label>
+                <div class="col-sm-8">
+                    <input 
+                        class="form-control"
+                        type="text" 
+                        name="ingredient"
+                        [(ngModel)]="ingredient"
+                        required
+                    >
+                </div>
+                <div class="col-sm-1 text-center">
+                    <button class="btn btn-link" click="addIngredient(add)">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
 
             <div *ngFor="let item of ingredients; let i=index" class="checkbox">
-                <label [ngStyle]="{'opacity': item.selected ? '1.0' : '0.5'}">
-                    <input
-                        type="checkbox"
-                        ng-init="checked=item.selected"
-                        name={{item.name}}
-                        [(ngModel)]="item.selected"
-                    > {{item.name}}
-                </label>
+                <div class="row form-group">
+                    <div class="col-sm-3 text-center">
+                        <input
+                            type="checkbox"
+                            ng-init="checked=item.selected"
+                            name={{item.name}}
+                            [(ngModel)]="item.selected"
+                        >
+                    </div>
+                    <div class="col-sm-9">
+                        <label [ngStyle]="{'opacity': item.selected ? '1.0' : '0.5'}">
+                            {{item.name}}
+                        </label>
+                    </div>
+                </div>
             </div>
+            <div *ngIf="!list" class="text-center">
+                You have no items on your shopping list.
+            </div>
+            <br />
+            <hr />
+
+            <form *ngIf="message" #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
+                <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+                <div class="col-sm-8">
+                    <input 
+                        class="form-control"
+                        type="text" 
+                        name="phone"
+                        [(ngModel)]="phone"
+                        required
+                    >
+                </div>
+                <div class="col-sm-1 text-center">
+                    <button class="btn btn-link" click="addPhone(add)">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div *ngFor="let item of phones; let i=index">
+                <div class="row form-group">
+                    <div class="col-sm-3 text-center">
+                        <input
+                            name="send"
+                            type="radio"
+                            [value]="item"
+                            [(ngModel)]="send"
+                        >
+                    </div>
+                    <div class="col-sm-9">
+                        <label>
+                            {{item}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+                
+    
         </form>
+
+        <div *ngIf="message && list" class="pad-button">
+            <br />
+            <br />
+            <!-- <button class="btn btn-outline-primary btn-block" (click)="save(f)">
+                Save Changes
+            </button> -->
+            <button class="btn btn-outline-danger btn-block" (click)="clear(f)">
+                Clear List <i class="fa fa-trash"></i>
+            </button>
+            <button class="btn btn-outline-primary btn-block" (click)="onSubmit(f)">
+                Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            </button>
+        </div>
     </div>
 </div>
 
 <div class="modal-footer">
     <div *ngIf="message">
-        <button class="btn btn-primary" (click)="onSubmit(f)">
-            Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i>
-        </button>
-        <button class="btn btn-primary" (click)="save(f)">
-            Save Changes
-        </button>
-        <button class="btn btn-danger" (click)="clear(f)">
-            Clear List
-        </button>
+        
     </div>
     <div *ngIf="!message">
         <button class="btn btn-primary" (click)="onSubmit(f)">Save Changes</button>
     </div>
     
-    <button class="btn btn-secondary" (click)="toggle($event)">
-        Close
+    <button class="btn btn-secondary" (click)="toggle(f)">
+        Continue
     </button>
 </div>
 

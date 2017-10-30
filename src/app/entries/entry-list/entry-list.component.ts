@@ -49,7 +49,7 @@ export class EntryListComponent implements OnInit, OnChanges {
                 shoppingListNames: [],
                 recipes: [],
                 _id: '',
-                phone: ''
+                phone: []
             });
         } 
     }

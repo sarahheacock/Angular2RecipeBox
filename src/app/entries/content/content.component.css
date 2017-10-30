@@ -47,12 +47,15 @@
 }
 
 .form-group {
-    padding: 2%;
+    padding: 0px 35px 1px 35px
 }
 
-.checkbox {
-    padding-left: 2%;
-    padding-right: 2%;
+/* .checkbox {
+    padding: 0px 35px 0px 35px
+} */
+
+.phone {
+    padding: 25px 25px 10px 25px
 }
 
 .modal-body {
@@ -77,6 +80,19 @@
 .fa-spinner {
     color: #d9534f;
 }
+
+.pad-button {
+    padding: 0px 35px 0px 35px
+}
+
+.form-text {
+    color: dimgray;
+    font-size: 80%;
+}
+
+/* .form-list {
+    padding: 0px 35px 0px 35px
+} */
 
 /* .modal-body {
     

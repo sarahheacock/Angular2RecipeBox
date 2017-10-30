@@ -19,7 +19,7 @@
                     Add Recipe <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn-outline-secondary" (click)="stateChange('Text Shopping List')">
-                    Text Shopping List <b>( {{user.shoppingList.length}} )</b>
+                    Text Shopping List <b>( {{length}} )</b>
                 </button>
             </div>
         </div>
@@ -32,6 +32,7 @@
     [options]="options" 
     (onToggle)="toggleState($event)" 
     (updateUser)="updateUser($event)"
+    (onEntryEdit)="changeModalContent($event)"
 ></app-modal>
 <div class="border">
     <div class="main">

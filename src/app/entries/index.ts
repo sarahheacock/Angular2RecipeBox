@@ -9,6 +9,9 @@ export * from './content/ingredients.component';
 export * from './content/delete-recipe.component';
 export * from './content/message.component';
 export * from './content/recipe-form.component';
+export * from './content/clear-list.component';
+export * from './content/save-changes.component';
+export * from './content/send-message.component';
 export * from './content/default-modal.component';
 
 export * from './entry-list/entry-list.component';

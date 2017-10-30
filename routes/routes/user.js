@@ -68,8 +68,8 @@ router.get('/:userID', mid.auth, mid.outputUser);
   
 //add to shopping list
 router.post("/:userID/list", mid.auth, (req, res, next) => {
-    req.user.shoppingListNames.push(req.body.shoppingListNames);
-    req.user.shoppingListNames = req.user.shoppingListNames.reduce((a, b) => {
+    //req.user.shoppingListNames.push(req.body.shoppingListNames);
+    req.user.shoppingListNames = req.user.shoppingListNames.concat(req.body.shoppingListNames).reduce((a, b) => {
         if(!a.includes(b)) a.push(b);
         return a;
     }, []);
@@ -90,8 +90,18 @@ router.post("/:userID/list", mid.auth, (req, res, next) => {
     next();
 }, mid.saveAndOutput);
 
-//clear shopping list 
+//save shopping list changes
 router.put("/:userID/list", mid.auth, (req, res, next) => {
+    //req.user.shoppingList = req.body.shoppingList;
+    //const phone = formatNum(req.body.phone);
+    //if(!req.user.phone.includes(phone)) req.user.phone.push(phone);
+    req.user.phone = req.body.phone;
+    req.user.shoppingList = req.body.shoppingList;
+    next();
+}, mid.saveAndOutput);
+
+//clear shopping list 
+router.put("/:userID/clear", mid.auth, (req, res, next) => {
     req.user.shoppingList = [];
     req.user.shoppingListNames = [];
     next();
@@ -99,16 +109,16 @@ router.put("/:userID/list", mid.auth, (req, res, next) => {
 
 //text shopping list
 router.post("/:userID/message", mid.auth, (req, res, next) => {
-    const phone = formatNum(req.body.phone);
-    req.user.phone = phone;
+    if(!req.user.phone.includes(req.body.send)) req.user.phone.push(req.body.send);
+    //req.user.phone = phone;
     next();
 }, (req, res, next) => {
-    const names = req.body.shoppingListNames;
+    const names = req.user.shoppingListNames.join(", ");
 
     let i = 1;
     const list = req.body.shoppingList.reduce((a, b) => {      
         if(b.selected){
-            a.push((i + 1) + ".\t" + b.name);
+            a.push((i) + ".\t" + b.name);
             i++;
         } 
         return a;
@@ -119,11 +129,16 @@ router.post("/:userID/message", mid.auth, (req, res, next) => {
 
     textClient.messages.create({
         from: config.phone,
-        to: req.user.phone,
+        to: req.body.send,
         body: content
     }, (error, message) => {
-        if(error) res.json({message: error.message});
-        else next();
+        if(error){
+            res.json({message: error.message});
+        } 
+        else{
+            req.user.shoppingList = req.body.shoppingList;
+            next();
+        } 
     });
 }, mid.saveAndOutput);
 

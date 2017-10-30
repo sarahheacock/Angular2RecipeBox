@@ -21,7 +21,6 @@
                         <div></div>
                     </ng-container>
                 </div>
-                <br />
             </div>
         
             <div [@showContent]="contentShown" class="directions">
@@ -37,17 +36,17 @@
                         <li *ngFor="let direction of entry.directions"><p>{{direction}}</p></li>
                     </ol>
                     <div class="text-center">
-                        <a href="{{entry.href}}" *ngIf="cloud === 'original'"><button class="btn btn-link">{{entry.href}}</button></a>
-                        <div *ngIf="cloud === 'added'">
+                        <a href="{{entry.href}}" *ngIf="edit === 'original'"><button class="btn btn-link">{{entry.href}}</button></a>
+                        <div *ngIf="edit === 'added'">
                             <button class="btn btn-outline-danger btn-block"  (click)="deleteRecipe($event)">Delete <i class="fa fa-trash"></i></button>
-                            <button class="btn btn-outline-primary btn-block" (click)="editRecipe($event)">Edit</button>
+                            <button class="btn btn-outline-primary btn-block" (click)="editRecipe($event)">Edit <i class="fa fa-pencil" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center guts">
-                <button class="btn btn-outline-primary ingredients-button btn-block" (click)="launch($event)">{{button}}<i class="fa fa-pencil" aria-hidden="true"></i></button>
+            <div class="text-center guts" [@button]="contentShown">
+                <button class="btn btn-outline-primary ingredients-button btn-block" (click)="launch($event)">{{button}} <i class="fa fa-list" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>

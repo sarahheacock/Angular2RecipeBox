@@ -12,6 +12,7 @@ import { User } from '../shared/entry.model';
 
 export class AddShopping {
     message: boolean = false;
+    list: boolean = true;
     
     @Output() stateChange = new EventEmitter<any>();
     @Output() userChange = new EventEmitter<any>();
