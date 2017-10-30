@@ -67,28 +67,28 @@ router.param("recipeID", (req, res, next, id) => {
 router.get('/:userID', mid.auth, mid.outputUser);
   
 //add to shopping list
-router.post("/:userID/list", mid.auth, (req, res, next) => {
-    //req.user.shoppingListNames.push(req.body.shoppingListNames);
-    req.user.shoppingListNames = req.user.shoppingListNames.concat(req.body.shoppingListNames).reduce((a, b) => {
-        if(!a.includes(b)) a.push(b);
-        return a;
-    }, []);
+// router.post("/:userID/list", mid.auth, (req, res, next) => {
+//     //req.user.shoppingListNames.push(req.body.shoppingListNames);
+//     req.user.shoppingListNames = req.user.shoppingListNames.concat(req.body.shoppingListNames).reduce((a, b) => {
+//         if(!a.includes(b)) a.push(b);
+//         return a;
+//     }, []);
 
-    req.user.shoppingList = req.user.shoppingList.concat(req.body.shoppingList).reduce((a, b) => {
-        const valid = a.reduce((c, d) => {
-            if(d.name === b.name) return a.indexOf(d);
-            else return c;
-        }, -1);
+//     req.user.shoppingList = req.user.shoppingList.concat(req.body.shoppingList).reduce((a, b) => {
+//         const valid = a.reduce((c, d) => {
+//             if(d.name === b.name) return a.indexOf(d);
+//             else return c;
+//         }, -1);
 
-        if(valid > -1) a[valid]["selected"] = b["selected"];
-        else a.push(b);
+//         if(valid > -1) a[valid]["selected"] = b["selected"];
+//         else a.push(b);
 
-        return a;
-    }, []);
+//         return a;
+//     }, []);
 
-    console.log(req.user);
-    next();
-}, mid.saveAndOutput);
+//     console.log(req.user);
+//     next();
+// }, mid.saveAndOutput);
 
 //save shopping list changes
 router.put("/:userID/list", mid.auth, (req, res, next) => {
@@ -97,6 +97,7 @@ router.put("/:userID/list", mid.auth, (req, res, next) => {
     //if(!req.user.phone.includes(phone)) req.user.phone.push(phone);
     req.user.phone = req.body.phone;
     req.user.shoppingList = req.body.shoppingList;
+    req.user.shoppingListNames = req.body.shoppingListNames;
     next();
 }, mid.saveAndOutput);
 

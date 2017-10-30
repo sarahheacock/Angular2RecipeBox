@@ -87,21 +87,21 @@ const outputUser = (req, res, next) => {
 
 //format input
 const formatInput = (req, res, next) => {
-  const valid = required.reduce((a, b) => {
-    return a && req.body[b] !== '' && req.body[b] !== undefined;
-  }, true);
+  // const valid = required.reduce((a, b) => {
+  //   return a && req.body[b] !== '' && req.body[b] !== undefined;
+  // }, true);
 
-  if(!valid){
-    res.json({message: "*Fill out required fields"});
-  }
-  else{
+  // if(!valid){
+  //   res.json({message: "*Fill out required fields"});
+  // }
+  // else{
     req.body.title = cap(req.body.title);
 
     req.body.ingredients = arr(req.body.ingredients);
     req.body.directions = arr(req.body.directions);
 
     next();
-  }
+  // }
 };
   
 

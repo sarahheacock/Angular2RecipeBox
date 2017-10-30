@@ -116,10 +116,10 @@ export class EntryComponent implements AfterContentInit{
             data: null
         } : 
         {
-            title: "Add Ingredients",
+            title: "Shopping List",
             data: {
-                title: this.entry.title,
-                ingredients: ingredients
+                shoppingListNames: [this.entry.title],
+                shoppingList: ingredients
             }
         };
 

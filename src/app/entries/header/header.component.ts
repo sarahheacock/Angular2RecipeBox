@@ -68,21 +68,34 @@ export class HeaderContent{
         console.log(str);
 
         if(this.user.name){
-            this.modalContent = (str === 'Add Recipe') ? {
-                title: str,
-                data: {
-                    title: '',
-                    ingredients: '',
-                    directions: '',
-                    pic: 'Tile-Dark-Grey-Smaller-White-97_pxf5ux',
-                    href: '',
-                    _id: ''
-                }
-            }:
-            {
-                title: str,
-                data: null
-            };
+            if(str === "Shopping List"){
+                this.modalContent = {
+                    title: "Shopping List",
+                    data: {
+                        shoppingListNames: [],
+                        shoppingList: []
+                    }
+                };
+            }
+            else if(str === 'Add Recipe'){
+                this.modalContent = {
+                    title: str,
+                    data: {
+                        title: '',
+                        ingredients: '',
+                        directions: '',
+                        pic: 'Tile-Dark-Grey-Smaller-White-97_pxf5ux',
+                        href: '',
+                        _id: ''
+                    }
+                };
+            }
+            else {
+                this.modalContent = {
+                    title: str,
+                    data: null
+                };
+            }
         } 
         else{
             this.modalContent = {

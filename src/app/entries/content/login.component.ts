@@ -7,7 +7,26 @@ declare var gapi: any;
 
 @Component({
     selector: 'app-login',
-    templateUrl: './login.component.html',
+    template: `
+    <div class="modal-body">
+        <div class="text-center" [ngSwitch]="name">
+            <ng-container *ngSwitchCase="''">
+                <div class="pad-button">
+                    <button class="btn btn-success btn-block" (click)="loginWithGmail($event)">Sign in with Gmail <i class='fa fa-google' aria-hidden='true'></i></button>
+                    <p>OR</p>
+                    <button class="btn btn-primary btn-block" (click)="loginWithFacebook($event)">Sign in with Facebook <i class="fa fa-facebook-square" aria-hidden="true"></i></button>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                <p>Welcome, {{name}}!</p>
+            </ng-container>
+            <br />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+    </div>
+    `,
     styleUrls: ['./content.component.css']
 })
 

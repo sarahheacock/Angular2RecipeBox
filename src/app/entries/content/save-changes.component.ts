@@ -25,6 +25,7 @@ export class SaveChanges {
     @Input() user: User;
     @Input() ingredients: {
         phone: Array<string>;
+        shoppingListNames: Array<string>;
         shoppingList: Array<{name:string; selected:boolean;}>;
     };
 

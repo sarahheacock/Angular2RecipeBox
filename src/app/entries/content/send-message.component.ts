@@ -5,9 +5,9 @@ import { User } from '../shared/entry.model';
 @Component({
     selector: 'app-send-message',
     template: `
-    <div class="modal-body">
+    <div class="modal-body text-center">
         <i *ngIf="!done" class="fa fa-spinner fa-spin fa-2x"></i>
-        <p *ngIf="done">Message Sent!</p>
+        <p *ngIf="done" class="">Message Sent!</p>
     </div>
     <div class="modal-footer">
         <button *ngIf="done" type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
@@ -22,6 +22,7 @@ export class SendMessage implements OnInit{
     @Input() user: User;
     @Input() ingredients: {
         send: string;
+        shoppingListNames: Array<string>;
         shoppingList: Array<{name:string; selected:boolean;}>;
     };
 

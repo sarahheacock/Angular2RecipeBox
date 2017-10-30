@@ -3,17 +3,12 @@
     <div class="modal-body modal-guts">
         <form #f="ngForm" (ngSubmit)="onSubmit(f)">
             <div class="text-center" *ngIf="list">
-                <i *ngIf="message && title.length" class="text-center">
-                    Shopping list for <b>{{title}}</b>
-                </i>
-                <i *ngIf="!message" class="text-center">
-                    Select which items you would like to add to your grocery list.
-                </i>
+                Shopping list for <b>{{title}}</b>
             </div>
             <br />
             <hr />
                 
-            <form *ngIf="message" #add="ngForm" (ngSubmit)="addIngredient(add)" class="form-group row">
+            <form #add="ngForm" (ngSubmit)="addIngredient(add)" class="form-group row">
                 <label for="add" class="col-sm-3 col-form-label">Add Ingredient:</label>
                 <div class="col-sm-8">
                     <input 
@@ -54,7 +49,7 @@
             <br />
             <hr />
 
-            <form *ngIf="message" #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
+            <form #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
                 <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
                 <div class="col-sm-8">
                     <input 
@@ -93,7 +88,7 @@
     
         </form>
 
-        <div *ngIf="message && list" class="pad-button">
+        <div *ngIf="list" class="pad-button">
             <br />
             <br />
             <!-- <button class="btn btn-outline-primary btn-block" (click)="save(f)">
@@ -110,13 +105,6 @@
 </div>
 
 <div class="modal-footer">
-    <div *ngIf="message">
-        
-    </div>
-    <div *ngIf="!message">
-        <button class="btn btn-primary" (click)="onSubmit(f)">Save Changes</button>
-    </div>
-    
     <button class="btn btn-secondary" (click)="toggle(f)">
         Continue
     </button>

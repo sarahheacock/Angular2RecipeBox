@@ -4,7 +4,17 @@ import { User } from '../shared/entry.model';
 
 @Component({
     selector: 'app-recipe-delete',
-    templateUrl: './delete-recipe.component.html',
+    template: `
+    <div class="modal-body">
+        <div class="center text-center">
+            <p>Are you sure you would like to delete, {{data.title}}?</p>
+            <button class="btn btn-danger center" (click)="delete()">Delete Recipe <i class="fa fa-trash"></i></button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+    </div>
+    `,
     styleUrls: ['./content.component.css']
 })
 

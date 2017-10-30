@@ -25,28 +25,16 @@
                     ></app-logout>
                 </ng-container>
             
-                <ng-container *ngSwitchCase="'Add Ingredients'">
-                    <app-add-shopping 
-                      [ingredients]="modalContent.data.ingredients"
-                      [title]="modalContent.data.title" 
-                      [userID]="user._id" 
-                      [token]="user.userID" 
-                      (stateChange)="stateChange($event)" 
-                      (userChange)="userChange($event)"
-                    ></app-add-shopping>
-                </ng-container>
-            
-                <ng-container *ngSwitchCase="'Text Shopping List'">
-                    <app-text-shopping 
+                <ng-container *ngSwitchCase="'Shopping List'">
+                    <app-shopping-list 
                       [ingredientList]="user.shoppingList" 
                       [title]="user.shoppingListNames" 
                       [phoneList]="user.phone" 
-                      [userID]="user._id" 
-                      [token]="user.userID" 
+                      [data]="modalContent.data"
                       (stateChange)="stateChange($event)" 
                       (userChange)="userChange($event)"
                       (modalChange)="modalChange($event)"
-                    ></app-text-shopping>
+                    ></app-shopping-list>
                 </ng-container>
             
                 <ng-container *ngSwitchCase="'Add Recipe'">

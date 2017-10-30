@@ -1,19 +1,19 @@
 import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { EntryService } from '../shared/entry.service';
+// import { EntryService } from '../shared/entry.service';
 import { User } from '../shared/entry.model';
 
 //declare var gapi: any;
 
 @Component({
-    selector: 'app-text-shopping',
+    selector: 'app-shopping-list',
     //template: `<div></div>`,
-    templateUrl: './ingredients.component.html',
+    templateUrl: './shopping-list.component.html',
     styleUrls: ['./content.component.css']
 })
 
-export class TextShopping implements OnInit{
-    message: boolean = true;
+export class ShoppingList implements OnInit{
+    // message: boolean = true;
     list: boolean = true;
 
     ingredient: string = '';
@@ -21,6 +21,7 @@ export class TextShopping implements OnInit{
     phone: string = '';
     phones: Array<string>;
     send: string = '';
+    titleList: Array<string>;
 
     @Output() stateChange = new EventEmitter<any>();
     @Output() userChange = new EventEmitter<any>();
@@ -29,26 +30,45 @@ export class TextShopping implements OnInit{
     @Input() ingredientList: Array<{name:string; selected:boolean;}>;
     @Input() title: Array<string>;
     @Input() phoneList: Array<string>;
-    @Input() userID: string;
-    @Input() token: string;
+    @Input() data: {
+        shoppingList: Array<{name:string; selected:boolean;}>;
+        shoppingListNames: Array<string>
+    }
 
     @ViewChild('f') f: NgForm;
 
     //@ViewChild('commentForm') commentForm: NgForm;
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
-    constructor(private entryService: EntryService) {}
+    constructor() {}
 
     ngOnInit(){
-        this.list = this.ingredientList.length > 0;
 
-        this.ingredients = this.ingredientList.map((i) => { return {...i}; }); //make a copy so that we can discard changes if we want later
+        //make a copy so that we can discard changes if we want later
+        this.ingredients = this.data.shoppingList.concat(this.ingredientList).reduce((a, b) => {
+            let bName = b.name.trim();
+
+            const valid = a.reduce((c, d) => {
+                let dName = d.name.trim();
+                if(dName === bName) return a.indexOf(d);
+                else return c;
+            }, -1);
+    
+            b.name = bName;
+            if(valid < 0) a.push({...b});
+    
+            return a;
+        }, []);
+
+        this.titleList = this.data.shoppingListNames.concat(this.title).reduce((a, b) => {
+            if(!a.includes(b)) a.push(b);
+            return a;
+        }, []);
+
         this.phones = this.phoneList.map((i) => { return i; });
         this.send = this.phoneList[0] || '';
-        // this.send = (this.phoneList.length > 0) ? this.phoneList.reduce((a, b) => {
-
-        // }, this.phones[0]["number"]);
-
+        this.list = this.ingredients.length > 0;
+        
         console.log(this.ingredientList, this.ingredients);
     }
 
@@ -63,6 +83,7 @@ export class TextShopping implements OnInit{
                 title: "Sending Text...",
                 data: {
                     shoppingList: this.modify(f.value),
+                    shoppingListNames: this.titleList,
                     send: f.value.send
                 }
             });
@@ -106,6 +127,7 @@ export class TextShopping implements OnInit{
                 title: "Save Changes",
                 data: {
                     shoppingList: this.modify(f.value),
+                    shoppingListNames: this.titleList,
                     phone: this.phones
                 }
             });
@@ -116,18 +138,12 @@ export class TextShopping implements OnInit{
     }
 
     clear(f: NgForm){
-        // const result = this.modify(f);
-        // console.log(f.value);
         this.modalChange.emit({
             title: "Clear List",
             data: null
         });
     }
 
-    // save(f: NgForm){
-    //     const result = this.modify(f);
-    //     console.log(result);
-    // }
 
     modify(value){
         return Object.keys(value).reduce((a, b) => {
