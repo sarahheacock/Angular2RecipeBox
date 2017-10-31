@@ -82,7 +82,8 @@
 }
 
 .pad-button {
-    padding: 0px 35px 0px 35px
+    padding: 0px 35px 0px 35px;
+    margin-bottom: 5%;
 }
 
 .form-text {

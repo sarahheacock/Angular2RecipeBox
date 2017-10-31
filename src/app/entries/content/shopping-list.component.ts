@@ -18,18 +18,13 @@ export class ShoppingList implements OnInit{
 
     ingredient: string = '';
     ingredients: Array<{name:string; selected:boolean;}>;
-    phone: string = '';
-    phones: Array<string>;
-    send: string = '';
     titleList: Array<string>;
 
     @Output() stateChange = new EventEmitter<any>();
-    @Output() userChange = new EventEmitter<any>();
     @Output() modalChange = new EventEmitter<{title:string; data:any}>()
 
     @Input() ingredientList: Array<{name:string; selected:boolean;}>;
     @Input() title: Array<string>;
-    @Input() phoneList: Array<string>;
     @Input() data: {
         shoppingList: Array<{name:string; selected:boolean;}>;
         shoppingListNames: Array<string>
@@ -39,11 +34,9 @@ export class ShoppingList implements OnInit{
 
     //@ViewChild('commentForm') commentForm: NgForm;
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
-
     constructor() {}
 
     ngOnInit(){
-
         //make a copy so that we can discard changes if we want later
         this.ingredients = this.data.shoppingList.concat(this.ingredientList).reduce((a, b) => {
             let bName = b.name.trim();
@@ -65,30 +58,11 @@ export class ShoppingList implements OnInit{
             return a;
         }, []);
 
-        this.phones = this.phoneList.map((i) => { return i; });
-        this.send = this.phoneList[0] || '';
         this.list = this.ingredients.length > 0;
         
         console.log(this.ingredientList, this.ingredients);
     }
 
-    onSubmit(f: NgForm) {     
-        const result = this.modify(f);
-        console.log(result);
-
-        let valid = true;
-
-        if(valid){
-            this.modalChange.emit({
-                title: "Sending Text...",
-                data: {
-                    shoppingList: this.modify(f.value),
-                    shoppingListNames: this.titleList,
-                    send: f.value.send
-                }
-            });
-        }
-    }
 
     addIngredient(add: NgForm){
         console.log(add.value);
@@ -105,54 +79,37 @@ export class ShoppingList implements OnInit{
         }
     }
 
-    addPhone(text: NgForm){
-        console.log(text.value);
-        const num = text.value.phone.trim();
-
-        if(num && !this.phones.includes(num)){
-            this.phones.splice(0, 0, num);
-
-            //this.list = true;
-            this.phone = '';
-            this.send = num;
-            console.log(this.phones);
-        }
-    }
-
-    toggle(f: NgForm){
-        //if(e) e.preventDefault();
-        console.log(this.ingredientList, this.ingredients);
-        if(this.list){
-            this.modalChange.emit({
-                title: "Save Changes",
-                data: {
-                    shoppingList: this.modify(f.value),
-                    shoppingListNames: this.titleList,
-                    phone: this.phones
-                }
-            });
-        }
-        else {
-            this.stateChange.emit('inactive');
-        }
-    }
 
     clear(f: NgForm){
         this.modalChange.emit({
             title: "Clear List",
             data: null
         });
+    }    
+
+    continue(f: NgForm){
+        //if(e) e.preventDefault();
+        console.log(this.ingredientList, this.ingredients);
+        this.modalChange.emit({
+            title: "Save Changes",
+            data: {
+                shoppingListNames: this.titleList,
+                shoppingList: this.modify(f.value)
+            }
+        });
+    }
+
+    toggle(e){
+        this.stateChange.emit('inactive');
     }
 
 
     modify(value){
         return Object.keys(value).reduce((a, b) => {
-            if(b !== "send"){
-                a.push({
-                    name: b.trim(),
-                    selected: value[b]
-                });
-            }
+            a.push({
+                name: b.trim(),
+                selected: value[b]
+            });
             return a;
         }, []);
     }

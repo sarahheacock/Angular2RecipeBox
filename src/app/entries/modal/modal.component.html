@@ -28,11 +28,9 @@
                 <ng-container *ngSwitchCase="'Shopping List'">
                     <app-shopping-list 
                       [ingredientList]="user.shoppingList" 
-                      [title]="user.shoppingListNames" 
-                      [phoneList]="user.phone" 
+                      [title]="user.shoppingListNames"  
                       [data]="modalContent.data"
                       (stateChange)="stateChange($event)" 
-                      (userChange)="userChange($event)"
                       (modalChange)="modalChange($event)"
                     ></app-shopping-list>
                 </ng-container>
@@ -80,13 +78,24 @@
 
                 <ng-container *ngSwitchCase="'Save Changes'">
                     <app-save-changes
-                        [user]="user"
+                        [userID]="user._id"
+                        [userPhone]="user.phone"
+                        [token]="user.userID"
                         [ingredients]="modalContent.data"
-                        (userChange)="userChange($event)"
+                        (stateChange)="stateChange($event)"
+                        (modalChange)="modalChange($event)"
                     ></app-save-changes>
                 </ng-container>
 
                 <ng-container *ngSwitchCase="'Sending Text...'">
+                    <app-send-message
+                        [user]="user"
+                        [ingredients]="modalContent.data"
+                        (userChange)="userChange($event)"
+                    ></app-send-message>
+                </ng-container>
+               
+                <ng-container *ngSwitchCase="'Saving Changes...'">
                     <app-send-message
                         [user]="user"
                         [ingredients]="modalContent.data"

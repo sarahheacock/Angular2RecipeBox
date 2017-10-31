@@ -1,0 +1,58 @@
+<div class="modal-body">
+    <div class="text-center" *ngIf="this.ingredients.shoppingListNames[0]">
+        Shopping list for <b>{{this.ingredients.shoppingListNames}}</b>
+        <br />
+        <hr />
+    </div>
+    
+    <form #f="ngForm">
+
+        <div class="pad-button">
+            <button class="btn btn-outline-primary btn-block" (click)="onSave(f)">
+                Save Changes
+            </button>
+            <button class="btn btn-outline-primary btn-block" (click)="onSend(f)">
+                Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <form #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
+            <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+            <div class="col-sm-8">
+                <input 
+                    class="form-control"
+                    type="text" 
+                    name="phone"
+                    [(ngModel)]="phone"
+                    required
+                >
+            </div>
+            <div class="col-sm-1 text-center">
+                <button class="btn btn-link" click="addPhone(add)">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </button>
+            </div>
+        </form>
+
+        <div *ngFor="let item of phones; let i=index">
+            <div class="row form-group">
+                <div class="col-sm-3 text-center">
+                    <input
+                        name="send"
+                        type="radio"
+                        [value]="item"
+                        [(ngModel)]="send"
+                    >
+                </div>
+                <div class="col-sm-9">
+                    <label>
+                        {{item}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="toggle($event)">Cancel</button>
+</div>
