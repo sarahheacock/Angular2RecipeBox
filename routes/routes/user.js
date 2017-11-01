@@ -133,13 +133,13 @@ router.post("/:userID/message", mid.auth, (req, res, next) => {
         to: req.body.send,
         body: content
     }, (error, message) => {
-        if(error){
-            res.json({message: error.message});
-        } 
-        else{
+        // if(error){
+        //     res.json({message: error.message});
+        // } 
+        // else{
             req.user.shoppingList = req.body.shoppingList;
             next();
-        } 
+        // } 
     });
 }, mid.saveAndOutput);
 

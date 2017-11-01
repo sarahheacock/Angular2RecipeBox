@@ -28,7 +28,8 @@
                 <ng-container *ngSwitchCase="'Shopping List'">
                     <app-shopping-list 
                       [ingredientList]="user.shoppingList" 
-                      [title]="user.shoppingListNames"  
+                      [title]="user.shoppingListNames"
+                      [phone]="user.phone"
                       [data]="modalContent.data"
                       (stateChange)="stateChange($event)" 
                       (modalChange)="modalChange($event)"
@@ -67,27 +68,35 @@
                     ></app-recipe-delete>
                 </ng-container>
 
+                <!-- [_id]="user._id" [token]="user.userID" -->
                 <ng-container *ngSwitchCase="'Clear List'">
                     <app-clear-list
-                        [_id]="user._id" 
-                        [token]="user.userID"
+                        [data]="modalContent.data"
+                        [user]="user"
                         (userChange)="userChange($event)"
-                        (stateChange)="stateChange($event)"
+                        (modalChange)="modalChange($event)"
                     ></app-clear-list>
                 </ng-container>
 
                 <ng-container *ngSwitchCase="'Save Changes'">
                     <app-save-changes
-                        [userID]="user._id"
-                        [userPhone]="user.phone"
-                        [token]="user.userID"
-                        [ingredients]="modalContent.data"
+                        [user]="user"
+                        [data]="modalContent.data"
                         (stateChange)="stateChange($event)"
-                        (modalChange)="modalChange($event)"
+                        (userChange)="userChange($event)"
                     ></app-save-changes>
                 </ng-container>
 
-                <ng-container *ngSwitchCase="'Sending Text...'">
+                <ng-container *ngSwitchCase="'Send Message'">
+                    <app-send-message
+                        [user]="user"
+                        [data]="modalContent.data"
+                        (stateChange)="stateChange($event)"
+                        (modalChange)="modalChange($event)"
+                    ></app-send-message>
+                </ng-container>
+
+                <!-- <ng-container *ngSwitchCase="'Sending Text...'">
                     <app-send-message
                         [user]="user"
                         [ingredients]="modalContent.data"
@@ -101,11 +110,11 @@
                         [ingredients]="modalContent.data"
                         (userChange)="userChange($event)"
                     ></app-send-message>
-                </ng-container>
+                </ng-container> -->
             
                 <ng-container *ngSwitchDefault>
                     <app-default 
-                      (stateChange)="stateChange($event)"
+                    (modalChange)="modalChange($event)"
                     ></app-default>
                 </ng-container>
             </div>

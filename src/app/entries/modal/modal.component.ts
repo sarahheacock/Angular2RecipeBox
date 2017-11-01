@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -28,12 +28,13 @@ import { User } from '../shared/entry.model';
   ]
 })
 
-export class EntryListModal {
-  @Output() onToggle = new EventEmitter<any>();
+export class EntryListModal implements OnChanges{
+  modalShown: string;
+  //@Output() onToggle = new EventEmitter<any>();
   @Output() updateUser = new EventEmitter<any>();
   @Output() onEntryEdit = new EventEmitter<{ title:string; data:any }>();
 
-  @Input() modalShown: string;
+  //@Input() modalShown: string;
   @Input() modalContent: { title:string; data:any; };
   @Input() user: any;
   @Input() options: Array<string>;
@@ -41,12 +42,22 @@ export class EntryListModal {
   
   constructor() {}
 
+  // ngOnInit(){
+  //   this.modalShown = (this.modalContent.title) ? 'active': "inactive";
+  // }
+
   ngOnChanges(e) {
     console.log("E", e);
+    if(e.modalContent){
+      this.modalShown = (this.modalContent.title) ? 'active': "inactive";
+    }
   }
 
   stateChange(e) {
-    this.onToggle.emit(e);
+    this.onEntryEdit.emit({
+      title: '',
+      data: null
+    });
   }
   
   userChange(e) {

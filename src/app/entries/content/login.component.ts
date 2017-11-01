@@ -18,7 +18,7 @@ declare var gapi: any;
                 </div>
             </ng-container>
             <ng-container *ngSwitchDefault>
-                <p>Welcome, {{name}}!</p>
+                <h5>Welcome, {{name}}!</h5>
             </ng-container>
             <br />
         </div>

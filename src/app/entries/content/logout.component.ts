@@ -8,18 +8,17 @@ import { User } from '../shared/entry.model';
     <div class="modal-body">
         <div class="text-center" [ngSwitch]="name">
             <ng-container *ngSwitchCase="''">
-                <p>You are logged out.</p>
+                <h5>You are logged out.</h5>
             </ng-container>
             <ng-container *ngSwitchDefault>
                 <div  class="pad-button">
-                    <p>Are you sure you would like to logout, {{name}}?</p>
-                    <button class="btn btn-outline-danger btn-block" (click)="signOut()">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+                    <h5>Are you sure you would like to logout, {{name}}?</h5>
                 </div>
             </ng-container>
-            <br />
         </div>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-danger" (click)="signOut()" *ngIf="name">Sign out <i class="fa fa-sign-out" aria-hidden="true"></i></button>
         <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
     </div>
 
@@ -44,6 +43,7 @@ export class Logout {
         this.entryService.getUser(`${this.url}/auth/logout`)
         .then(user => {
             this.userChange.emit(user);
+            //this.stateChange.emit('inactive');
         });
     }
 }

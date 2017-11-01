@@ -1,28 +1,40 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
-import { NgForm } from '@angular/forms';
+// import { NgForm } from '@angular/forms';
 import { User } from '../shared/entry.model';
 
 @Component({
     selector: 'app-save-changes',
-    templateUrl: './save-changes.component.html',
+    template: `
+    <div class="modal-body text-center">
+        <div class="pad-button">
+            <h5 *ngIf="!done && !start">Would you like to like to save changes?</h5>
+            <i *ngIf="!done && start" class="fa fa-spinner fa-spin fa-2x"></i>
+            <h5 *ngIf="done && start">Changes Saved!</h5>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="!start" class="btn btn-primary" (click)="onSave($event)">
+            Save Changes
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+    </div>
+    `,
     styleUrls: ['./content.component.css']
 })
 
 
 export class SaveChanges {
-    phones: Array<string>;
-    newPhone: string;
-    send: string;
+    start:boolean = false;
+    done:boolean = false;
 
     @Output() stateChange = new EventEmitter<string>();
-    @Output() modalChange = new EventEmitter<{title:string; data:any}>();
+    @Output() userChange = new EventEmitter<User>();
 
-    @Input() token: string;
-    @Input() userID: string;
-    @Input() userPhone: Array<string>;
+    @Input() user: User
 
-    @Input() ingredients: {
+    @Input() data: {
+        phone: Array<string>;
         shoppingListNames: Array<string>;
         shoppingList: Array<{name:string; selected:boolean;}>;
     };
@@ -30,72 +42,23 @@ export class SaveChanges {
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     constructor(private entryService: EntryService) {}
 
-    ngOnInit(){
-        this.phones = this.userPhone.map((i) => { return i; });
-        this.send = this.userPhone[0] || '';
-        this.newPhone = '';
-    }
 
-    addPhone(text: NgForm){
-        console.log(text.value);
-        const num = text.value.phone.trim();
-
-        if(num && !this.phones.includes(num)){
-            this.phones.splice(0, 0, num);
-
-            //this.list = true;
-            this.newPhone = '';
-            this.send = num;
-            console.log(this.phones);
-        }
-    }
-
-
-    onSend(f: NgForm) {     
-        let valid = true;
-
-        if(valid){
-            this.modalChange.emit({
-                title: "Sending Text...",
-                data: {
-                    ...this.ingredients,
-                    send: f.value.send,
-                    phone: this.phones
-                }
+    onSave(e){
+        if(!this.start){
+            const url = `${this.url}/user/${this.user._id}/list?token=${this.user.userID}`;
+            this.start = true;
+    
+            this.entryService.putUser(url, this.data).then(user => {
+                this.userChange.emit(user);
+                //this.user = user;
+                this.done = true;
             });
         }
     }
 
 
-    onSave(f: NgForm){
-        console.log({
-            ...this.ingredients,
-            send: f.value.send,
-            phone: this.phones
-        });
-
-        this.modalChange.emit({
-            title: "Saving Changes...",
-            data: {
-                ...this.ingredients,
-                phone: this.phones,
-                send: undefined
-            }
-        });
-    }
-
-
     toggle(e){
-        console.log("toggle");
-        this.stateChange.emit('inactive');
         //this.userChange.emit(this.user);
-        // this.modalChange.emit({
-        //     title: "Save Changes",
-        //     data: {
-        //         ...this.ingredients,
-        //         phone: this.phones,
-        //         send: this.send
-        //     }
-        // });
+        this.stateChange.emit('inactive');
     }
 }

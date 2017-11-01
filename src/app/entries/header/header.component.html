@@ -26,11 +26,9 @@
     </header>
 </div>
 <app-modal 
-    [modalShown]="modalShown" 
     [modalContent]="modalContent" 
     [user]="user" 
     [options]="options" 
-    (onToggle)="toggleState($event)" 
     (updateUser)="updateUser($event)"
     (onEntryEdit)="changeModalContent($event)"
 ></app-modal>

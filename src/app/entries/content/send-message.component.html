@@ -1,24 +1,16 @@
 <div class="modal-body">
-    <div class="text-center" *ngIf="this.ingredients.shoppingListNames[0]">
-        Shopping list for <b>{{this.ingredients.shoppingListNames}}</b>
-        <br />
+    <div class="text-center">
+        <h5>Would you like to text your ingredient list 
+            <span *ngIf="this.data.shoppingListNames[0]">for <b>{{this.data.shoppingListNames}}</b> </span>
+            <span *ngIf="send"> to <b>{{send}}</b></span>?
+        </h5>
         <hr />
     </div>
     
     <form #f="ngForm">
-
-        <div class="pad-button">
-            <button class="btn btn-outline-primary btn-block" (click)="onSave(f)">
-                Save Changes
-            </button>
-            <button class="btn btn-outline-primary btn-block" (click)="onSend(f)">
-                Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i>
-            </button>
-        </div>
-
         <form #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
             <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-7">
                 <input 
                     class="form-control"
                     type="text" 
@@ -27,9 +19,9 @@
                     required
                 >
             </div>
-            <div class="col-sm-1 text-center">
-                <button class="btn btn-link" click="addPhone(add)">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <div class="col-sm-2 text-center">
+                <button class="btn btn-outline-primary" type="submit">
+                    ADD <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 </button>
             </div>
         </form>
@@ -52,7 +44,13 @@
             </div>
         </div>
     </form>
+    <div class="pad-button text-center">
+        <br />
+        <i *ngIf="!done && start" class="fa fa-spinner fa-spin fa-2x"></i>
+        <h5 *ngIf="done && start" class="alert alert-info">Message Sent!</h5>
+    </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="toggle($event)">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onSend(f)">Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
 </div>

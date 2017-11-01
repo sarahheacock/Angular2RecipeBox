@@ -6,12 +6,12 @@ import { User } from '../shared/entry.model';
     selector: 'app-recipe-delete',
     template: `
     <div class="modal-body">
-        <div class="center text-center">
-            <p>Are you sure you would like to delete, {{data.title}}?</p>
-            <button class="btn btn-danger center" (click)="delete()">Delete Recipe <i class="fa fa-trash"></i></button>
+        <div class="pad-button text-center">
+            <h5>Are you sure you would like to delete, {{data.title}}?</h5>
         </div>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-danger" (click)="delete()">Delete Recipe <i class="fa fa-trash"></i></button>
         <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
     </div>
     `,
@@ -19,6 +19,8 @@ import { User } from '../shared/entry.model';
 })
 
 export class DeleteRecipe {
+    user:User;
+
     @Output() stateChange = new EventEmitter<any>();
     @Output() userChange = new EventEmitter<any>();
 
@@ -27,7 +29,6 @@ export class DeleteRecipe {
         category:string;
         _id:string;
     };
-
     @Input() _id: string;
     @Input() token: string;
 

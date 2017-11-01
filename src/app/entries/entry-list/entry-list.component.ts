@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterContentInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterContentInit, Output, EventEmitter, Input, NgZone } from '@angular/core';
 import { EntryService } from '../shared/entry.service';
 import { User, Recipe } from '../shared/entry.model';
 
@@ -13,13 +13,7 @@ export class EntryListComponent implements OnInit, OnChanges {
         options:Array<string>;
         user:User;
     }>();
-    @Output() onEntryEdit = new EventEmitter<{title:string; data:{
-        title:string;
-        ingredients:Array<{
-            name:string;
-            selected:boolean;
-        }>;
-    }}>();
+    @Output() onEntryEdit = new EventEmitter<{title:string; data:any;}>();
 
     @Input() user: User;
     @Input() modalContent: {
@@ -28,7 +22,7 @@ export class EntryListComponent implements OnInit, OnChanges {
     entries: any;
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
-    constructor(private entryService: EntryService){}   
+    constructor(private entryService: EntryService, private ngZone: NgZone){}   
 
     ngOnInit(){
         const userUrl = `${this.url}/user/${this.user._id}?token=${this.user.userID}`;
@@ -90,13 +84,22 @@ export class EntryListComponent implements OnInit, OnChanges {
                 if(e.user.currentValue.name !== e.user.previousValue.name){
                     console.log("SIGN IN");
                     const user = e.user.currentValue;
-                    const userUrl = `${this.url}/user/${user._id}?token=${user.userID}`;
+                    //const userUrl = `${this.url}/user/${user._id}?token=${user.userID}`;
     
                     if(user.userID){
-                        this.add(user.recipes) 
+                        this.addAll(user.recipes) 
                     }
                     else {
                         this.remove();
+                        // this.ngZone.runOutsideAngular(() => {
+                        //     this.remove(() => {
+                        //         this.ngZone.run(() => {
+                        //             console.log("ngZone");
+                        //             this.toggle();
+                        //         });
+                        //     });
+                        // });
+                        
                     } 
                 }
                 else if(e.user.currentValue.recipes.length > e.user.previousValue.recipes.length){
@@ -128,49 +131,90 @@ export class EntryListComponent implements OnInit, OnChanges {
                         }
                     });
                 }
+                this.toggle();
             }
         }
     }
 
+    //user sign out
+    // remove(doneCallback: () => void){
+    //     this.entries.forEach((entry, i) => {
+    //         entry.recipes = entry.recipes.filter((recipe) => {
+    //             return recipe.href.includes("http");
+    //         });
+    //         //this.toggle();
+    //         if(i === this.entries.length - 1) doneCallback();
+    //     });
+    // }
     remove(){
-        this.entries.forEach((entry) => {
+        this.entries.forEach((entry, i) => {
             entry.recipes = entry.recipes.filter((recipe) => {
                 return recipe.href.includes("http");
             });
         });
     }
 
-    add(recipe: Recipe){
-        this.entries.forEach((entry) => {
-            if(entry.category === recipe.href) entry.recipes.push(recipe);
-        })
+    //user sign in
+    addAll(recipes: Array<Recipe>){
+        recipes.forEach((recipe) => {
+            this.add(recipe);
+        });
     }
 
+    //user add recipe or sign in
+    add(recipe: Recipe){
+        this.entries.forEach((entry) => {
+            if(entry.category === recipe.href){
+                entry.recipes.push(recipe);
+                //this.toggle();
+            } 
+        });
+    }
+
+    //user delete recipe
     delete(category:string, id:string){
         //console.log(recipe);
 
         this.entries.forEach((entry) => {
             if(entry.category === category){
+                // let index;
                 entry.recipes.forEach((recipe, i) => {
-                    if(recipe._id === id) entry.recipes.splice(i, 1);
+                    if(recipe._id === id){
+                        //entry.recipes = entry.recipes.slice(0, i).concat(entry.recipes.slice(i + 1));
+                        //entry.recipes.splice(i, 1, {...recipe});
+                        entry.recipes.splice(i, 1);
+                        
+                        // index = i
+                        //this.toggle();
+                    } 
                 });
+
+                // const arr1 = entry.recipes.slice(0, index);
+                // const arr2 = entry.recipes.slice(index + 1);
+                // entry.recipes = arr1.concat(arr2);
+
                 console.log(entry.recipes);
             }
         });
     }
 
+    //user edit recipe and NOT change categories
     edit(recipe: Recipe){
         //console.log(recipe);
         this.entries.forEach((entry) => {
             //console.log(moved);
             if(entry.category === recipe.href){
                 entry.recipes.forEach((record, i) => {
-                    if(record._id === recipe._id) entry.recipes.splice(i, 1, recipe);
+                    if(record._id === recipe._id){
+                        entry.recipes.splice(i, 1, recipe);
+                        //this.toggle();
+                    } 
                 });
             } 
         });
     }
 
+    //user edit recipe and change categories
     move(recipe: Recipe, cat: string){
         this.entries.forEach((entry) => {
             //console.log(moved);
@@ -179,10 +223,27 @@ export class EntryListComponent implements OnInit, OnChanges {
             }
             else if(entry.category === cat){ //remove from old
                 entry.recipes.forEach((record, i) => {
-                    if(record._id === recipe._id) entry.recipes.splice(i, 1);
+                    if(record._id === recipe._id){
+                        entry.recipes.splice(i, 1);
+                        //this.toggle();
+                    } 
                 });
             }
         });
+    }
+
+    //get rid of modal
+    toggle(){
+        //TOGGLE DOES NOT APPEAR TO WORK UNLESS ANOTHER ENTRY IS INTESERTED
+        if(this.modalContent.title){
+            // this.modalContent.title = '';
+            // this.modalContent.data = null;
+            
+            this.onEntryEdit.emit({
+                title: '',
+                data: null
+            });
+        }
     }
 
     entryEdit(e){

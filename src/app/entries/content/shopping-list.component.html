@@ -2,29 +2,42 @@
 <div class="modal-outer">
     <div class="modal-body modal-guts">
         <form #f="ngForm">
-            <div class="text-center" *ngIf="this.titleList[0]">
+            <h5 class="text-center" *ngIf="this.titleList[0]">
                 Shopping list for <b>{{this.titleList}}</b>
                 <br />
                 <hr />
-            </div>
-                
+            </h5>
+            
+            <!-- (ngSubmit)="addIngredient(add)"  -->
             <form #add="ngForm" (ngSubmit)="addIngredient(add)" class="form-group row">
-                <label for="add" class="col-sm-3 col-form-label">Add Ingredient:</label>
-                <div class="col-sm-8">
+                <label for="add" 
+                    class="col-sm-3 col-form-label"  
+                    [ngStyle]="{'color': !ingredientField.valid && error === 'Fill out input field in order to add new ingredient.' ? '#d9534f': undefined}"
+                >Add Ingredient:</label>
+                <div class="col-sm-7">
                     <input 
                         class="form-control"
                         type="text" 
                         name="ingredient"
                         [(ngModel)]="ingredient"
                         required
+                        minlength="1" 
+                        #ingredientField="ngModel"
+                        [ngStyle]="{'border-color': !ingredientField.valid && error === 'Fill out input field in order to add new ingredient.' ? '#d9534f': undefined}"
                     >
                 </div>
-                <div class="col-sm-1 text-center">
-                    <button class="btn btn-link" click="addIngredient(add)">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <div class="col-sm-2 text-center">
+                    <button class="btn btn-outline-primary" type="submit">
+                        ADD <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     </button>
                 </div>
             </form>
+
+            <div class="pad-button text-center">
+                <div *ngIf="error" class="alert alert-danger">
+                    {{error}}
+                </div>
+            </div>
 
             <div *ngFor="let item of ingredients; let i=index" class="checkbox">
                 <div class="row form-group">
@@ -34,16 +47,25 @@
                             ng-init="checked=item.selected"
                             name={{item.name}}
                             [(ngModel)]="item.selected"
+                            [ngStyle]="{
+                                'opacity': item.selected ? '1.0' : '0.7',
+                                'outline': error === 'You must have one or more items on your shopping list to continue.' ? '1px solid #d9534f': undefined
+                            }"
+                            (click)="onChange($event)"
                         >
                     </div>
                     <div class="col-sm-9">
-                        <label [ngStyle]="{'opacity': item.selected ? '1.0' : '0.5'}">
+                        <label 
+                            [ngStyle]="{
+                                'opacity': item.selected ? '1.0' : '0.5',
+                                'color': error === 'You must have one or more items on your shopping list to continue.' ? '#d9534f': undefined
+                            }">
                             {{item.name}}
                         </label>
                     </div>
                 </div>
             </div>
-            <div *ngIf="!list" class="text-center">
+            <div *ngIf="!ingredients[0]" class="text-center">
                 You have no items on your shopping list.
             </div>
             <br />
@@ -52,16 +74,16 @@
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-primary" (click)="continue(f)">
-        Continue
+    <button class="btn btn-primary" (click)="continue(f)" type="button">
+        Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i>
     </button>
-    <div *ngIf="list" class="">
-        <button class="btn btn-danger" (click)="clear(f)">
+    <div *ngIf="ingredients[0]" class="">
+        <button class="btn btn-danger" (click)="clear(f)" type="button">
             Clear List <i class="fa fa-trash"></i>
         </button>
     </div>
-    <button class="btn btn-secondary" (click)="toggle(f)">
-        Cancel
+    <button class="btn btn-secondary" (click)="toggle(f)" type="button">
+        Close
     </button>
 </div>
 

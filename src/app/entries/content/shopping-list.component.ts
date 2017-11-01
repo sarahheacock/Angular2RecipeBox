@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, OnInit, AfterContentInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // import { EntryService } from '../shared/entry.service';
 import { User } from '../shared/entry.model';
@@ -12,13 +12,13 @@ import { User } from '../shared/entry.model';
     styleUrls: ['./content.component.css']
 })
 
-export class ShoppingList implements OnInit{
-    // message: boolean = true;
-    list: boolean = true;
+export class ShoppingList implements AfterContentInit{
+    changed: boolean = false;
+    error: string = '';
 
     ingredient: string = '';
-    ingredients: Array<{name:string; selected:boolean;}>;
-    titleList: Array<string>;
+    ingredients: Array<{name:string; selected:boolean;}> = [];
+    titleList: Array<string> = [];
 
     @Output() stateChange = new EventEmitter<any>();
     @Output() modalChange = new EventEmitter<{title:string; data:any}>()
@@ -29,6 +29,7 @@ export class ShoppingList implements OnInit{
         shoppingList: Array<{name:string; selected:boolean;}>;
         shoppingListNames: Array<string>
     }
+    @Input() phone: Array<string>;
 
     @ViewChild('f') f: NgForm;
 
@@ -36,8 +37,11 @@ export class ShoppingList implements OnInit{
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     constructor() {}
 
-    ngOnInit(){
+    //ngOnInit(){
+    ngAfterContentInit(){
         //make a copy so that we can discard changes if we want later
+        console.log(this.data);
+
         this.ingredients = this.data.shoppingList.concat(this.ingredientList).reduce((a, b) => {
             let bName = b.name.trim();
 
@@ -58,9 +62,14 @@ export class ShoppingList implements OnInit{
             return a;
         }, []);
 
-        this.list = this.ingredients.length > 0;
-        
+        if(this.data.shoppingListNames.length === 1) this.changed = true;
         console.log(this.ingredientList, this.ingredients);
+    }
+
+    onChange(e){
+        this.changed = true;
+        this.error = '';
+        console.log(this.changed);
     }
 
 
@@ -74,8 +83,13 @@ export class ShoppingList implements OnInit{
                 selected: true
             }].concat(this.ingredients);
 
-            this.list = true;
+            //this.list = true;
             this.ingredient = '';
+            this.changed = true;
+            this.error = '';
+        }
+        else {
+            this.error = "Fill out input field in order to add new ingredient."
         }
     }
 
@@ -83,24 +97,47 @@ export class ShoppingList implements OnInit{
     clear(f: NgForm){
         this.modalChange.emit({
             title: "Clear List",
-            data: null
-        });
-    }    
-
-    continue(f: NgForm){
-        //if(e) e.preventDefault();
-        console.log(this.ingredientList, this.ingredients);
-        this.modalChange.emit({
-            title: "Save Changes",
             data: {
                 shoppingListNames: this.titleList,
                 shoppingList: this.modify(f.value)
             }
         });
+    }    
+
+    continue(f: NgForm){
+        const valid = Object.keys(f.value).reduce((a, b) => {
+            return a || f.value[b];
+        }, false);
+
+        if(valid){
+            this.modalChange.emit({
+                title: "Send Message",
+                data: {
+                    shoppingListNames: this.titleList,
+                    shoppingList: this.modify(f.value),
+                    changed: this.changed
+                }
+            });
+        }
+        else {
+            this.error = "You must have one or more items on your shopping list to continue.";
+        }
     }
 
-    toggle(e){
-        this.stateChange.emit('inactive');
+    toggle(f: NgForm){
+        if(this.changed === false){
+            this.stateChange.emit('inactive');
+        }
+        else {
+            this.modalChange.emit({
+                title: "Save Changes",
+                data: {
+                    shoppingListNames: this.titleList,
+                    shoppingList: this.modify(f.value),
+                    phone: this.phone
+                }
+            });
+        }
     }
 
 

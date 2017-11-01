@@ -50,14 +50,7 @@ import $ from "jquery";
 })
 
 export class EntryComponent implements AfterContentInit{
-    @Output() entryEdit = new EventEmitter<{title:string; data:any;//{
-        // title:string;
-        // ingredients:Array<{
-        //     name:string;
-        //     selected:boolean;
-        // }>;
-    //}
-    }>();
+    @Output() entryEdit = new EventEmitter<{title:string; data:any;}>();
     @Input() entry: Recipe;
     @Input() userName: string;
 
@@ -88,6 +81,12 @@ export class EntryComponent implements AfterContentInit{
         return str.replace("http://", "https://");
     }
 
+    maintain(){
+        this.contentShown = 'active';
+        this.title = this.entry.title;
+        this.button = "Add ingredients to shopping list.";
+    }
+
     changeState(e) {
         if(e) e.preventDefault();
 
@@ -102,6 +101,7 @@ export class EntryComponent implements AfterContentInit{
 
     launch(e){
         if(e) e.preventDefault();
+        this.maintain();
 
         const ingredients = this.entry.ingredients.map((item) => {
             return {
@@ -123,11 +123,14 @@ export class EntryComponent implements AfterContentInit{
             }
         };
 
+        console.log(obj);
+
         this.entryEdit.emit(obj);
     }
 
     editRecipe(e) {
         if(e) e.preventDefault();
+        this.maintain();
 
         const obj = (!this.userName) ? 
         {
@@ -151,6 +154,7 @@ export class EntryComponent implements AfterContentInit{
 
     deleteRecipe(e){
         if(e) e.preventDefault();
+        this.maintain();
         
         const obj = (!this.userName) ? 
         {
@@ -168,6 +172,7 @@ export class EntryComponent implements AfterContentInit{
 
         this.entryEdit.emit(obj);
     }
+
 
     animationDone(){
         //console.log(this.entry);

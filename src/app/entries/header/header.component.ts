@@ -9,7 +9,7 @@ import { User, Recipe } from '../shared/entry.model';
     styleUrls: ["header.component.css"]
 })
 
-export class HeaderContent{
+export class HeaderContent implements OnChanges{
     //length: number = 0;
     user: User = {
         name: '',
@@ -21,11 +21,16 @@ export class HeaderContent{
         phone: []
     };
 
-    modalShown: string = 'active';
     modalContent: { title:string; data:any } = {
         title: "Loading",
         data: null
     };
+
+    // modalShown: string = [this.modalContent.title].reduce((a, b) => {
+    //     if(b !== '') return 'active';
+    //     else return 'inactive';
+    // }, '');
+
     options: Array<string> = [];
     length: number = this.user.shoppingList.reduce((a, b) => { 
         if(b.selected) a += 1;
@@ -51,6 +56,10 @@ export class HeaderContent{
             this.count();
             console.log(this.user);
         }
+    }
+
+    ngOnChanges(e){
+        console.log("Header", e);
     }
 
     // ngOnInit(){
@@ -104,27 +113,32 @@ export class HeaderContent{
             };
         }
 
-        this.toggleState('active');
+        // this.toggleState('active');
     }
 
     // ==============MODAL CONTENT===============================
-    toggleState(e) {
-        if(!e) this.modalShown = (this.modalShown === 'inactive') ? 'active': 'inactive';
-        else this.modalShown = e;
+    // toggleState(e) {
+    //     if(!e) this.modalShown = (this.modalShown === 'inactive') ? 'active': 'inactive';
+    //     else this.modalShown = e;
 
-        console.log("header", this.modalShown);
-    }
+    //     console.log("header", this.modalShown);
+    // }
 
     changeModalContent(e: {title:string; data:any;}) {
         this.modalContent = e;
-        this.toggleState('active');
+        console.log(this.modalContent);
+        // this.toggleState('active');
     }
 
     updateOptions(e: {options: Array<string>; user: User;}) {
         this.options = e.options;
         //this.user = e.user;
-        this.modalShown = 'inactive';
+        //this.modalShown = 'inactive';
         this.updateUser(e.user);
+        this.modalContent = {
+            title: '',
+            data: null
+        }
         console.log(this.options);
     }
 
@@ -146,6 +160,9 @@ export class HeaderContent{
         window.sessionStorage.setItem('user', JSON.stringify(obj));
 
         this.count();
-        this.toggleState('inactive');
+        // this.modalContent = {
+        //     title: '',
+        //     data: null
+        // }
     } 
 }

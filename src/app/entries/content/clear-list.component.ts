@@ -7,13 +7,13 @@ import { User } from '../shared/entry.model';
     template: `
     <div class="modal-body">
         <div class="pad-button">
-            <p class="text-center">Are you sure you would like to clear your shopping list?</p>
-            <button class="btn btn-outline-danger btn-block" (click)="clear($event)">Clear Shopping List <i class="fa fa-trash"></i></button>
+            <h5 class="text-center">Are you sure you would like to clear your shopping list?</h5>
+            <h5>Clearing your shopping list is permanent.</h5>
         </div>
-        <br />
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+        <button class="btn btn-danger" (click)="clear($event)">Clear Shopping List <i class="fa fa-trash"></i></button>
+        <button type="button" class="btn btn-secondary" (click)="toggle($event)">Cancel</button>
     </div>
     `,
     styleUrls: ['./content.component.css']
@@ -21,25 +21,48 @@ import { User } from '../shared/entry.model';
 
 
 export class ClearList {
-    @Output() stateChange = new EventEmitter<string>();
+    @Output() modalChange = new EventEmitter<{
+        title: string;
+        data: {
+            shoppingList: Array<{name:string; selected:boolean;}>;
+            shoppingListNames: Array<string>
+        }
+    }>();
     @Output() userChange = new EventEmitter<User>();
 
-    @Input() _id: string;
-    @Input() token: string;
+    @Input() user: User;
+    @Input() data: {
+        shoppingList: Array<{name:string; selected:boolean;}>;
+        shoppingListNames: Array<string>
+    };
+
 
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     constructor(private entryService: EntryService) {}
 
     clear(e){
-        const url = `${this.url}/user/${this._id}/clear?token=${this.token}`;
+        if(e) e.preventDefault();
+        this.data.shoppingList = [];
+        this.data.shoppingListNames = [];
         
+        const url = `${this.url}/user/${this.user._id}/clear?token=${this.user.userID}`;
         this.entryService.putUser(url, {}).then(user => {
-            //this.stateChange.emit('inactive');
             this.userChange.emit(user);
+            
+            this.modalChange.emit({
+                title: "Shopping List",
+                data: this.data
+            });
         });
     }
 
     toggle(e){
-        this.stateChange.emit('inactive');
+        if(e) e.preventDefault();
+        console.log(this.data);
+        
+        this.modalChange.emit({
+            title: "Shopping List",
+            data: this.data
+        });
     }
 }
