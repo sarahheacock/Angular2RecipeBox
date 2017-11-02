@@ -9,13 +9,13 @@
     
     <form #f="ngForm">
         <form #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
-            <label for="phone" class="col-sm-3 col-form-label">Phone Number:</label>
+            <label for="newPhone" class="col-sm-3 col-form-label">Phone Number:</label>
             <div class="col-sm-7">
                 <input 
                     class="form-control"
                     type="text" 
-                    name="phone"
-                    [(ngModel)]="phone"
+                    name="newPhone"
+                    [(ngModel)]="newPhone"
                     required
                 >
             </div>
