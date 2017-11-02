@@ -25,22 +25,13 @@
         </div>
     </header>
 </div>
-<app-modal 
-    [modalContent]="modalContent" 
-    [user]="user" 
-    [options]="options" 
+
+<app-entry-list 
+    (updateModal)="changeModalContent($event)" 
     (updateUser)="updateUser($event)"
-    (onEntryEdit)="changeModalContent($event)"
-></app-modal>
-<div class="border">
-    <div class="main">
-        <app-entry-list 
-            (onEntryLoad)="updateOptions($event)" 
-            (onEntryEdit)="changeModalContent($event)"
-            [modalContent]="modalContent" 
-            [user]="user"
-        ></app-entry-list>
-    </div>      
-</div>
+    [modalContent]="modalContent" 
+    [user]="user"
+></app-entry-list>
+
 
 

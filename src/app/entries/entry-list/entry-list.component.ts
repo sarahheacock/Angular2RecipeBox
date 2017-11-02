@@ -9,19 +9,22 @@ import { User, Recipe } from '../shared/entry.model';
 })
 
 export class EntryListComponent implements OnInit, OnChanges {
-    @Output() onEntryLoad = new EventEmitter<{
-        options:Array<string>;
-        user:User;
+    @Output() updateModal = new EventEmitter<{
+        title:string;
+        data:any;
     }>();
-    @Output() onEntryEdit = new EventEmitter<{title:string; data:any;}>();
+    @Output() updateUser = new EventEmitter<any>();
 
     @Input() user: User;
     @Input() modalContent: {
-        title:string; data:any;
+        title:string; 
+        data:any;
     }
-    entries: any;
-    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
 
+    entries: any;
+    options: Array<string>;
+
+    private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     constructor(private entryService: EntryService, private ngZone: NgZone){}   
 
     ngOnInit(){
@@ -52,13 +55,14 @@ export class EntryListComponent implements OnInit, OnChanges {
         this.entryService
         .getEntries()
         .then(entries => {
-            console.log(entries);
-            const categories = entries.map((cat) => {
+            //get category options for adding recipes
+            this.options = entries.map((cat) => {
                 return cat.category;
             });
 
+            //combine user and api recipes
             this.entries = (this.user.recipes.length < 1) ? entries: this.user.recipes.reduce((a, b) => {
-                if(categories.includes(b.href)) {
+                if(this.options.includes(b.href)) {
                     entries.forEach((entry) => {
                         if(entry.category === b.href) entry.recipes.push(b);
                     });
@@ -66,86 +70,61 @@ export class EntryListComponent implements OnInit, OnChanges {
                 return a;
             }, entries);
 
-            this.onEntryLoad.emit({
-                options: categories, 
-                user: user
-            });
+            this.toggle();
+            //this.updateUser.emit(user);
         });
     }
 
     ngOnChanges(e){
         console.log("User", e);
-
-        if(e.user){
-            if(e.user.previousValue){
-                const previous = e.user.previousValue.recipes || [];
-                const current = e.user.currentValue.recipes || [];
-
-                if(e.user.currentValue.name !== e.user.previousValue.name){
-                    console.log("SIGN IN");
-                    const user = e.user.currentValue;
-                    //const userUrl = `${this.url}/user/${user._id}?token=${user.userID}`;
-    
-                    if(user.userID){
-                        this.addAll(user.recipes) 
-                    }
-                    else {
-                        this.remove();
-                        // this.ngZone.runOutsideAngular(() => {
-                        //     this.remove(() => {
-                        //         this.ngZone.run(() => {
-                        //             console.log("ngZone");
-                        //             this.toggle();
-                        //         });
-                        //     });
-                        // });
-                        
-                    } 
-                }
-                else if(e.user.currentValue.recipes.length > e.user.previousValue.recipes.length){
-                    //find new one
-                    console.log("ADD");
-                    const newRecipe = current.reduce((a, b) => {
-                        if(!previous.includes(b)) return b;
-                        else return a;
-                    }, {});
-
-                    this.add(newRecipe);
-                }
-                else if(e.user.currentValue.recipes.length < e.user.previousValue.recipes.length){
-                    //find old
-                    console.log('DELETE');
-                    this.delete(this.modalContent.data.category, this.modalContent.data._id);
-                }
-                else if(this.modalContent.title === 'Edit Recipe'){
-                    console.log('EDIT');
-                    //find edited recipe
-                    this.user.recipes.forEach((recipe) => {
-                        if(recipe._id === this.modalContent.data._id){
-                            if(recipe.href !== this.modalContent.data.href){
-                                this.move(recipe, this.modalContent.data.href);
-                            }
-                            else{
-                                this.edit(recipe);
-                            }
-                        }
-                    });
-                }
-                this.toggle();
-            }
-        }
     }
 
-    //user sign out
-    // remove(doneCallback: () => void){
-    //     this.entries.forEach((entry, i) => {
-    //         entry.recipes = entry.recipes.filter((recipe) => {
-    //             return recipe.href.includes("http");
-    //         });
-    //         //this.toggle();
-    //         if(i === this.entries.length - 1) doneCallback();
-    //     });
-    // }
+
+    entryEdit(e){
+        this.updateModal.emit(e);
+    }
+
+    userEdit(user){
+        const title = this.modalContent.title;
+        if(title === "Sign In"){
+            console.log('SIGN IN');
+            this.addAll(user.recipes);
+        }
+        else if(title === "Logout"){
+            console.log('LOGOUT');
+            this.remove();
+        }
+        else if(title === "Add Recipe"){
+            console.log('ADD RECIPE');
+            const newRecipe = user.recipes.reduce((a, b) => {
+                if(!this.user.recipes.includes(b)) return b;
+                else return a;
+            }, {});
+
+            this.add(newRecipe);
+        }
+        else if(title === "Delete Recipe"){
+            console.log('DELETE');
+            this.delete(this.modalContent.data.category, this.modalContent.data._id);
+        } 
+        else if(title === "Edit Recipe"){
+            console.log('EDIT RECIPE', this.user.recipes);
+            user.recipes.forEach((recipe) => {
+                if(recipe._id === this.modalContent.data._id){
+                    if(recipe.href !== this.modalContent.data.href){
+                        this.move(recipe, this.modalContent.data.href);
+                    }
+                    else{
+                        this.edit(recipe);
+                    }
+                }
+            });
+        }
+        this.updateUser.emit(user);
+        this.toggle();
+    }
+
+
     remove(){
         this.entries.forEach((entry, i) => {
             entry.recipes = entry.recipes.filter((recipe) => {
@@ -173,26 +152,14 @@ export class EntryListComponent implements OnInit, OnChanges {
 
     //user delete recipe
     delete(category:string, id:string){
-        //console.log(recipe);
-
         this.entries.forEach((entry) => {
             if(entry.category === category){
                 // let index;
                 entry.recipes.forEach((recipe, i) => {
                     if(recipe._id === id){
-                        //entry.recipes = entry.recipes.slice(0, i).concat(entry.recipes.slice(i + 1));
-                        //entry.recipes.splice(i, 1, {...recipe});
                         entry.recipes.splice(i, 1);
-                        
-                        // index = i
-                        //this.toggle();
                     } 
                 });
-
-                // const arr1 = entry.recipes.slice(0, index);
-                // const arr2 = entry.recipes.slice(index + 1);
-                // entry.recipes = arr1.concat(arr2);
-
                 console.log(entry.recipes);
             }
         });
@@ -200,7 +167,7 @@ export class EntryListComponent implements OnInit, OnChanges {
 
     //user edit recipe and NOT change categories
     edit(recipe: Recipe){
-        //console.log(recipe);
+        console.log(recipe);
         this.entries.forEach((entry) => {
             //console.log(moved);
             if(entry.category === recipe.href){
@@ -234,19 +201,12 @@ export class EntryListComponent implements OnInit, OnChanges {
 
     //get rid of modal
     toggle(){
-        //TOGGLE DOES NOT APPEAR TO WORK UNLESS ANOTHER ENTRY IS INTESERTED
-        if(this.modalContent.title){
-            // this.modalContent.title = '';
-            // this.modalContent.data = null;
-            
-            this.onEntryEdit.emit({
+        //TOGGLE DOES NOT APPEAR TO WORK UNLESS ANOTHER ENTRY IS INSERTED
+        if(this.modalContent.title){            
+            this.updateModal.emit({
                 title: '',
                 data: null
-            });
+            })
         }
-    }
-
-    entryEdit(e){
-        this.onEntryEdit.emit(e);
     }
 }

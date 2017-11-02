@@ -31,7 +31,7 @@ export class HeaderContent implements OnChanges{
     //     else return 'inactive';
     // }, '');
 
-    options: Array<string> = [];
+    //options: Array<string> = [];
     length: number = this.user.shoppingList.reduce((a, b) => { 
         if(b.selected) a += 1;
         return a; 
@@ -130,17 +130,17 @@ export class HeaderContent implements OnChanges{
         // this.toggleState('active');
     }
 
-    updateOptions(e: {options: Array<string>; user: User;}) {
-        this.options = e.options;
-        //this.user = e.user;
-        //this.modalShown = 'inactive';
-        this.updateUser(e.user);
-        this.modalContent = {
-            title: '',
-            data: null
-        }
-        console.log(this.options);
-    }
+    // updateOptions(e: {options: Array<string>; user: User;}) {
+    //     this.options = e.options;
+    //     //this.user = e.user;
+    //     //this.modalShown = 'inactive';
+    //     this.updateUser(e.user);
+    //     this.modalContent = {
+    //         title: '',
+    //         data: null
+    //     }
+    //     console.log(this.options);
+    // }
 
     //==============EDIT USER===============================
     // fetchUser() {
