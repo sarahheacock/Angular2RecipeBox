@@ -26,10 +26,7 @@ export class Box {
         title:string;
         data:any;
     }>();
-    @Input() box: {
-        category: string;
-        recipes: Array<Recipe>;
-    }
+    @Input() box: any;
     @Input() name: string;
 
     contentShown: string;
