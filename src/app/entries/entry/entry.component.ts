@@ -176,11 +176,11 @@ export class EntryComponent implements AfterContentInit{
 
     animationDone(){
         //console.log(this.entry);
-        const element = document.getElementById(this.entry._id);
-        const dist = $(element).offset().top;
+        // const element = document.getElementById(this.entry._id);
+        // const dist = $(element).offset().top;
 
-        $('html, body').animate({
-            scrollTop: dist
-        }, 700, "swing");
+        // $('html, body').animate({
+        //     scrollTop: dist
+        // }, 700, "swing");
     }
 }

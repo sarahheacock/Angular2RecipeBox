@@ -15,3 +15,4 @@ export * from './content/default-modal.component';
 
 export * from './entry-list/entry-list.component';
 export * from './entry/entry.component';
+export * from './box/box.component';

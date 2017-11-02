@@ -12,7 +12,6 @@ import { User } from '../shared/entry.model';
 
 export class SendMessage{
     @Output() userChange = new EventEmitter<User>();
-    @Output() stateChange = new EventEmitter<string>();
     @Output() modalChange = new EventEmitter<{
         title:string;
         data:any;
@@ -31,7 +30,7 @@ export class SendMessage{
 
     start:boolean = false;
     done:boolean = false;
-    error:boolean = false;
+    error:string = '';
 
     private url = (window.location.hostname === "localhost") ? "http://localhost:8080" : "";
     constructor(private entryService: EntryService) {}
@@ -46,29 +45,10 @@ export class SendMessage{
     }
 
     addPhone(text: NgForm){
-        console.log(text.value);
-        const formatNum = (num) => {
-            const newNum = num.replace(/[^0-9]/gi, '');
-            if(newNum.length === 11){
-              return "+" + newNum;
-            }
-            else if(newNum.length === 10){
-              return "+1" + newNum;
-            }
-            else {
-              return newNum;
-            }
-        };
-          
-        const checkPhone = (newNum) => {
-            //make sure num has <= 11 digits but >= 10 digits
-            //newNum.replace("+", "");
-            return /^[+]{1}([0-9]{10}|(1|0)[0-9]{10})$/.test(newNum);
-        };
+        console.log(text.value);         
+        const num = this.formatNum(text.value.newPhone);
 
-        const num = formatNum(text.value.phone);
-
-        if(checkPhone(num) && !this.phones.includes(num)){
+        if(this.checkPhone(num) && !this.phones.includes(num)){
             this.phones.splice(0, 0, num);
 
             this.newPhone = '';
@@ -76,26 +56,68 @@ export class SendMessage{
             this.send = num;
         }
         else {
-            this.error = true;
+            //this.error = true;
+            this.error = this.newPhone;
         }
+    }
+
+    formatNum(num) {
+        const newNum = num.replace(/[^0-9]/gi, '');
+        if(newNum.length === 11){
+          return "+" + newNum;
+        }
+        else if(newNum.length === 10){
+          return "+1" + newNum;
+        }
+        else {
+          return newNum;
+        }
+    }
+
+    checkPhone(newNum) {
+        //make sure num has <= 11 digits but >= 10 digits
+        //newNum.replace("+", "");
+        return /^[+]{1}([0-9]{10}|(1|0)[0-9]{10})$/.test(newNum);
+    }
+
+    onChange(e){
+        console.log("hi");
+        this.error = '';
     }
 
 
     onSend(f: NgForm) {
-        console.log(this.user);   
+        console.log(this.user);
+        
+
+        // if(checkPhone(this.send)){
         const url = `${this.url}/user/${this.user._id}/message?token=${this.user.userID}`;
         this.start = true;
+        this.done = false;
+
+        const send = (this.send) ? this.send: this.newPhone;
 
         this.entryService.postUser(url, {
             ...this.data, 
-            send: this.send
+            send: send
         }).then(user => {
-            this.userChange.emit(user);
-            this.done = true;
+            if(!user.name){
+                this.start = false;
+                this.error = send || "''";
+                console.log(user);
+            }
+            else {
+                this.done = true;
+                this.userChange.emit(user);
+            }
         });
+        // }
+        // else {
+        //     this.error = true;
+        // }
     }
 
-    toggle(e){
+    toggle(f: NgForm){
         if(this.data.changed && !this.done && !this.start){
             this.modalChange.emit({
                 title: "Save Changes",
@@ -107,7 +129,10 @@ export class SendMessage{
             });
         }
         else{
-            this.stateChange.emit('');
+            this.modalChange.emit({
+                title: '',
+                data: null
+            });
         }
     }
 }

@@ -1,7 +1,6 @@
 import { User } from './entry.model';
 import { Injectable, OnInit } from '@angular/core';
 import { FacebookService, InitParams, LoginResponse, LoginOptions } from 'ngx-facebook';
-import { GoogleSignInProviderService } from 'ngx-google-sign-in';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 

@@ -9,23 +9,21 @@
     
     <form #f="ngForm">
         <form #text="ngForm" (ngSubmit)="addPhone(text)" class="form-group row">
-            <label for="newPhone" class="col-sm-3 col-form-label">Phone Number:</label>
+            <label for="newPhone" class="col-sm-3 col-form-label" [ngStyle]="{'color': error === newPhone && newPhone !== '' ? '#d9534f': undefined}">Phone Number:</label>
             <div class="col-sm-7">
                 <input 
                     class="form-control"
                     type="text" 
                     name="newPhone"
                     [(ngModel)]="newPhone"
-                    required
+                    (click)="onChange($event)"
+                    [ngStyle]="{'border-color': error === newPhone && newPhone !== '' ? '#d9534f': undefined}"
                 >
             </div>
             <div class="col-sm-2 text-center">
                 <button class="btn btn-outline-primary" type="submit">
                     ADD <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 </button>
-            </div>
-            <div *ngIf="error" class="alert alert-danger text-center">
-                Invalid phone number.
             </div>
         </form>
 
@@ -37,23 +35,37 @@
                         type="radio"
                         [value]="item"
                         [(ngModel)]="send"
+                        (click)="onChange($event)"
+                        [ngStyle]="{
+                            'outline': error === item ? '1px solid #d9534f': undefined
+                        }"
                     >
                 </div>
                 <div class="col-sm-9">
-                    <label>
+                    <label
+                        [ngStyle]="{
+                            'color': error === item ? '#d9534f': undefined
+                        }"
+                    >
                         {{item}}
                     </label>
                 </div>
             </div>
         </div>
     </form>
+    <div class="pad-button">
+        <div *ngIf="error" class="alert alert-danger text-center">
+            {{error}} is an invalid phone number. Must be in format 555-555-5555.
+        </div>
+    </div>
+
     <div class="pad-button text-center">
         <br />
         <i *ngIf="!done && start" class="fa fa-spinner fa-spin fa-2x"></i>
-        <h5 *ngIf="done && start" class="alert alert-info">Message Sent!</h5>
+        <p *ngIf="done && start" class="alert alert-info">Message Sent!</p>
     </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="onSend(f)">Send Text <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-    <button type="button" class="btn btn-secondary" (click)="toggle($event)">Close</button>
+    <button type="button" class="btn btn-secondary" (click)="toggle(f)">Close</button>
 </div>

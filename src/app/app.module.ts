@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
+// import { HttpModule } from '@angular/http';
 //import * as cloudinary from 'cloudinary-core';
 //import * as cloudJQ from 'cloudinary-jquery-file-upload';
 //import { CloudinaryModule } from '@cloudinary/angular-4.x';
@@ -14,7 +14,6 @@ import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-4
 import { FileUploadModule } from 'ng2-file-upload';
 
 import { FacebookModule } from 'ngx-facebook';
-import { NgxGoogleSignInModule } from 'ngx-google-sign-in'
 import { AppComponent } from './app.component';
 
 import { 
@@ -22,7 +21,8 @@ import {
   EntryComponent, 
   EntryService, 
   EntryListModal, 
-  HeaderContent, 
+  HeaderContent,
+  Box,
   Login, 
   Logout, 
   ShoppingList, 
@@ -57,7 +57,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     FacebookModule.forRoot(),
-    HttpModule,
+    // HttpModule,
     CloudinaryModule.forRoot({ Cloudinary }, cloudinaryConfig as CloudinaryConfiguration),
     FileUploadModule,
     //CloudinaryModule
@@ -69,6 +69,7 @@ const appRoutes: Routes = [
     EntryListComponent,
     EntryListModal,
     HeaderContent,
+    Box,
     Login,
     Logout,
     ShoppingList,

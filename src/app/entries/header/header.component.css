@@ -11,6 +11,14 @@ body {
     border-color: white;
 }
 
+.border {
+    /* padding: 40px 30px 40px 30px;
+    min-height: 100%; */
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(245,245,245);
+    border-color: rgba(245,245,245,0.8);
+}
 
 header {
     background-image: url(https://res.cloudinary.com/dhd1eov8v/image/upload/c_scale,w_934/v1506628983/pexels-photo-326278_jrnio3.jpg);

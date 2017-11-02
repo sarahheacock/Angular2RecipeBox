@@ -110,10 +110,6 @@ router.put("/:userID/clear", mid.auth, (req, res, next) => {
 
 //text shopping list
 router.post("/:userID/message", mid.auth, (req, res, next) => {
-    if(!req.user.phone.includes(req.body.send)) req.user.phone.push(req.body.send);
-    //req.user.phone = phone;
-    next();
-}, (req, res, next) => {
     const names = req.user.shoppingListNames.join(", ");
 
     let i = 1;
@@ -133,13 +129,14 @@ router.post("/:userID/message", mid.auth, (req, res, next) => {
         to: req.body.send,
         body: content
     }, (error, message) => {
-        // if(error){
-        //     res.json({message: error.message});
-        // } 
-        // else{
+        if(error){
+            res.json({message: error.message});
+        } 
+        else{
+            if(!req.user.phone.includes(req.body.send)) req.user.phone.push(req.body.send);
             req.user.shoppingList = req.body.shoppingList;
             next();
-        // } 
+        } 
     });
 }, mid.saveAndOutput);
 

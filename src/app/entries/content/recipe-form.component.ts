@@ -1,9 +1,6 @@
-// import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-// import { NgForm } from '@angular/forms';
 import { EntryService } from '../shared/entry.service';
 
 import { Component, OnInit, Input, NgZone, Output, EventEmitter } from '@angular/core';
-//import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { FileUploader, FileUploaderOptions, ParsedResponseHeaders } from 'ng2-file-upload';
 import { NgForm } from '@angular/forms';
 import 'rxjs/add/operator/toPromise';
